@@ -183,43 +183,20 @@
           }
       }
       
-      /* --- SKILLS Section Styling --- */
-      /* Base Style for all list items */
-      .skills-list li {
+      /* --- SKILLS Section Styling (NEW centered layout) --- */
+      .skill-item {
           font-size: 0.95rem; 
-          margin-bottom: 15px !important; 
-          display: flex;
-          align-items: center;
           font-weight: bold; 
-          /* Crucial to allow negative margins to pull content over the edge */
+          display: flex; /* Enables flexbox for centering */
+          flex-direction: column; /* Stacks icon on top of text */
+          align-items: center; /* Centers items horizontally */
+          text-align: center;
       }
-      /* Base Icon Style (for right column) */
-      .skills-list i.fa {
-          font-size: 2rem; 
-          margin-right: 15px; /* Default: icon on left, margin on right */
+
+      .skill-item i.fa {
+          font-size: 2.5rem; /* Slightly larger icon */
+          margin-bottom: 10px;
           filter: drop-shadow(0 0 5px var(--pink-neon));
-      }
-
-      /* 2. SKILLS Gap Fix: Reduce horizontal padding for inner columns (to make the negative margin fix easier) */
-      #skills .skills-list .col-sm-6 {
-          padding-left: 10px !important;
-          padding-right: 10px !important;
-      }
-
-      /* 3. Custom Style for Left Column (Name - Icon, Right-Aligned) */
-      .skills-list .col-sm-6:first-child li {
-          width: 100%; /* Ensures li spans the full column width */
-          justify-content: flex-end; /* Pushes content to the far right */
-          flex-direction: row-reverse; /* Puts the icon on the right */
-          
-          /* FIX: Pull the content 10px to the right to negate the column's 10px right padding */
-          margin-right: -10px; 
-      }
-      
-      /* Adjust icon margin for the left column (margin on the left of the icon) */
-      .skills-list .col-sm-6:first-child i.fa {
-          margin-right: 0; 
-          margin-left: 15px; 
       }
       /* --- END SKILLS Section Styling --- */
       
@@ -421,7 +398,7 @@
     </div>
     <!-- About End -->
 
-    <!-- Skills Start (Reorganized by General vs. Visualization Tools) -->
+    <!-- Skills Start (Now in a single 6-column row for symmetry) -->
     <div class="container-fluid py-5" id="skills">
       <div class="container">
         <!-- Section Heading -->
@@ -430,25 +407,58 @@
           <h1 class="background-title text-uppercase d-none d-md-block">SKILLS</h1>
         </div>
         <div class="row align-items-center animation-element fade-in-up justify-content-center">
-          <div class="col-md-8"> 
-            <div class="row skills-list text-left">
-                <!-- Left Column: General Tools (Name - Icon, Right-Aligned) -->
-                <div class="col-sm-6">
-                    <ul class="list-unstyled mb-0">
-                        <!-- Icon and Text order is the same, but CSS reverses and right-aligns -->
-                        <li class="animation-element fade-in-left"><i class="fa fa-code primary-color"></i> SQL</li>
-                        <li class="animation-element fade-in-left"><i class="fa fa-brain primary-color"></i> Python</li>
-                        <li class="animation-element fade-in-left"><i class="fa fa-magic primary-color"></i> KNIME</li>
-                    </ul>
+          <div class="col-lg-10"> 
+            <!-- Single row for 6 skill items -->
+            <div class="row text-center">
+                
+                <!-- Skill 1: SQL -->
+                <div class="col-6 col-md-2 mb-4 animation-element fade-in-up">
+                    <div class="skill-item">
+                        <i class="fa fa-code primary-color"></i> 
+                        SQL
+                    </div>
                 </div>
-                <!-- Right Column: Visualization/BI Tools (Icon - Name, Left-Aligned) -->
-                <div class="col-sm-6">
-                    <ul class="list-unstyled mb-0">
-                        <li class="animation-element fade-in-right"><i class="fa fa-chart-bar primary-color"></i> Tableau</li>
-                        <li class="animation-element fade-in-right"><i class="fa fa-chart-line primary-color"></i> Microsoft PowerBI</li>
-                        <li class="animation-element fade-in-right"><i class="fa fa-chart-area primary-color"></i> Looker Studio</li>
-                    </ul>
+
+                <!-- Skill 2: Python -->
+                <div class="col-6 col-md-2 mb-4 animation-element fade-in-up">
+                    <div class="skill-item">
+                        <i class="fa fa-brain primary-color"></i> 
+                        Python
+                    </div>
                 </div>
+
+                <!-- Skill 3: KNIME -->
+                <div class="col-6 col-md-2 mb-4 animation-element fade-in-up">
+                    <div class="skill-item">
+                        <i class="fa fa-magic primary-color"></i> 
+                        KNIME
+                    </div>
+                </div>
+
+                <!-- Skill 4: Tableau -->
+                <div class="col-6 col-md-2 mb-4 animation-element fade-in-up">
+                    <div class="skill-item">
+                        <i class="fa fa-chart-bar primary-color"></i> 
+                        Tableau
+                    </div>
+                </div>
+
+                <!-- Skill 5: Microsoft PowerBI -->
+                <div class="col-6 col-md-2 mb-4 animation-element fade-in-up">
+                    <div class="skill-item">
+                        <i class="fa fa-chart-line primary-color"></i> 
+                        Microsoft PowerBI
+                    </div>
+                </div>
+
+                <!-- Skill 6: Looker Studio -->
+                <div class="col-6 col-md-2 mb-4 animation-element fade-in-up">
+                    <div class="skill-item">
+                        <i class="fa fa-chart-area primary-color"></i> 
+                        Looker Studio
+                    </div>
+                </div>
+                
             </div>
           </div>
         </div>
@@ -852,7 +862,7 @@
           var windowTopPosition = $window.scrollTop();
           var windowBottomPosition = windowTopPosition + windowHeight;
 
-          $.each($animationElements, function () {
+            $.each($animationElements, function () {
             var $element = $(this);
             var elementHeight = $element.outerHeight();
             var elementTopPosition = $element.offset().top;
@@ -860,15 +870,15 @@
 
             // Check to see if this current container is within viewport
             if (
-              elementBottomPosition >= windowTopPosition &&
-              elementTopPosition <= windowBottomPosition
+                elementBottomPosition >= windowTopPosition &&
+                elementTopPosition <= windowBottomPosition
             ) {
-              $element.addClass("in-view");
+                $element.addClass("in-view");
             } else { 
-              // This ensures the 'in-view' class is removed when the element scrolls out
-              $element.removeClass("in-view");
+                // This ensures the 'in-view' class is removed when the element scrolls out
+                $element.removeClass("in-view");
             }
-          });
+            });
         }
 
         $window.on("scroll resize", checkIfInView);
