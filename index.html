@@ -123,11 +123,22 @@
           color: var(--dark) !important; /* Text to Dark for contrast */
       }
       
-      /* 1. H1 Font size adjustment for "ROMANSYA SETYO UTOMO" */
+      /* 3. H1 Name Size Adjustment (Reduced to fit on one line) */
       #home h1.display-3 {
-          font-size: 4rem !important; /* Ensure it fits on one line */
+          font-size: 3.5rem !important; /* Reduced to ensure it fits on one line */
       }
-
+      
+      /* 1. Animation CSS for rolling effect (Added back) */
+      .animation-element {
+          opacity: 0;
+          transform: translateY(50px);
+          transition: opacity 1s ease-out, transform 1s ease-out;
+      }
+      .animation-element.in-view {
+          opacity: 1;
+          transform: translateY(0);
+      }
+      
       /* Section Heading Styles for double text effect */
       .section-heading {
         position: relative;
@@ -155,7 +166,7 @@
           position: relative;
           z-index: 1;
           display: inline-block;
-          /* FIX: Adjusted from 10px to 5px to move it slightly up */
+          /* FIX: Adjusted to move it slightly up */
           top: 5px; 
       }
       /* Adjust for mobile to prevent massive text */
@@ -164,7 +175,7 @@
               font-size: 3.5rem;
               -webkit-text-stroke: 0.5px var(--blue-neon); /* Neon blue outline */
           }
-          /* FIX: Adjusted from 5px to 2px to move it slightly up */
+          /* FIX: Adjusted to move it slightly up */
           .section-heading .foreground-title {
               top: 2px; 
           }
@@ -224,13 +235,30 @@
           }
       }
       
-      /* Style for full image display in Teaching section */
-      .achievement-card img {
+      /* 2. Style for larger, clickable full image display in Teaching section */
+      .teaching-img-zoom {
           border: 1px solid var(--pink-neon);
-          max-height: 250px;
+          /* Increased from 250px to 350px (~140% increase) */
+          max-height: 350px !important; 
           max-width: 100%;
           object-fit: cover;
+          cursor: pointer;
+          transition: transform 0.3s ease;
       }
+      .teaching-img-zoom:hover {
+          transform: scale(1.02);
+      }
+      /* Modal styling for better dark theme appearance */
+      .modal-content {
+          background-color: var(--dark) !important;
+          border: 1px solid var(--blue-neon);
+      }
+      .modal-header .close {
+          color: var(--light) !important;
+          opacity: 1;
+          text-shadow: none;
+      }
+      
 
       /* Footer Styling for contrast */
       .footer-container {
@@ -310,7 +338,7 @@
             <!-- FIX 2: Made "Hi, I'm" bold -->
             <h3 class="font-weight-bold mb-3">Hi, I'm</h3>
 
-            <!-- 1. H1 Name Size Adjustment (Style added to CSS block) -->
+            <!-- 3. H1 Name Size Adjustment (Style controlled by CSS block) -->
             <h1
               class="display-3 text-uppercase mb-2"
               style="-webkit-text-stroke: 2px var(--dark); color: transparent !important; font-weight: 900 !important;"
@@ -595,12 +623,12 @@
                             </p>
                         </div>
                     </div>
-                    <!-- Image displayed in center -->
+                    <!-- 2. Image element now uses the new class and onClick handler -->
                     <img 
-                        class="img-fluid rounded mt-3 mx-auto d-block" 
-                        style="max-height: 250px; max-width: 100%; object-fit: cover;"
+                        class="img-fluid rounded mt-3 mx-auto d-block teaching-img-zoom" 
                         src="pics/guest_lecturer_proof.jpg" 
                         alt="Proof of Guest Lecturer engagement" 
+                        onclick="openImageModal(this.src)"
                     />
                 </div>
             </div>
@@ -618,12 +646,12 @@
                             </p>
                         </div>
                     </div>
-                    <!-- Image displayed in center -->
+                    <!-- 2. Image element now uses the new class and onClick handler -->
                     <img 
-                        class="img-fluid rounded mt-3 mx-auto d-block" 
-                        style="max-height: 250px; max-width: 100%; object-fit: cover;"
+                        class="img-fluid rounded mt-3 mx-auto d-block teaching-img-zoom" 
                         src="pics/instructor_ratings.png" 
                         alt="Favorite Instructor recognition proof" 
+                        onclick="openImageModal(this.src)"
                     />
                 </div>
             </div>
@@ -687,6 +715,22 @@
     </div>
     <!-- Footer End -->
 
+    <!-- Image Modal (Lightbox) - 2. Added for full-screen image view -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-dark border border-primary">
+                <div class="modal-header border-0">
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center p-2">
+                    <img id="modalImageContent" src="" class="img-fluid rounded" style="max-height: 90vh; width: auto;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scroll to Bottom -->
     <a href="#home" class="btn btn-outline-primary px-0 back-to-top"
       ><i class="fa fa-angle-double-up"></i
@@ -700,6 +744,12 @@
 
     <!-- Custom JavaScript for Animation & Navigation -->
     <script>
+      // Function to open the lightbox modal
+      function openImageModal(imageSrc) {
+          $("#modalImageContent").attr("src", imageSrc);
+          $("#imageModal").modal("show");
+      }
+
       $(function () {
         "use strict";
 
@@ -765,7 +815,8 @@
         // Scroll Spy (The "rolling effect" animation)
         var $window = $(window);
         var $animationElements = $(".animation-element");
-        var mobileview = window.matchMedia("(max-width: 768px)").matches;
+        // Removed: var mobileview = window.matchMedia("(max-width: 768px)").matches;
+        // The mobileview variable is no longer needed after fixing the logic below.
 
         function checkIfInView() {
           var windowHeight = $window.height();
@@ -784,8 +835,9 @@
               elementTopPosition <= windowBottomPosition
             ) {
               $element.addClass("in-view");
-            } else if (mobileview === false) {
-              // For desktop view, remove class if scrolled out to allow re-animation on scroll up/down
+            } else { 
+              // FIX: This now removes the 'in-view' class on all devices 
+              // when the element scrolls out of the viewport, allowing the animation to replay.
               $element.removeClass("in-view");
             }
           });
