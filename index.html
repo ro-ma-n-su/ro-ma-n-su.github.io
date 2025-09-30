@@ -173,7 +173,7 @@
           }
       }
       
-      /* 5. Increase space above the ABOUT section */
+      /* Increase space above the ABOUT section */
       #about {
           padding-top: 100px !important; /* Increase top padding for more space on smaller screens */
       }
@@ -183,13 +183,8 @@
           }
       }
       
-      /* 2. SKILLS Gap Fix: Reduce horizontal padding for inner columns */
-      #skills .skills-list .col-sm-6 {
-          padding-left: 10px !important;
-          padding-right: 10px !important;
-      }
-
-      /* Skills Styling */
+      /* --- SKILLS Section Styling --- */
+      /* Base Style for all list items */
       .skills-list li {
           font-size: 0.95rem; 
           margin-bottom: 15px !important; 
@@ -197,11 +192,33 @@
           align-items: center;
           font-weight: bold; 
       }
+      /* Base Icon Style (for right column) */
       .skills-list i.fa {
           font-size: 2rem; 
-          margin-right: 15px;
+          margin-right: 15px; /* Default: icon on left, margin on right */
           filter: drop-shadow(0 0 5px var(--pink-neon));
       }
+
+      /* 2. SKILLS Gap Fix: Reduce horizontal padding for inner columns */
+      #skills .skills-list .col-sm-6 {
+          padding-left: 10px !important;
+          padding-right: 10px !important;
+      }
+
+      /* 3. Custom Style for Left Column (Name - Icon, Right-Aligned) */
+      .skills-list .col-sm-6:first-child li {
+          width: 100%; /* MANDATORY: Ensure the list item spans the full width of the column */
+          justify-content: flex-end; /* Pushes content block to the right edge of the list container */
+          flex-direction: row-reverse; /* Puts the icon on the right, next to the text */
+      }
+      
+      /* Adjust icon margin for the left column (margin on the left of the icon) */
+      .skills-list .col-sm-6:first-child i.fa {
+          margin-right: 0; 
+          margin-left: 15px; /* Adds space between text and icon */
+      }
+      /* --- END SKILLS Section Styling --- */
+      
       
       /* Project/Achievement Card Styles */
       .project-card, .achievement-card {
@@ -411,15 +428,16 @@
         <div class="row align-items-center animation-element fade-in-up justify-content-center">
           <div class="col-md-8"> 
             <div class="row skills-list text-left">
-                <!-- Left Column: General Tools (SQL, Python, KNIME) -->
+                <!-- Left Column: General Tools (Name - Icon, Right-Aligned) -->
                 <div class="col-sm-6">
                     <ul class="list-unstyled mb-0">
+                        <!-- Icon and Text order is the same, but CSS reverses and right-aligns -->
                         <li class="animation-element fade-in-left"><i class="fa fa-code primary-color"></i> SQL</li>
                         <li class="animation-element fade-in-left"><i class="fa fa-brain primary-color"></i> Python</li>
                         <li class="animation-element fade-in-left"><i class="fa fa-magic primary-color"></i> KNIME</li>
                     </ul>
                 </div>
-                <!-- Right Column: Visualization/BI Tools (Tableau, PowerBI, Looker Studio) -->
+                <!-- Right Column: Visualization/BI Tools (Icon - Name, Left-Aligned) -->
                 <div class="col-sm-6">
                     <ul class="list-unstyled mb-0">
                         <li class="animation-element fade-in-right"><i class="fa fa-chart-bar primary-color"></i> Tableau</li>
