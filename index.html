@@ -33,7 +33,7 @@
       rel="stylesheet"
     />
 
-    <!-- Custom CSS Styles with Neon Colors (Cleaner Head Section) -->
+    <!-- Custom CSS Styles with Neon Colors -->
     <style>
       :root {
         /* Defining the new Neon colors (TikTok style) */
@@ -65,18 +65,6 @@
         color: var(--blue-neon) !important;
       }
       
-      /* Default button style (not used by LinkedIn button now) */
-      .btn.btn-outline-primary {
-        color: var(--pink-neon);
-        border-color: var(--pink-neon);
-      }
-      
-      .btn.btn-outline-primary:hover {
-        background: var(--pink-neon);
-        color: var(--dark);
-      }
-
-      /* LinkedIn Button Styling */
       .btn-linkedin {
           background-color: var(--linkedin-blue);
           color: var(--light) !important;
@@ -98,21 +86,20 @@
         align-items: center;
       }
 
-      /* --- Navbar/Sidebar Styling (REVERTED TO DARK BACKGROUND) --- */
+      /* --- Navbar/Sidebar Styling --- */
       #navbar {
-        background: var(--dark) !important; /* REVERTED: Navbar background back to dark/default */
+        background: var(--dark) !important; 
         border-bottom: 2px solid var(--pink-neon); 
       }
-      /* REVERTED: Navbar brand and links must be NEON BLUE for contrast against Dark BG */
       #navbar .navbar-brand h1 {
-          color: var(--blue-neon) !important; /* REVERTED */
+          color: var(--blue-neon) !important; 
       }
       #navbar .nav-link {
-          color: var(--blue-neon) !important; /* REVERTED: Nav links color to Neon Blue */
+          color: var(--blue-neon) !important; 
       }
       #navbar .nav-link:hover,
       #navbar .nav-link.active {
-        color: var(--pink-neon) !important; /* Hover color remains PINK for accent */
+        color: var(--pink-neon) !important; 
       }
       
       /* Neon Blue Background for Header Section */
@@ -121,36 +108,42 @@
       }
       /* Contrast text color for Header H3 and Typed output */
       #home h3, #home .typed-text-output {
-          color: var(--dark) !important; /* Text to Dark for contrast */
+          color: var(--dark) !important; 
       }
       
-      /* 2. H1 Name Size Adjustment */
+      /* H1 Name Size Adjustment */
       #home h1.display-3 {
-          font-size: 3rem !important; /* Reduced to 3rem from 3.5rem to ensure it fits on one line */
+          font-size: 3rem !important; 
       }
       
-      /* 1. Animation CSS for rolling effect (Added back) */
+      /* 1. Animation CSS for directional rolling effect */
       .animation-element {
           opacity: 0;
-          transform: translateY(50px);
           transition: opacity 1s ease-out, transform 1s ease-out;
       }
+      /* Directional Hidden States */
+      .fade-in-up { transform: translateY(50px); }
+      .fade-in-down { transform: translateY(-50px); }
+      .fade-in-left { transform: translateX(-50px); }
+      .fade-in-right { transform: translateX(50px); }
+
+      /* In-View State: Reset transform and set opacity to 1 */
       .animation-element.in-view {
           opacity: 1;
-          transform: translateY(0);
+          transform: translate(0, 0); 
       }
       
       /* Section Heading Styles for double text effect */
       .section-heading {
         position: relative;
         text-align: center;
-        margin-bottom: 70px; /* Increased margin for better separation */
+        margin-bottom: 70px; 
       }
-      /* Large, outlined, background text (3. Background Title Styling & Size) */
+      /* Large, outlined, background text */
       .section-heading .background-title {
-          font-size: 6.75rem; /* Increased size to 135% of 5rem */
+          font-size: 6.75rem; 
           font-weight: 900;
-          color: transparent; /* Invisible fill */
+          color: transparent; 
           position: absolute;
           top: 50%;
           left: 50%;
@@ -159,50 +152,64 @@
           line-height: 1;
           -webkit-text-stroke: 1px var(--blue-neon); /* Neon blue outline */
       }
-      /* Foreground text (3. Foreground Title Styling & 2. Centering Fix) */
+      /* Foreground text */
       .section-heading .foreground-title {
           font-size: 2.5rem; 
           font-weight: 700;
-          color: var(--blue-neon); /* Neon blue color */
+          color: var(--blue-neon); 
           position: relative;
           z-index: 1;
           display: inline-block;
-          /* FIX: Adjusted to move it slightly up */
           top: 5px; 
       }
       /* Adjust for mobile to prevent massive text */
       @media (max-width: 768px) {
           .section-heading .background-title {
               font-size: 3.5rem;
-              -webkit-text-stroke: 0.5px var(--blue-neon); /* Neon blue outline */
+              -webkit-text-stroke: 0.5px var(--blue-neon); 
           }
-          /* FIX: Adjusted to move it slightly up */
           .section-heading .foreground-title {
               top: 2px; 
           }
       }
       
-      /* 4. Skills Styling (Reduced size & BOLD text) */
+      /* 5. Increase space above the ABOUT section */
+      #about {
+          padding-top: 100px !important; /* Increase top padding for more space on smaller screens */
+      }
+      @media (min-width: 992px) {
+          #about {
+              padding-top: 150px !important; /* Even more space on large screens */
+          }
+      }
+      
+      /* 2. SKILLS Gap Fix: Reduce horizontal padding for inner columns */
+      #skills .skills-list .col-sm-6 {
+          padding-left: 10px !important;
+          padding-right: 10px !important;
+      }
+
+      /* Skills Styling */
       .skills-list li {
-          font-size: 0.95rem; /* Reduced to ~66% of 1.4rem */
-          margin-bottom: 15px !important; /* Also reducing spacing */
+          font-size: 0.95rem; 
+          margin-bottom: 15px !important; 
           display: flex;
           align-items: center;
-          font-weight: bold; /* Make skill names bold */
+          font-weight: bold; 
       }
       .skills-list i.fa {
-          font-size: 2rem; /* Reduced to ~66% of 3rem */
+          font-size: 2rem; 
           margin-right: 15px;
           filter: drop-shadow(0 0 5px var(--pink-neon));
       }
       
       /* Project/Achievement Card Styles */
       .project-card, .achievement-card {
-        background-color: #343a40; /* Slightly lighter dark for contrast */
-        border: 1px solid rgba(0, 255, 255, 0.2); /* Subtle blue neon border */
+        background-color: #343a40; 
+        border: 1px solid rgba(0, 255, 255, 0.2); 
         border-radius: 10px;
         padding: 20px;
-        box-shadow: 0 0 15px rgba(255, 0, 127, 0.1); /* Subtle pink neon glow */
+        box-shadow: 0 0 15px rgba(255, 0, 127, 0.1); 
         height: 100%; 
       }
       .project-card h5 {
@@ -222,10 +229,10 @@
 
       /* Custom CSS to enforce a perfect round profile image */
       .img-fluid.rounded-circle {
-          border-radius: 50% !important; /* Enforce circular shape */
+          border-radius: 50% !important; 
           width: 250px; 
           height: 250px;
-          object-fit: cover; /* Ensures image content covers the area */
+          object-fit: cover; 
       }
       @media (min-width: 992px) {
           .col-lg-5 .img-fluid.rounded-circle {
@@ -236,10 +243,9 @@
           }
       }
       
-      /* 2. Style for larger, clickable full image display in Teaching section */
+      /* Style for larger, clickable full image display in Teaching section */
       .teaching-img-zoom {
           border: 1px solid var(--pink-neon);
-          /* Increased from 250px to 350px (~140% increase) */
           max-height: 350px !important; 
           max-width: 100%;
           object-fit: cover;
@@ -260,7 +266,6 @@
           text-shadow: none;
       }
       
-
       /* Footer Styling for contrast */
       .footer-container {
         background-color: var(--blue-neon) !important;
@@ -270,14 +275,14 @@
           color: var(--dark) !important;
       }
       .footer-social a {
-        border: 1px solid var(--dark); /* Dark border for contrast */
-        color: var(--dark); /* Dark icon color */
-        background: var(--light); /* White background for visibility */
+        border: 1px solid var(--dark); 
+        color: var(--dark); 
+        background: var(--light); 
       }
       .footer-social a:hover {
-        background: var(--dark); /* Dark hover background */
+        background: var(--dark); 
         border-color: var(--light); 
-        color: var(--light) !important; /* White hover icon */
+        color: var(--light) !important; 
       }
 
     </style>
@@ -288,9 +293,8 @@
     <nav
       class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5"
       id="navbar"
-      style="display: none;" <!-- ADDED: Hide navbar initially -->
+      style="display: none;" 
     >
-      <!-- FIX 1: Changed "Roman" to "Roman's Portfolio" and ensures text color is dark -->
       <a href="index.html" class="navbar-brand d-block d-lg-none">
         <h1 class="m-0" style="color: var(--blue-neon) !important;">Roman's Portfolio</h1>
       </a>
@@ -306,7 +310,6 @@
         class="collapse navbar-collapse justify-content-between"
         id="navbarCollapse"
       >
-        <!-- 6. Navigation Links Update -->
         <div class="navbar-nav m-auto">
           <a href="#home" class="nav-item nav-link active">Home</a>
           <a href="#about" class="nav-item nav-link">About</a>
@@ -319,7 +322,7 @@
     </nav>
     <!-- Navbar End -->
 
-    <!-- Header Start (Now with Neon Blue Background) -->
+    <!-- Header Start -->
     <div
       class="container-fluid d-flex align-items-center py-5"
       id="home"
@@ -337,10 +340,8 @@
           </div>
           <!-- Text content block -->
           <div class="col-lg-7 text-center text-lg-left">
-            <!-- FIX 2: Made "Hi, I'm" bold -->
             <h3 class="font-weight-bold mb-3">Hi, I'm</h3>
 
-            <!-- 2. H1 Name Size Adjustment (Style controlled by CSS block) -->
             <h1
               class="display-3 text-uppercase mb-2"
               style="-webkit-text-stroke: 2px var(--dark); color: transparent !important; font-weight: 900 !important;"
@@ -348,7 +349,6 @@
               ROMANSYA SETYO UTOMO
             </h1>
             
-            <!-- FIX 2: Made rolling job titles bold -->
             <h1 class="typed-text-output d-inline font-weight-bold"></h1>
             
             <!-- Hidden containers for Typed.js content -->
@@ -366,29 +366,32 @@
     <!-- Header End -->
 
     <!-- About Start -->
+    <!-- The padding-top is now heavily controlled by the CSS for #about -->
     <div class="container-fluid py-5" id="about">
       <div class="container">
-        <!-- Section Heading (3. New Styling applied) -->
-        <div class="section-heading animation-element">
+        <!-- Section Heading -->
+        <div class="section-heading animation-element fade-in-down">
           <h2 class="foreground-title text-uppercase">About Me</h2>
           <h1 class="background-title text-uppercase d-none d-md-block">ABOUT</h1>
         </div>
-        <div class="row align-items-center animation-element">
+        <div class="row align-items-center">
           <div class="col-lg-5 pb-4 pb-lg-0">
-            <img class="img-fluid rounded w-100 shadow-lg" src="pics/Web About Me.png" alt="About Image" />
+            <img 
+              class="img-fluid rounded w-100 shadow-lg animation-element fade-in-left" 
+              src="pics/Web About Me.png" 
+              alt="About Image" 
+            />
           </div>
           <div class="col-lg-7">
             <!-- Dynamic greeting output -->
-            <h3 class="mb-4 text-white">
+            <h3 class="mb-4 text-white animation-element fade-in-right">
                 <span id="typed-greeting-about-output" class="d-inline"></span> 
                 <span class="secondary-color d-inline">Roman</span>
             </h3>
-            <!-- 5. Split paragraph 1 -->
-            <p>
+            <p class="animation-element fade-in-right">
               A results-driven Data professional with a passion for leveraging data to solve complex business problems, experienced in multiple industries such as e-commerce, HR services, financial services, IoT, and training.
             </p>
-            <!-- 5. Split paragraph 2 -->
-            <p>
+            <p class="animation-element fade-in-right">
               With <strong>5 years of experience</strong> in full-time Data Science and Analytics, and <strong>3 years</strong> in part-time teaching, my focus is to turn raw data into clear, actionable insights that drive growth and operational efficiency, while also dedicated to sharing knowledge as an instructor and content creator.
             </p>
           </div>
@@ -400,30 +403,28 @@
     <!-- Skills Start (Reorganized by General vs. Visualization Tools) -->
     <div class="container-fluid py-5" id="skills">
       <div class="container">
-        <!-- Section Heading (3. New Styling applied) -->
-        <div class="section-heading animation-element">
+        <!-- Section Heading -->
+        <div class="section-heading animation-element fade-in-down">
           <h2 class="foreground-title text-uppercase">Core Data & BI Tools</h2>
           <h1 class="background-title text-uppercase d-none d-md-block">SKILLS</h1>
         </div>
-        <div class="row align-items-center animation-element justify-content-center">
-          <!-- 4. CHANGED: Reduced container size to col-md-8 for tighter centering -->
+        <div class="row align-items-center animation-element fade-in-up justify-content-center">
           <div class="col-md-8"> 
-            <!-- 4. SKILLS list items are now bold via CSS -->
             <div class="row skills-list text-left">
                 <!-- Left Column: General Tools (SQL, Python, KNIME) -->
                 <div class="col-sm-6">
                     <ul class="list-unstyled mb-0">
-                        <li><i class="fa fa-code primary-color"></i> SQL</li>
-                        <li><i class="fa fa-brain primary-color"></i> Python</li>
-                        <li><i class="fa fa-magic primary-color"></i> KNIME</li>
+                        <li class="animation-element fade-in-left"><i class="fa fa-code primary-color"></i> SQL</li>
+                        <li class="animation-element fade-in-left"><i class="fa fa-brain primary-color"></i> Python</li>
+                        <li class="animation-element fade-in-left"><i class="fa fa-magic primary-color"></i> KNIME</li>
                     </ul>
                 </div>
                 <!-- Right Column: Visualization/BI Tools (Tableau, PowerBI, Looker Studio) -->
                 <div class="col-sm-6">
                     <ul class="list-unstyled mb-0">
-                        <li><i class="fa fa-chart-bar primary-color"></i> Tableau</li>
-                        <li><i class="fa fa-chart-line primary-color"></i> Microsoft PowerBI</li>
-                        <li><i class="fa fa-chart-area primary-color"></i> Looker Studio</li>
+                        <li class="animation-element fade-in-right"><i class="fa fa-chart-bar primary-color"></i> Tableau</li>
+                        <li class="animation-element fade-in-right"><i class="fa fa-chart-line primary-color"></i> Microsoft PowerBI</li>
+                        <li class="animation-element fade-in-right"><i class="fa fa-chart-area primary-color"></i> Looker Studio</li>
                     </ul>
                 </div>
             </div>
@@ -436,17 +437,17 @@
     <!-- What I Did (Projects) Start -->
     <div class="container-fluid py-5" id="what-i-did">
         <div class="container">
-            <!-- Section Heading (3. New Styling applied) -->
-            <div class="section-heading animation-element">
+            <!-- Section Heading -->
+            <div class="section-heading animation-element fade-in-down">
                 <h2 class="foreground-title text-uppercase">What I Did</h2>
                 <h1 class="background-title text-uppercase d-none d-md-block">PROJECT</h1>
             </div>
             <!-- Projects in 3 columns, 2 rows -->
-            <div class="row animation-element">
+            <div class="row">
                   
                 <!-- Project 1: E-Commerce Monitoring Dashboard -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="project-card">
+                    <div class="project-card animation-element fade-in-up">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center mb-3">
                                 <img 
@@ -454,12 +455,10 @@
                                     src="https://png.pngtree.com/png-vector/20230302/ourmid/pngtree-dashboard-line-icon-vector-png-image_6626604.png" 
                                     alt="Dashboard Icon" 
                                 />
-                                <!-- 5. Project Title Color: secondary-color (Neon Blue) -->
                                 <h5 class="font-weight-bold secondary-color mb-0">E-Commerce Monitoring Dashboard</h5>
                             </div>
                             <div class="col-12">
                                 <p>
-                                    <!-- 5. Situation/Task/Action/Result Color: text-primary (Neon Pink) -->
                                     <strong class="text-primary">Situation:</strong> Both internal and external sides needed a monitoring system for marketing needs.<br>
                                     <strong class="text-primary">Task:</strong> Develop a data integration system from multiple data sources and build a dashboard.<br>
                                     <strong class="text-primary">Action:</strong> Used <strong>Python & SQL</strong> to do data collection and ETL, then <strong>Looker Studio</strong> to build the dashboard.<br>
@@ -472,7 +471,7 @@
                 
                 <!-- Project 2: Supporting Business Decision in Crisis -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="project-card">
+                    <div class="project-card animation-element fade-in-up">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center mb-3">
                                 <img 
@@ -480,12 +479,10 @@
                                     src="https://cdn0.iconfinder.com/data/icons/finance-and-money-3/64/black-19-512.png" 
                                     alt="Decision Icon" 
                                 />
-                                <!-- 5. Project Title Color: secondary-color (Neon Blue) -->
                                 <h5 class="font-weight-bold secondary-color mb-0">Supporting Business Decision in Crisis</h5>
                             </div>
                             <div class="col-12">
                                 <p>
-                                    <!-- 5. Situation/Task/Action/Result Color: text-primary (Neon Pink) -->
                                     <strong class="text-primary">Situation:</strong> Early pandemic, business performance was declining.<br>
                                     <strong class="text-primary">Task:</strong> Find data-driven actionables.<br>
                                     <strong class="text-primary">Action:</strong> Analyzed data, built a <strong>Machine Learning model using Python</strong>, and did a cross-check with related business teams.<br>
@@ -498,7 +495,7 @@
                 
                 <!-- Project 3: Raw Material Price Forecasting -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="project-card">
+                    <div class="project-card animation-element fade-in-up">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center mb-3">
                                 <img 
@@ -506,12 +503,10 @@
                                     src="https://cdn-icons-png.flaticon.com/512/9059/9059902.png" 
                                     alt="Forecast Icon" 
                                 />
-                                <!-- 5. Project Title Color: secondary-color (Neon Blue) -->
                                 <h5 class="font-weight-bold secondary-color mb-0">Raw Material Price Forecasting</h5>
                             </div>
                             <div class="col-12">
                                 <p>
-                                    <!-- 5. Situation/Task/Action/Result Color: text-primary (Neon Pink) -->
                                     <strong class="text-primary">Situation:</strong> Business team needed to know how much raw material to buy, depending on the future price.<br>
                                     <strong class="text-primary">Task:</strong> Predict the raw material price in the next two months.<br>
                                     <strong class="text-primary">Action:</strong> Used <strong>Python</strong> to collect data and build a <strong>machine learning model</strong>, also used a <strong>PowerBI Dashboard</strong> to display both real and forecast data.<br>
@@ -524,7 +519,7 @@
 
                 <!-- Project 4: Business Intelligence News -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="project-card">
+                    <div class="project-card animation-element fade-in-up">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center mb-3">
                                 <img 
@@ -532,12 +527,10 @@
                                     src="https://cdn-icons-png.flaticon.com/256/4382/4382529.png" 
                                     alt="News Icon" 
                                 />
-                                <!-- 5. Project Title Color: secondary-color (Neon Blue) -->
                                 <h5 class="font-weight-bold secondary-color mb-0">Company-Wide Business Intelligence News</h5>
                             </div>
                             <div class="col-12">
                                 <p>
-                                    <!-- 5. Situation/Task/Action/Result Color: text-primary (Neon Pink) -->
                                     <strong class="text-primary">Situation:</strong> Management wanted to boost employee morale in the company.<br>
                                     <strong class="text-primary">Task:</strong> Give appreciation and good news across the company using data.<br>
                                     <strong class="text-primary">Action:</strong> Maintaining a <strong>Metabase dashboard</strong> and pointing out interesting topics and/or trends.<br>
@@ -550,7 +543,7 @@
 
                 <!-- Project 5: E-Wallet Risk Analytics -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="project-card">
+                    <div class="project-card animation-element fade-in-up">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center mb-3">
                                 <img 
@@ -558,12 +551,10 @@
                                     src="https://cdn-icons-png.flaticon.com/512/3843/3843921.png" 
                                     alt="E-Wallet Risk Icon" 
                                 />
-                                <!-- 5. Project Title Color: secondary-color (Neon Blue) -->
                                 <h5 class="font-weight-bold secondary-color mb-0">E-Wallet Risk Analytics (Account Takeover Fraud)</h5>
                             </div>
                             <div class="col-12">
                                 <p>
-                                    <!-- 5. Situation/Task/Action/Result Color: text-primary (Neon Pink) -->
                                     <strong class="text-primary">Situation:</strong> Fraud rates due to Account Takeover (ATO) were high.<br>
                                     <strong class="text-primary">Task:</strong> Minimizing fraud rates.<br>
                                     <strong class="text-primary">Action:</strong> Used several platforms to gather data, used <strong>Python</strong> to analyze patterns, and collaborated with the Data Scientist team to build the <strong>Machine Learning model</strong> using Python.<br>
@@ -576,7 +567,7 @@
                 
                 <!-- Project 6: IoT Analytics -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="project-card">
+                    <div class="project-card animation-element fade-in-up">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center mb-3">
                                 <img 
@@ -584,12 +575,10 @@
                                     src="https://cdn-icons-png.flaticon.com/512/4269/4269818.png" 
                                     alt="IoT Icon" 
                                 />
-                                <!-- 5. Project Title Color: secondary-color (Neon Blue) -->
                                 <h5 class="font-weight-bold secondary-color mb-0">IoT Analytics & Monitoring System</h5>
                             </div>
                             <div class="col-12">
                                 <p>
-                                    <!-- 5. Situation/Task/Action/Result Color: text-primary (Neon Pink) -->
                                     <strong class="text-primary">Situation:</strong> Management wanted to initiate a new product/service in IoT Analytics.<br>
                                     <strong class="text-primary">Task:</strong> Build an IoT Analytics & Monitoring system.<br>
                                     <strong class="text-primary">Action:</strong> Used <strong>Python</strong> to do ETL, collaborated with the Machine Learning team to build the analytics model, and built a dashboard.<br>
@@ -609,8 +598,8 @@
     <!-- Teaching & Mentorship Start (Content and Image Display Updated) -->
     <div class="container-fluid py-5" id="teaching">
       <div class="container">
-        <!-- Section Heading (3. New Styling applied) -->
-        <div class="section-heading animation-element">
+        <!-- Section Heading -->
+        <div class="section-heading animation-element fade-in-down">
           <h2 class="foreground-title text-uppercase">Teaching & Mentorship</h2>
           <h1 class="background-title text-uppercase d-none d-md-block">EDUCATOR</h1>
         </div>
@@ -619,7 +608,7 @@
             
             <!-- Achievement Card 1: Guest Lecturer - Finance Technology -->
             <div class="col-lg-6 mb-4">
-                <div class="achievement-card animation-element">
+                <div class="achievement-card animation-element fade-in-left">
                     <div class="d-flex align-items-center">
                         <i class="fa fa-chalkboard-teacher fa-2x primary-color mr-4"></i>
                         <div>
@@ -630,7 +619,7 @@
                             </p>
                         </div>
                     </div>
-                    <!-- 2. Image element now uses the new class and onClick handler -->
+                    <!-- Image element now uses the new class and onClick handler -->
                     <img 
                         class="img-fluid rounded mt-3 mx-auto d-block teaching-img-zoom" 
                         src="pics/guest_lecturer_proof.jpg" 
@@ -642,18 +631,20 @@
 
             <!-- Achievement Card 2: Top Instructor Recognition -->
             <div class="col-lg-6 mb-4">
-                <div class="achievement-card animation-element">
+                <div class="achievement-card animation-element fade-in-right">
                     <div class="d-flex align-items-center">
                         <i class="fa fa-medal fa-2x primary-color mr-4"></i>
                         <div>
                             <h5 class="text-white mb-1 font-weight-bold">Top-Rated Data Analytics Instructor Recognition</h5>
+                            <!-- Program Name Change Applied Here -->
                             <small class="text-white-50">RevoU (Full-Stack Data Analytics, Kampus Merdeka Data Analytics)</small>
                             <p class="mt-2 mb-2">
-                                Repeatedly acknowledged for outstanding student satisfaction (average <strong>4.95+</strong>) voted <strong>Favorite Instructor</strong> across multiple courses based on student polls.
+                                <!-- Paraphrasing Applied Here -->
+                                Repeatedly acknowledged for outstanding student satisfaction (average score of 4.95+) and voted Favorite Instructor across multiple courses based on student polls.
                             </p>
                         </div>
                     </div>
-                    <!-- 2. Image element now uses the new class and onClick handler -->
+                    <!-- Image element now uses the new class and onClick handler -->
                     <img 
                         class="img-fluid rounded mt-3 mx-auto d-block teaching-img-zoom" 
                         src="pics/instructor_ratings.png" 
@@ -671,13 +662,13 @@
     <!-- Contact/Connect Start -->
     <div class="container-fluid py-5" id="connect">
       <div class="container">
-        <!-- Section Heading (3. New Styling applied) -->
-        <div class="section-heading animation-element">
+        <!-- Section Heading -->
+        <div class="section-heading animation-element fade-in-down">
           <h2 class="foreground-title text-uppercase">Let's Connect</h2>
           <h1 class="background-title text-uppercase d-none d-md-block">CONTACT</h1>
         </div>
-        <div class="row justify-content-center animation-element">
-          <div class="col-lg-8 text-center">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center animation-element fade-in-up">
             <h4 class="mb-4 secondary-color">Ready to collaborate? Find me on LinkedIn!</h4>
             <!-- Button uses solid LinkedIn blue background with white text -->
             <a 
@@ -722,7 +713,7 @@
     </div>
     <!-- Footer End -->
 
-    <!-- Image Modal (Lightbox) - 2. Added for full-screen image view -->
+    <!-- Image Modal (Lightbox) -->
     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content bg-dark border border-primary">
@@ -785,7 +776,7 @@
         }
 
 
-        // Back to top button and Navbar visibility logic (MODIFIED)
+        // Back to top button and Navbar visibility logic (Navbar Scroll Hide/Show)
         $(window).scroll(function () {
             const scrollTop = $(this).scrollTop();
             
@@ -800,7 +791,7 @@
             }
         });
         
-        // Trigger scroll event on load to set the initial state (e.g., if page is reloaded halfway down)
+        // Trigger scroll event on load to set the initial state
         $(window).trigger('scroll');
 
 
@@ -830,7 +821,7 @@
         });
 
 
-        // Scroll Spy (The "rolling effect" animation)
+        // Scroll Spy (The directional rolling effect animation)
         var $window = $(window);
         var $animationElements = $(".animation-element");
 
@@ -852,16 +843,13 @@
             ) {
               $element.addClass("in-view");
             } else { 
-              // This logic ensures the 'in-view' class is removed when the element scrolls out
-              // allowing the animation to replay when scrolling back up.
+              // This ensures the 'in-view' class is removed when the element scrolls out
               $element.removeClass("in-view");
             }
           });
         }
 
         $window.on("scroll resize", checkIfInView);
-        // Note: We don't need to trigger scroll here again as it's triggered above, 
-        // but keeping it for the animation logic's initial check.
         $window.trigger("scroll");
       });
     </script>
