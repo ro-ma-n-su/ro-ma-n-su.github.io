@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Roman - Data Analytics Portfolio</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Roman, Data Analyst, Data Scientist, Portfolio, SQL, Python, Tableau, TikTok, YouTube" name="keywords" />
+    <meta content="Roman - Data Science and Analytics Portfolio showcasing industry projects and teaching achievements." name="description" />
+    <!-- Open Graph tags for better social media sharing -->
+    <meta property="og:title" content="Roman - Data Analytics Portfolio" />
+    <meta property="og:description" content="A portfolio showcasing data science and analytics projects and teaching." />
+    <meta property="og:type" content="website" />
+    
+    <!-- Favicon -->
+    <!-- TODO: Update the favicon URL (e.g., img/favicon.ico) -->
+    <link href="img/favicon.ico" rel="icon" />
+
+    <!-- Google Web Fonts (Roboto is used for clean, modern look) -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome (for icons) - Updated to v5.15.4 to ensure TikTok icon is available -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS (required for layout and utility classes) -->
+    <link 
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS Styles with Neon Colors (Cleaner Head Section) -->
+    <style>
+      :root {
+        /* Defining the new Neon colors (TikTok style) */
+        --pink-neon: #FF007F; /* Bright Pink Neon */
+        --blue-neon: #00FFFF; /* Electric Cyan/Blue Neon */
+        --dark: #212529;
+        --light: #f8f9fa;
+        --text-color: #f8f9fa;
+      }
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: var(--dark);
+        color: var(--text-color);
+        padding-top: 60px; /* Space for fixed navbar */
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        color: var(--text-color);
+      }
+      
+      .primary-color, .text-primary {
+        color: var(--pink-neon) !important;
+      }
+
+      .secondary-color, .text-secondary {
+        color: var(--blue-neon) !important;
+      }
+
+      .btn.btn-outline-primary {
+        color: var(--pink-neon);
+        border-color: var(--pink-neon);
+      }
+      
+      .btn.btn-outline-primary:hover {
+        background: var(--pink-neon);
+        color: var(--dark);
+      }
+      
+      /* Social Button Styling */
+      .btn-social {
+        border-radius: 50%;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Navbar/Sidebar Styling */
+      #navbar {
+        background: var(--dark) !important;
+        border-bottom: 2px solid var(--blue-neon); 
+      }
+
+      #navbar .nav-link:hover,
+      #navbar .nav-link.active {
+        color: var(--pink-neon) !important;
+      }
+
+      /* Section Titles - Simplified */
+      .section-heading {
+        position: relative;
+        text-align: center;
+        margin-bottom: 50px;
+        padding-bottom: 10px;
+      }
+      .section-heading h1 {
+        display: inline-block;
+        padding-bottom: 5px;
+        border-bottom: 2px solid var(--pink-neon);
+      }
+      
+      /* Project/Achievement Card Styles */
+      .project-card, .achievement-card {
+        background-color: #343a40; /* Slightly lighter dark for contrast */
+        border: 1px solid rgba(0, 255, 255, 0.2); /* Subtle blue neon border */
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(255, 0, 127, 0.1); /* Subtle pink neon glow */
+        height: 100%; 
+      }
+      .project-card h5 {
+        border-bottom: 1px dashed var(--blue-neon);
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+      }
+      
+      /* Specific styling for the list-style achievements */
+      .achievement-card .d-flex {
+          align-items: flex-start !important; /* Align content to the top */
+      }
+      .achievement-card i {
+          margin-top: 5px; /* Adjust icon position */
+      }
+      .project-icon {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: contain;
+          margin-right: 15px;
+          filter: drop-shadow(0 0 5px var(--blue-neon));
+      }
+      .project-card .row {
+          align-items: center;
+      }
+
+      /* Custom CSS to enforce a perfect round profile image (Fix for Issue #3) */
+      .img-fluid.rounded-circle {
+          border-radius: 50% !important; /* Enforce circular shape */
+          width: 250px; 
+          height: 250px;
+          object-fit: cover; /* Ensures image content covers the area */
+      }
+      /* Ensure the rounded-circle image is fully responsive when necessary */
+      @media (min-width: 992px) {
+          .col-lg-5 .img-fluid.rounded-circle {
+              width: 100%;
+              max-width: 400px; /* Match the old placeholder size */
+              height: auto;
+              aspect-ratio: 1 / 1; /* Maintain 1:1 aspect ratio */
+          }
+      }
+      /* End Custom Image Fix */
+
+
+      /* Image Overlay for Projects (Gallery) */
+      .portfolio-item {
+        overflow: hidden;
+        border-radius: 10px;
+        position: relative;
+      }
+      .portfolio-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(33, 37, 41, 0.9);
+        opacity: 0;
+        transition: 0.5s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .portfolio-item:hover .portfolio-overlay {
+        opacity: 1;
+      }
+
+      /* Footer Custom Styling for Social Icons */
+      .footer-social a {
+        border: 1px solid var(--pink-neon);
+        color: var(--pink-neon);
+      }
+      .footer-social a:hover {
+        background: var(--blue-neon);
+        border-color: var(--blue-neon);
+        color: var(--dark);
+      }
+
+
+      /* Animation classes (for the "rolling effect") */
+      .animation-element {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .animation-element.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      /* Remove margin from footer to keep it neat */
+      .footer-container {
+        background-color: #343a40 !important;
+      }
+      
+      /* FIX 4: Ensure consistent section spacing */
+      #what-i-did {
+          padding-bottom: 100px !important; /* Added explicit bottom padding for Project section */
+      }
+      #teaching {
+          padding-bottom: 100px !important; /* Increased bottom padding */
+      }
+      
+      #connect {
+          padding-bottom: 100px !important; /* Increased bottom padding */
+      }
+      
+      /* Style for full image display in Teaching section */
+      .achievement-card img {
+          border: 1px solid var(--pink-neon);
+          max-height: 250px;
+          max-width: 100%;
+          object-fit: cover;
+      }
+
+    </style>
+  </head>
+
+  <body data-spy="scroll" data-target="#navbar" data-offset="51">
+    <!-- Navbar Start -->
+    <nav
+      class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5"
+      id="navbar"
+    >
+      <a href="index.html" class="navbar-brand d-block d-lg-none">
+        <h1 class="m-0 primary-color">Roman</h1>
+      </a>
+      <button
+        type="button"
+        class="navbar-toggler"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="collapse navbar-collapse justify-content-between"
+        id="navbarCollapse"
+      >
+        <div class="navbar-nav m-auto">
+          <a href="#home" class="nav-item nav-link active">Home</a>
+          <a href="#about" class="nav-item nav-link">About</a>
+          <a href="#skills" class="nav-item nav-link">Skills</a>
+          <a href="#what-i-did" class="nav-item nav-link">What I Did</a>
+          <a href="#teaching" class="nav-item nav-link">Teaching</a>
+          <a href="#connect" class="nav-item nav-link">Connect</a>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Header Start -->
+    <div
+      class="container-fluid d-flex align-items-center py-5"
+      id="home"
+      style="min-height: 100vh"
+    >
+      <div class="container">
+        <div class="row align-items-center">
+          <!-- Profile image block -->
+          <div class="col-lg-5 px-5 pl-lg-0 pb-5 pb-lg-0 text-center">
+            <!-- Image source updated and CSS ensures circular shape -->
+            <img
+              class="img-fluid rounded-circle shadow-lg"
+              src="/pics/Web Profile.heif"
+              alt="Profile Picture"
+            />
+          </div>
+          <!-- Text content block -->
+          <div class="col-lg-7 text-center text-lg-left">
+            <!-- Static professional title is now 'Hi, I'm' -->
+            <h3 class="text-white font-weight-normal mb-3">Hi, I'm</h3>
+
+            <!-- The main name (Roman) -->
+            <h1
+              class="display-3 text-uppercase primary-color mb-2"
+              style="-webkit-text-stroke: 2px var(--text-color)"
+            >
+              Roman
+            </h1>
+            
+            <!-- Rolling job titles (white text) -->
+            <h1 class="typed-text-output d-inline font-weight-lighter text-white"></h1>
+            
+            <!-- Hidden containers for Typed.js content -->
+            <div class="typed-text d-none">
+              Data Scientist, Data Analyst, Educator, Content Creator
+            </div>
+            <!-- Dynamic greeting content using '|' as separator -->
+            <div class="typed-greeting d-none">
+              Call me|Halo, gw
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- About Start -->
+    <div class="container-fluid py-5" id="about">
+      <div class="container">
+        <!-- Section Heading with Rolling Effect -->
+        <div class="section-heading animation-element">
+          <h1 class="text-uppercase text-white">About Me</h1>
+        </div>
+        <div class="row align-items-center animation-element">
+          <div class="col-lg-5 pb-4 pb-lg-0">
+            <!-- Image source updated to use /pics/Web About Me.png -->
+            <img class="img-fluid rounded w-100 shadow-lg" src="/pics/Web About Me.png" alt="About Image" />
+          </div>
+          <div class="col-lg-7">
+            <!-- Dynamic greeting output -->
+            <h3 class="mb-4 text-white">
+                <span id="typed-greeting-about-output" class="d-inline"></span> 
+                <span class="secondary-color d-inline">Roman</span>
+            </h3>
+            <p>
+              A results-driven Data professional with a passion for leveraging data to solve complex business problems, experienced in multiple industries such as e-commerce, HR services, financial services, IoT, and training. With **5 years of experience** in full-time Data Science and Analytics, and **3 years** in part-time teaching, my focus is to turn raw data into clear, actionable insights that drive growth and operational efficiency, while also dedicated to sharing knowledge as an instructor and content creator.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- About End -->
+
+    <!-- Skills Start (Reorganized by General vs. Visualization Tools) -->
+    <div class="container-fluid py-5" id="skills">
+      <div class="container">
+        <!-- Section Heading with Rolling Effect -->
+        <div class="section-heading animation-element">
+          <h1 class="text-uppercase text-white">Skills</h1>
+        </div>
+        <div class="row align-items-center animation-element justify-content-center">
+          <div class="col-md-8">
+            <h4 class="mb-4 secondary-color">Core Data & BI Tools</h4>
+            <div class="row">
+                <!-- Left Column: General Tools (SQL, Python, KNIME) -->
+                <div class="col-sm-6">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i class="fa fa-code primary-color mr-2"></i> SQL</li>
+                        <li class="mb-2"><i class="fa fa-brain primary-color mr-2"></i> Python</li>
+                        <li class="mb-2"><i class="fa fa-magic primary-color mr-2"></i> KNIME</li>
+                    </ul>
+                </div>
+                <!-- Right Column: Visualization/BI Tools (Tableau, PowerBI, Looker Studio) -->
+                <div class="col-sm-6">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i class="fa fa-chart-bar primary-color mr-2"></i> Tableau</li>
+                        <li class="mb-2"><i class="fa fa-chart-line primary-color mr-2"></i> Microsoft PowerBI</li>
+                        <li class="mb-2"><i class="fa fa-chart-area primary-color mr-2"></i> Looker Studio</li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Skills End -->
+    
+    <!-- What I Did (Projects) Start (Fully Replaced with New Projects) -->
+    <div class="container-fluid py-5" id="what-i-did">
+        <div class="container">
+            <!-- Section Heading with Rolling Effect -->
+            <div class="section-heading animation-element">
+                <h1 class="text-uppercase text-white">What I Did</h1>
+            </div>
+            <div class="row animation-element">
+                <div class="col-lg-12">
+                  
+                    <!-- Project 1: E-Commerce Monitoring Dashboard -->
+                    <div class="project-card mb-4">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center mb-3">
+                                <img 
+                                    class="project-icon" 
+                                    src="https://png.pngtree.com/png-vector/20230302/ourmid/pngtree-dashboard-line-icon-vector-png-image_6626604.png" 
+                                    alt="Dashboard Icon" 
+                                />
+                                <h5 class="font-weight-bold primary-color mb-0">E-Commerce Monitoring Dashboard</h5>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <strong class="text-secondary">Situation:</strong> Both internal and external sides needed a monitoring system for marketing needs.<br>
+                                    <strong class="text-secondary">Task:</strong> Develop a data integration system from multiple data sources and build a dashboard.<br>
+                                    <strong class="text-secondary">Action:</strong> Used **Python & SQL** to do data collection and ETL, then **Looker Studio** to build the dashboard.<br>
+                                    <strong class="text-secondary">Result:</strong> Reduced data processing time from 2 hours to **10-15 minutes**, and enabled real-time dashboard for both internal and external sides.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2: Supporting Business Decision in Crisis -->
+                    <div class="project-card mb-4">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center mb-3">
+                                <img 
+                                    class="project-icon" 
+                                    src="https://cdn0.iconfinder.com/data/icons/finance-and-money-3/64/black-19-512.png" 
+                                    alt="Decision Icon" 
+                                />
+                                <h5 class="font-weight-bold primary-color mb-0">Supporting Business Decision in Crisis</h5>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <strong class="text-secondary">Situation:</strong> Early pandemic, business performance was declining.<br>
+                                    <strong class="text-secondary">Task:</strong> Find data-driven actionables.<br>
+                                    <strong class="text-secondary">Action:</strong> Analyzed data, built a **Machine Learning model using Python**, and did a cross-check with related business teams.<br>
+                                    <strong class="text-secondary">Result:</strong> Related business teams redesigned their KPI and used the model for their weekly focus activities.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 3: Raw Material Price Forecasting -->
+                    <div class="project-card mb-4">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center mb-3">
+                                <img 
+                                    class="project-icon" 
+                                    src="https://cdn-icons-png.flaticon.com/512/9059/9059902.png" 
+                                    alt="Forecast Icon" 
+                                />
+                                <h5 class="font-weight-bold primary-color mb-0">Raw Material Price Forecasting</h5>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <strong class="text-secondary">Situation:</strong> Business team needed to know how much raw material to buy, depending on the future price.<br>
+                                    <strong class="text-secondary">Task:</strong> Predict the raw material price in the next two months.<br>
+                                    <strong class="text-secondary">Action:</strong> Used **Python** to collect data and build a **machine learning model**, also used a **PowerBI Dashboard** to display both real and forecast data.<br>
+                                    <strong class="text-secondary">Result:</strong> The business team uses the dashboard as a basis to determine the raw material bulk order.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Business Intelligence News -->
+                    <div class="project-card mb-4">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center mb-3">
+                                <img 
+                                    class="project-icon" 
+                                    src="https://cdn-icons-png.flaticon.com/256/4382/4382529.png" 
+                                    alt="News Icon" 
+                                />
+                                <h5 class="font-weight-bold primary-color mb-0">Company-Wide Business Intelligence News</h5>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <strong class="text-secondary">Situation:</strong> Management wanted to boost employee morale in the company.<br>
+                                    <strong class="text-secondary">Task:</strong> Give appreciation and good news across the company using data.<br>
+                                    <strong class="text-secondary">Action:</strong> Maintaining a **Metabase dashboard** and pointing out interesting topics and/or trends.<br>
+                                    <strong class="text-secondary">Result:</strong> Creation of a company-wide weekly news report based on data insights.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5: E-Wallet Risk Analytics -->
+                    <div class="project-card mb-4">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center mb-3">
+                                <img 
+                                    class="project-icon" 
+                                    src="https://cdn-icons-png.flaticon.com/512/3843/3843921.png" 
+                                    alt="E-Wallet Risk Icon" 
+                                />
+                                <h5 class="font-weight-bold primary-color mb-0">E-Wallet Risk Analytics (Account Takeover Fraud)</h5>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <strong class="text-secondary">Situation:</strong> Fraud rates due to Account Takeover (ATO) were high.<br>
+                                    <strong class="text-secondary">Task:</strong> Minimizing fraud rates.<br>
+                                    <strong class="text-secondary">Action:</strong> Used several platforms to gather data, used **Python** to analyze patterns, and collaborated with the Data Scientist team to build the **Machine Learning model** using Python.<br>
+                                    <strong class="text-secondary">Result:</strong> Fraud rates reduced by **3%**.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 6: IoT Analytics -->
+                    <div class="project-card mb-4">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center mb-3">
+                                <img 
+                                    class="project-icon" 
+                                    src="https://cdn-icons-png.flaticon.com/512/4269/4269818.png" 
+                                    alt="IoT Icon" 
+                                />
+                                <h5 class="font-weight-bold primary-color mb-0">IoT Analytics & Monitoring System</h5>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <strong class="text-secondary">Situation:</strong> Management wanted to initiate a new product/service in IoT Analytics.<br>
+                                    <strong class="text-secondary">Task:</strong> Build an IoT Analytics & Monitoring system.<br>
+                                    <strong class="text-secondary">Action:</strong> Used **Python** to do ETL, collaborated with the Machine Learning team to build the analytics model, and built a dashboard.<br>
+                                    <strong class="text-secondary">Result:</strong> A system and dashboard were successfully deployed to detect crowd, water level, illegal parking, and traffic violation data.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- What I Did (Projects) End -->
+
+
+    <!-- Teaching & Mentorship Start (Content and Image Display Updated) -->
+    <div class="container-fluid py-5" id="teaching">
+      <div class="container">
+        <!-- Section Heading with Rolling Effect -->
+        <div class="section-heading animation-element">
+          <h1 class="text-uppercase text-white">Teaching & Mentorship</h1>
+        </div>
+        <div class="row justify-content-center">
+            <!-- Achievements/Certificates List Container -->
+            <div class="col-lg-10">
+                
+                <!-- Achievement Card 1: Guest Lecturer - Finance Technology -->
+                <div class="achievement-card mb-4 animation-element">
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-chalkboard-teacher fa-2x primary-color mr-4"></i>
+                        <div>
+                            <h5 class="text-white mb-1 font-weight-bold">Guest Lecturer - Finance Technology</h5>
+                            <small class="text-white-50">Faculty of Economics and Business, Universitas Indonesia (2025)</small>
+                            <p class="mt-2 mb-2">
+                                Invited to present about the usage of Artificial Intelligence in the context of Audit in Fintech company.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 4. Image Display for Teaching/Mentorship -->
+                    <!-- NOTE: This image assumes you create a folder named 'pics' and put your proof image inside it. -->
+                    <img 
+                        class="img-fluid rounded mt-3" 
+                        style="max-height: 250px; max-width: 100%; object-fit: cover;"
+                        src="pics/guest_lecturer_proof.jpg" 
+                        alt="Proof of Guest Lecturer engagement" 
+                    />
+                </div>
+
+                <!-- Achievement Card 2: Top Instructor Recognition -->
+                <div class="achievement-card mb-4 animation-element">
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-medal fa-2x primary-color mr-4"></i>
+                        <div>
+                            <h5 class="text-white mb-1 font-weight-bold">Top-Rated Data Analytics Instructor Recognition</h5>
+                            <small class="text-white-50">RevoU (Full-Stack Data Analytics Program, Kampus Merdeka Data Analytics Program)</small>
+                            <p class="mt-2 mb-2">
+                                Recognized multiple times for high student satisfaction (average 4.95+) and voted as Favorite Instructor in several classes (via student feedback/polling).
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 4. Image Display for Teaching/Mentorship -->
+                    <!-- NOTE: This image assumes you create a folder named 'pics' and put your proof image inside it. -->
+                    <img 
+                        class="img-fluid rounded mt-3" 
+                        style="max-height: 250px; max-width: 100%; object-fit: cover;"
+                        src="pics/instructor_ratings.png" 
+                        alt="Favorite Instructor recognition proof" 
+                    />
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- Teaching & Mentorship End -->
+
+
+    <!-- Contact/Connect Start -->
+    <div class="container-fluid py-5" id="connect">
+      <div class="container">
+        <!-- Section Heading with Rolling Effect -->
+        <div class="section-heading animation-element">
+          <h1 class="text-uppercase text-white">Let's Connect</h1>
+        </div>
+        <div class="row justify-content-center animation-element">
+          <div class="col-lg-8 text-center">
+            <h4 class="mb-4 secondary-color">Ready to collaborate? Find me on LinkedIn!</h4>
+            <!-- 5. Updated LinkedIn Profile URL -->
+            <a 
+                href="https://www.linkedin.com/in/romansyasetyo" 
+                class="btn btn-outline-primary py-3 px-5 d-inline-flex align-items-center font-weight-bold"
+                target="_blank"
+            >
+                <i class="fab fa-linkedin-in fa-2x mr-3"></i> Connect on LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Contact/Connect End -->
+
+    <!-- Footer Start -->
+    <div
+      class="container-fluid footer-container text-white mt-5 py-5 px-sm-3 px-md-5"
+    >
+      <div class="container text-center py-5">
+        <!-- FIX 1: Footer Title Changed -->
+        <h4 class="mb-4 primary-color">Connect & Find My Content</h4>
+        <div class="d-flex justify-content-center mb-4 footer-social">
+          <!-- FIX 2: LinkedIn URL verified and linked -->
+          <a class="btn btn-social mx-2" href="https://www.linkedin.com/in/romansyasetyo" target="_blank"
+            ><i class="fab fa-linkedin-in"></i
+          ></a>
+          <!-- FIX 3: title attribute is present for hover message -->
+          <a class="btn btn-social mx-2" href="YOUR_INSTAGRAM_URL" target="_blank" title="Published soon"
+            ><i class="fab fa-instagram"></i
+          ></a>
+          <!-- FIX 3: title attribute is present for hover message -->
+          <a class="btn btn-social mx-2" href="YOUR_TIKTOK_URL" target="_blank" title="Published soon"
+            ><i class="fab fa-tiktok"></i
+          ></a>
+          <!-- FIX 3: title attribute is present for hover message -->
+          <a class="btn btn-social mx-2" href="YOUR_YOUTUBE_URL" target="_blank" title="Published soon"
+            ><i class="fab fa-youtube"></i
+          ></a>
+        </div>
+        <p class="m-0">
+          &copy; <a class="text-white font-weight-bold" href="#">Roman's Portfolio</a>. All Rights Reserved.
+        </p>
+      </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Scroll to Bottom -->
+    <a href="#home" class="btn btn-outline-primary px-0 back-to-top"
+      ><i class="fa fa-angle-double-up"></i
+    ></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Typed.js for rolling text effect -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+    <!-- Custom JavaScript for Animation & Navigation -->
+    <script>
+      $(function () {
+        "use strict";
+
+        // Typed Initiate (Rolling Job Titles for the main H1 in Header)
+        if ($(".typed-text-output").length == 1) {
+          var typed_strings = $(".typed-text").text();
+          var typed = new Typed(".typed-text-output", {
+            strings: typed_strings.split(", "),
+            typeSpeed: 100,
+            backSpeed: 20,
+            smartBackspace: false,
+            loop: true,
+          });
+        }
+        
+        // NEW: Typed Initiate for Dynamic Greeting ("Call me" / "Halo, gw") in the ABOUT section
+        if ($("#typed-greeting-about-output").length == 1) {
+            var typed_greeting_strings = $(".typed-greeting").text();
+            // Split by '|' to ensure only two distinct phrases are generated
+            var typedGreetingAbout = new Typed("#typed-greeting-about-output", {
+                strings: typed_greeting_strings.split("|"),
+                typeSpeed: 100,
+                backSpeed: 50, 
+                smartBackspace: false,
+                loop: true,
+            });
+        }
+
+
+        // Back to top button logic
+        $(window).scroll(function () {
+          if ($(this).scrollTop() > 100) {
+            $(".back-to-top").fadeIn("slow");
+          } else {
+            $(".back-to-top").fadeOut("slow");
+          }
+        });
+        $(".back-to-top").click(function () {
+          $("html, body").animate({ scrollTop: 0 }, 1500, "easeInOutExpo");
+          return false;
+        });
+
+        // Smooth scrolling on the navbar
+        $("#navbar a").on("click", function (event) {
+          if (this.hash !== "") {
+            event.preventDefault();
+
+            $("html, body").animate(
+              {
+                scrollTop: $(this.hash).offset().top - 60, /* Adjusted offset for fixed navbar */
+              },
+              1500,
+              "easeInOutExpo"
+            );
+            
+            // Hide the mobile menu after clicking a link
+            if ($('.navbar-toggler').is(':visible')) {
+                $('.navbar-toggler').click();
+            }
+          }
+        });
+
+
+        // Scroll Spy (The "rolling effect" animation)
+        var $window = $(window);
+        var $animationElements = $(".animation-element");
+        var mobileview = window.matchMedia("(max-width: 768px)").matches;
+
+        function checkIfInView() {
+          var windowHeight = $window.height();
+          var windowTopPosition = $window.scrollTop();
+          var windowBottomPosition = windowTopPosition + windowHeight;
+
+          $.each($animationElements, function () {
+            var $element = $(this);
+            var elementHeight = $element.outerHeight();
+            var elementTopPosition = $element.offset().top;
+            var elementBottomPosition = elementTopPosition + elementHeight;
+
+            // Check to see if this current container is within viewport
+            if (
+              elementBottomPosition >= windowTopPosition &&
+              elementTopPosition <= windowBottomPosition
+            ) {
+              $element.addClass("in-view");
+            } else if (mobileview === false) {
+              // For desktop view, remove class if scrolled out to allow re-animation on scroll up/down
+              $element.removeClass("in-view");
+            }
+          });
+        }
+
+        $window.on("scroll resize", checkIfInView);
+        $window.trigger("scroll");
+      });
+    </script>
+  </body>
+</html>
