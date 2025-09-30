@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Roman - Data Analytics Portfolio</title>
+    <title>Roman's Portfolio</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="Roman, Data Analyst, Data Scientist, Portfolio, SQL, Python, Tableau, TikTok, YouTube" name="keywords" />
     <meta content="Roman - Data Science and Analytics Portfolio showcasing industry projects and teaching achievements." name="description" />
@@ -98,20 +98,21 @@
         align-items: center;
       }
 
-      /* Navbar/Sidebar Styling */
+      /* --- Navbar/Sidebar Styling (REVERTED TO DARK BACKGROUND) --- */
       #navbar {
-        background: var(--dark) !important;
-        /* Navbar border color updated to match new header background */
-        border-bottom: 2px solid var(--blue-neon); 
+        background: var(--dark) !important; /* REVERTED: Navbar background back to dark/default */
+        border-bottom: 2px solid var(--pink-neon); 
       }
-      /* FIX 1: Ensure the navbar brand color is neon blue */
+      /* REVERTED: Navbar brand and links must be NEON BLUE for contrast against Dark BG */
       #navbar .navbar-brand h1 {
-          color: var(--blue-neon) !important; 
+          color: var(--blue-neon) !important; /* REVERTED */
       }
-
+      #navbar .nav-link {
+          color: var(--blue-neon) !important; /* REVERTED: Nav links color to Neon Blue */
+      }
       #navbar .nav-link:hover,
       #navbar .nav-link.active {
-        color: var(--pink-neon) !important;
+        color: var(--pink-neon) !important; /* Hover color remains PINK for accent */
       }
       
       /* Neon Blue Background for Header Section */
@@ -123,9 +124,9 @@
           color: var(--dark) !important; /* Text to Dark for contrast */
       }
       
-      /* 3. H1 Name Size Adjustment (Reduced to fit on one line) */
+      /* 2. H1 Name Size Adjustment */
       #home h1.display-3 {
-          font-size: 3.5rem !important; /* Reduced to ensure it fits on one line */
+          font-size: 3rem !important; /* Reduced to 3rem from 3.5rem to ensure it fits on one line */
       }
       
       /* 1. Animation CSS for rolling effect (Added back) */
@@ -287,10 +288,11 @@
     <nav
       class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5"
       id="navbar"
+      style="display: none;" <!-- ADDED: Hide navbar initially -->
     >
-      <!-- FIX 1: Changed "Roman" to "Roman's Portfolio" and applied secondary-color (neon blue) -->
+      <!-- FIX 1: Changed "Roman" to "Roman's Portfolio" and ensures text color is dark -->
       <a href="index.html" class="navbar-brand d-block d-lg-none">
-        <h1 class="m-0 secondary-color">Roman's Portfolio</h1>
+        <h1 class="m-0" style="color: var(--blue-neon) !important;">Roman's Portfolio</h1>
       </a>
       <button
         type="button"
@@ -338,7 +340,7 @@
             <!-- FIX 2: Made "Hi, I'm" bold -->
             <h3 class="font-weight-bold mb-3">Hi, I'm</h3>
 
-            <!-- 3. H1 Name Size Adjustment (Style controlled by CSS block) -->
+            <!-- 2. H1 Name Size Adjustment (Style controlled by CSS block) -->
             <h1
               class="display-3 text-uppercase mb-2"
               style="-webkit-text-stroke: 2px var(--dark); color: transparent !important; font-weight: 900 !important;"
@@ -381,9 +383,13 @@
                 <span id="typed-greeting-about-output" class="d-inline"></span> 
                 <span class="secondary-color d-inline">Roman</span>
             </h3>
+            <!-- 5. Split paragraph 1 -->
             <p>
-              A results-driven Data professional with a passion for leveraging data to solve complex business problems, experienced in multiple industries such as e-commerce, HR services, financial services, IoT, and training. With 
-              <strong>5 years of experience</strong> in full-time Data Science and Analytics, and <strong>3 years</strong> in part-time teaching, my focus is to turn raw data into clear, actionable insights that drive growth and operational efficiency, while also dedicated to sharing knowledge as an instructor and content creator.
+              A results-driven Data professional with a passion for leveraging data to solve complex business problems, experienced in multiple industries such as e-commerce, HR services, financial services, IoT, and training.
+            </p>
+            <!-- 5. Split paragraph 2 -->
+            <p>
+              With <strong>5 years of experience</strong> in full-time Data Science and Analytics, and <strong>3 years</strong> in part-time teaching, my focus is to turn raw data into clear, actionable insights that drive growth and operational efficiency, while also dedicated to sharing knowledge as an instructor and content creator.
             </p>
           </div>
         </div>
@@ -400,9 +406,10 @@
           <h1 class="background-title text-uppercase d-none d-md-block">SKILLS</h1>
         </div>
         <div class="row align-items-center animation-element justify-content-center">
-          <div class="col-md-10">
+          <!-- 4. CHANGED: Reduced container size to col-md-8 for tighter centering -->
+          <div class="col-md-8"> 
             <!-- 4. SKILLS list items are now bold via CSS -->
-            <div class="row skills-list">
+            <div class="row skills-list text-left">
                 <!-- Left Column: General Tools (SQL, Python, KNIME) -->
                 <div class="col-sm-6">
                     <ul class="list-unstyled mb-0">
@@ -778,14 +785,25 @@
         }
 
 
-        // Back to top button logic
+        // Back to top button and Navbar visibility logic (MODIFIED)
         $(window).scroll(function () {
-          if ($(this).scrollTop() > 100) {
-            $(".back-to-top").fadeIn("slow");
-          } else {
-            $(".back-to-top").fadeOut("slow");
-          }
+            const scrollTop = $(this).scrollTop();
+            
+            if (scrollTop > 100) {
+                // Show Back-to-Top button and Navbar
+                $(".back-to-top").fadeIn("slow");
+                $("#navbar").fadeIn("slow");
+            } else {
+                // Hide Back-to-Top button and Navbar
+                $(".back-to-top").fadeOut("slow");
+                $("#navbar").fadeOut("slow");
+            }
         });
+        
+        // Trigger scroll event on load to set the initial state (e.g., if page is reloaded halfway down)
+        $(window).trigger('scroll');
+
+
         $(".back-to-top").click(function () {
           $("html, body").animate({ scrollTop: 0 }, 1500, "swing");
           return false;
@@ -815,8 +833,6 @@
         // Scroll Spy (The "rolling effect" animation)
         var $window = $(window);
         var $animationElements = $(".animation-element");
-        // Removed: var mobileview = window.matchMedia("(max-width: 768px)").matches;
-        // The mobileview variable is no longer needed after fixing the logic below.
 
         function checkIfInView() {
           var windowHeight = $window.height();
@@ -836,14 +852,16 @@
             ) {
               $element.addClass("in-view");
             } else { 
-              // FIX: This now removes the 'in-view' class on all devices 
-              // when the element scrolls out of the viewport, allowing the animation to replay.
+              // This logic ensures the 'in-view' class is removed when the element scrolls out
+              // allowing the animation to replay when scrolling back up.
               $element.removeClass("in-view");
             }
           });
         }
 
         $window.on("scroll resize", checkIfInView);
+        // Note: We don't need to trigger scroll here again as it's triggered above, 
+        // but keeping it for the animation logic's initial check.
         $window.trigger("scroll");
       });
     </script>
