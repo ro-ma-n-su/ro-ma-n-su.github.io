@@ -191,6 +191,7 @@
           display: flex;
           align-items: center;
           font-weight: bold; 
+          /* Crucial to allow negative margins to pull content over the edge */
       }
       /* Base Icon Style (for right column) */
       .skills-list i.fa {
@@ -199,7 +200,7 @@
           filter: drop-shadow(0 0 5px var(--pink-neon));
       }
 
-      /* 2. SKILLS Gap Fix: Reduce horizontal padding for inner columns */
+      /* 2. SKILLS Gap Fix: Reduce horizontal padding for inner columns (to make the negative margin fix easier) */
       #skills .skills-list .col-sm-6 {
           padding-left: 10px !important;
           padding-right: 10px !important;
@@ -207,15 +208,18 @@
 
       /* 3. Custom Style for Left Column (Name - Icon, Right-Aligned) */
       .skills-list .col-sm-6:first-child li {
-          width: 100%; /* MANDATORY: Ensure the list item spans the full width of the column */
-          justify-content: flex-end; /* Pushes content block to the right edge of the list container */
-          flex-direction: row-reverse; /* Puts the icon on the right, next to the text */
+          width: 100%; /* Ensures li spans the full column width */
+          justify-content: flex-end; /* Pushes content to the far right */
+          flex-direction: row-reverse; /* Puts the icon on the right */
+          
+          /* FIX: Pull the content 10px to the right to negate the column's 10px right padding */
+          margin-right: -10px; 
       }
       
       /* Adjust icon margin for the left column (margin on the left of the icon) */
       .skills-list .col-sm-6:first-child i.fa {
           margin-right: 0; 
-          margin-left: 15px; /* Adds space between text and icon */
+          margin-left: 15px; 
       }
       /* --- END SKILLS Section Styling --- */
       
