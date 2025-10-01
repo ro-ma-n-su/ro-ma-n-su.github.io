@@ -246,12 +246,11 @@
           margin-top: 15px;
       }
       
-      /* Rule 1: Static Images (Allows images to show their full height/aspect ratio up to 600px, preventing cropping) */
+      /* Rule 1: Static Images (Allows images to show their full height/aspect ratio up to 450, preventing cropping) */
       .carousel-inner .carousel-item img {
-          max-height: 600px !important; /* Use user's requested height limit */
-          height: auto !important; /* Ensure height scales naturally based on content */
+          max-height: 450px !important; /* Use user's requested height limit */
+          aspect-ratio: 16 / 9;
           object-fit: contain !important; /* Prevent cropping, show full image */
-          aspect-ratio: unset; /* IMPORTANT: Remove the fixed 16/9 aspect ratio for images */
       }
       
       /* Rule 2: Video Thumbnail Container (Must maintain 16:9 ratio for video aesthetic) */
