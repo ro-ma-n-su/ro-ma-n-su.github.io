@@ -234,24 +234,55 @@
           }
       }
       
-      /* Style for the Media Carousel in Teaching section */
+      /* --- START UPDATED Media Carousel Styles in Teaching section --- */
+      /* Base styles for all media components (static image and video wrapper) */
       .carousel-inner .carousel-item img,
       .video-thumbnail-container {
           border: 1px solid var(--pink-neon);
-          max-height: 600px !important; 
           max-width: 100%;
           width: 100%;
-          aspect-ratio: 16 / 9; /* Standard aspect ratio for media */
-          object-fit: cover;
           cursor: pointer;
           transition: transform 0.3s ease;
-          margin-top: 15px; /* Added margin for separation */
+          margin-top: 15px;
       }
       
+      /* Rule 1: Static Images (Allows images to show their full height/aspect ratio up to 600px, preventing cropping) */
+      .carousel-inner .carousel-item img {
+          max-height: 600px !important; /* Use user's requested height limit */
+          height: auto !important; /* Ensure height scales naturally based on content */
+          object-fit: contain !important; /* Prevent cropping, show full image */
+          aspect-ratio: unset; /* IMPORTANT: Remove the fixed 16/9 aspect ratio for images */
+      }
+      
+      /* Rule 2: Video Thumbnail Container (Must maintain 16:9 ratio for video aesthetic) */
+      .video-thumbnail-container {
+          max-height: 450px !important; /* Set a reasonable max-height for the video container */
+          aspect-ratio: 16 / 9; /* Force 16:9 aspect ratio */
+          position: relative;
+          display: block;
+          overflow: hidden;
+      }
+
+      /* Rule 3: Video Thumbnail Image (Must cover the 16:9 container, hence object-fit: cover) */
+      .video-thumbnail-container img {
+          border: none;
+          max-height: none !important;
+          margin-top: 0;
+          aspect-ratio: 16 / 9;
+          filter: brightness(0.7);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* Must use cover here to fill the space for the thumbnail */
+      }
+
       .carousel-inner .carousel-item img:hover,
       .video-thumbnail-container:hover {
           transform: scale(1.02);
       }
+      /* --- END UPDATED Media Carousel Styles in Teaching section --- */
 
       /* Video Thumbnail Overlay */
       .video-thumbnail-container {
