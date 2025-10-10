@@ -281,6 +281,27 @@
       .video-thumbnail-container:hover {
           transform: scale(1.02);
       }
+      
+      /* === START: Custom Styles for Carousel Indicator below image === */
+      .carousel-indicators {
+          position: static; /* Take it out of the image container's flow */
+          margin-top: 10px; /* Space it below the image/video */
+          margin-bottom: 0;
+      }
+      .carousel-indicators li {
+          background-color: var(--blue-neon);
+          border: 1px solid var(--pink-neon);
+          opacity: 0.5;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+      }
+      .carousel-indicators .active {
+          opacity: 1;
+          background-color: var(--pink-neon);
+      }
+      /* === END: Custom Styles for Carousel Indicator below image === */
+      
       /* --- END UPDATED Media Carousel Styles in Teaching section --- */
 
       /* Video Thumbnail Overlay */
@@ -320,6 +341,32 @@
           color: var(--light) !important;
           opacity: 1;
           text-shadow: none;
+      }
+      
+      /* Modal Navigation Button Styles */
+      .modal .carousel-control-prev,
+      .modal .carousel-control-next {
+          width: 5%;
+          filter: drop-shadow(0 0 5px var(--pink-neon));
+          opacity: 0.8;
+      }
+      .modal .carousel-control-prev-icon,
+      .modal .carousel-control-next-icon {
+          background-image: none; /* Remove default icon */
+      }
+      .modal .carousel-control-prev-icon::after {
+          content: "\f104"; /* Font Awesome Chevron Left */
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          font-size: 2rem;
+          color: var(--blue-neon);
+      }
+      .modal .carousel-control-next-icon::after {
+          content: "\f105"; /* Font Awesome Chevron Right */
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          font-size: 2rem;
+          color: var(--blue-neon);
       }
 
       /* Ensure the YouTube player is responsive */
@@ -682,30 +729,32 @@
                         </div>
                     </div>
                     <div id="carousel-lecturer-1" class="carousel slide" data-ride="carousel" data-interval="5000">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel-lecturer-1" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-lecturer-1" data-slide-to="1"></li>
-                        </ol>
                         <div class="carousel-inner rounded">
-                            <div class="carousel-item active">
+                            <div class="carousel-item active" data-media-type="image" data-media-src="pics/guest_lecturer_proof.jpg" data-slide-index="0">
                                 <img 
                                     class="d-block w-100" 
                                     src="pics/guest_lecturer_proof.jpg" 
-                                    alt="Guest Lecturer Proof" 
-                                    onclick="openMediaModal(this.src, 'image')"
+                                    alt="Guest Lecturer Certificate Proof" 
+                                    onclick="openMediaModal(this, 'image')"
                                 />
+                                <small class="text-muted text-center d-block mt-2">Image 1: Certificate</small>
                             </div>
-                            <div class="carousel-item">
+                            <div class="carousel-item" data-media-type="image" data-media-src="pics/class_documentation.jpg" data-slide-index="1">
                                 <img 
                                     class="d-block w-100" 
                                     src="pics/class_documentation.jpg" 
                                     alt="Class Documentation" 
-                                    onclick="openMediaModal(this.src, 'image')"
+                                    onclick="openMediaModal(this, 'image')"
                                 />
+                                <small class="text-muted text-center d-block mt-2">Image 2: In-class session</small>
                             </div>
                         </div>
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-lecturer-1" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-lecturer-1" data-slide-to="1"></li>
+                        </ol>
                     </div>
-                </div>
+                    </div>
             </div>
 
             <div class="col-lg-4 col-md-6 mb-4">
@@ -721,14 +770,10 @@
                         </div>
                     </div>
                     <div id="carousel-revou-2" class="carousel slide" data-ride="carousel" data-interval="5000">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel-revou-2" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-revou-2" data-slide-to="1"></li>
-                        </ol>
                         <div class="carousel-inner rounded">
-                            <div class="carousel-item active">
+                            <div class="carousel-item active" data-media-type="video" data-media-src="https://youtu.be/0XGfitBqfZU" data-slide-index="0">
                                 <a href="#" class="video-thumbnail-container" data-video-url="https://youtu.be/0XGfitBqfZU" 
-                                    onclick="event.preventDefault(); openMediaModal('https://youtu.be/0XGfitBqfZU', 'video');">
+                                    onclick="event.preventDefault(); openMediaModal(this, 'video');">
                                     <img 
                                         class="d-block w-100" 
                                         src="https://img.youtube.com/vi/0XGfitBqfZU/hqdefault.jpg" 
@@ -738,8 +783,8 @@
                                 </a>
                                 <small class="text-muted text-center d-block mt-2">Video 1: FSDA [Sec. Madrid] FEB 25</small>
                             </div>
-                            <div class="carousel-item">
-                                <a href="#" class="video-thumbnail-container" data-video-url="https://youtu.be/iVCZBtOM3xY" onclick="event.preventDefault(); openMediaModal('https://youtu.be/iVCZBtOM3xY', 'video');">
+                            <div class="carousel-item" data-media-type="video" data-media-src="https://youtu.be/iVCZBtOM3xY" data-slide-index="1">
+                                <a href="#" class="video-thumbnail-container" data-video-url="https://youtu.be/iVCZBtOM3xY" onclick="event.preventDefault(); openMediaModal(this, 'video');">
                                     <img 
                                         class="d-block w-100" 
                                         src="https://img.youtube.com/vi/iVCZBtOM3xY/hqdefault.jpg" 
@@ -750,8 +795,12 @@
                                 <small class="text-muted text-center d-block mt-2">Video 2: KM FEB'24 - GRADUATION NIGHT 🎓</small>
                             </div>
                         </div>
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-revou-2" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-revou-2" data-slide-to="1"></li>
+                        </ol>
                     </div>
-                </div>
+                    </div>
             </div>
 
             <div class="col-lg-4 col-md-6 mb-4">
@@ -768,17 +817,21 @@
                     </div>
                     <div id="carousel-digitalskola-3" class="carousel slide" data-ride="carousel" data-interval="false">
                         <div class="carousel-inner rounded">
-                            <div class="carousel-item active">
+                            <div class="carousel-item active" data-media-type="image" data-media-src="pics/DigitalSkola-MSIB-2021.jpg" data-slide-index="0">
                                 <img 
                                     class="d-block w-100" 
                                     src="pics/DigitalSkola-MSIB-2021.jpg" 
                                     alt="DigitalSkola MSIB 2021" 
-                                    onclick="openMediaModal(this.src, 'image')"
+                                    onclick="openMediaModal(this, 'image')"
                                 />
+                                <small class="text-muted text-center d-block mt-2">Image 1: Certificate</small>
                             </div>
                         </div>
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-digitalskola-3" data-slide-to="0" class="active"></li>
+                        </ol>
                     </div>
-                </div>
+                    </div>
             </div>
 
         </div>
@@ -828,6 +881,7 @@
         </p>
       </div>
     </div>
+    
     <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content bg-dark border border-primary">
@@ -838,12 +892,21 @@
                 </div>
                 <div class="modal-body text-center p-2">
                     <div id="modalMediaContent" class="video-wrapper">
-                        </div>
+                    </div>
                 </div>
+                <button class="carousel-control-prev" id="modal-prev-btn" style="display: none;" type="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </button>
+                <button class="carousel-control-next" id="modal-next-btn" style="display: none;" type="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </button>
+                <input type="hidden" id="currentCarouselId" value="">
+                <input type="hidden" id="currentSlideIndex" value="">
             </div>
         </div>
     </div>
-
     <a href="#home" class="btn btn-outline-primary px-0 back-to-top"
       ><i class="fa fa-angle-double-up"></i
     ></a>
@@ -882,13 +945,45 @@
 
         /**
          * Function to open the lightbox modal for both images and videos.
-         * @param {string} mediaSrc - The image source URL or YouTube URL.
+         * @param {Element|string} mediaElementOrSrc - The clicked element or the source URL/path for recursive calls.
          * @param {string} mediaType - 'image' or 'video'.
+         * @param {string|null} [carouselId=null] - The ID of the parent carousel, used for navigation.
+         * @param {number|null} [slideIndex=null] - The index of the current slide, used for navigation.
          */
-        function openMediaModal(mediaSrc, mediaType) {
+        function openMediaModal(mediaElementOrSrc, mediaType, carouselId = null, slideIndex = null) {
             const $modalMediaContent = $("#modalMediaContent");
+            const $modalPrevBtn = $("#modal-prev-btn");
+            const $modalNextBtn = $("#modal-next-btn");
+            let mediaSrc, $parentCarousel, $currentItem;
+            
+            // 1. Determine the source/type/context
+            if (typeof mediaElementOrSrc === 'string') {
+                // This is a recursive call from modal navigation
+                mediaSrc = mediaElementOrSrc;
+                $parentCarousel = $(`#${carouselId}`);
+                $currentItem = $parentCarousel.find(`.carousel-item[data-slide-index="${slideIndex}"]`);
+            } else {
+                // This is the initial click from the main page
+                $currentItem = $(mediaElementOrSrc).closest('.carousel-item');
+                $parentCarousel = $currentItem.closest('.carousel');
+                
+                carouselId = $parentCarousel.attr('id');
+                // For video thumbnails, the media src is on the 'data-video-url' of the 'a' tag
+                if (mediaType === 'video') {
+                    mediaSrc = $(mediaElementOrSrc).data('video-url');
+                } else {
+                    // For image, the media src is on the 'src' of the 'img' tag
+                    mediaSrc = $(mediaElementOrSrc).attr('src');
+                }
+                slideIndex = parseInt($currentItem.data('slide-index'));
+            }
+            
+            const $allItems = $parentCarousel.find('.carousel-item');
+            const totalItems = $allItems.length;
+
             $modalMediaContent.empty(); // Clear previous content
 
+            // 2. Load the media content
             if (mediaType === 'image') {
                 const imgTag = `<img src="${mediaSrc}" class="img-fluid rounded" style="max-height: 90vh; width: auto;"/>`;
                 $modalMediaContent.removeClass('video-wrapper').html(imgTag);
@@ -899,14 +994,80 @@
                     $modalMediaContent.addClass('video-wrapper').html(iframeTag);
                 }
             }
+            
+            // 3. Update state for navigation
+            $("#currentCarouselId").val(carouselId);
+            $("#currentSlideIndex").val(slideIndex);
+            
+            // 4. Update modal navigation buttons visibility and data
+            if (totalItems > 1) {
+                $modalPrevBtn.show().data('carousel-id', carouselId).data('slide-index', slideIndex);
+                $modalNextBtn.show().data('carousel-id', carouselId).data('slide-index', slideIndex);
+                
+                // Hide button if at the end of the carousel
+                if (slideIndex === 0) {
+                    $modalPrevBtn.hide();
+                }
+                if (slideIndex === totalItems - 1) {
+                    $modalNextBtn.hide();
+                }
+            } else {
+                $modalPrevBtn.hide();
+                $modalNextBtn.hide();
+            }
 
-            $("#mediaModal").modal("show");
+            // 5. Show the modal (only on the initial click, not recursive calls)
+            if (typeof mediaElementOrSrc !== 'string') {
+                 $("#mediaModal").modal("show");
+            }
         }
         
-        // Stop video playback when the modal is closed
+        // --- Modal Navigation Logic ---
+        
+        // Handler for Previous/Next button clicks
+        function handleModalNavigation(direction) {
+            const currentCarouselId = $("#currentCarouselId").val();
+            let currentSlideIndex = parseInt($("#currentSlideIndex").val());
+            const $parentCarousel = $(`#${currentCarouselId}`);
+            const $allItems = $parentCarousel.find('.carousel-item');
+            const totalItems = $allItems.length;
+            
+            let newSlideIndex;
+            if (direction === 'prev') {
+                newSlideIndex = (currentSlideIndex - 1 + totalItems) % totalItems;
+            } else { // 'next'
+                newSlideIndex = (currentSlideIndex + 1) % totalItems;
+            }
+            
+            // Get the new slide's data attributes
+            const $newSlide = $allItems.filter(`[data-slide-index="${newSlideIndex}"]`);
+            const newMediaType = $newSlide.data('media-type');
+            const newMediaSrc = $newSlide.data('media-src');
+            
+            // Programmatically slide the parent carousel (optional, but keeps UI synced)
+            $parentCarousel.carousel(newSlideIndex);
+
+            // Recursively call openMediaModal with new data
+            openMediaModal(newMediaSrc, newMediaType, currentCarouselId, newSlideIndex);
+        }
+
+        $("#modal-prev-btn").on('click', function() {
+            handleModalNavigation('prev');
+        });
+
+        $("#modal-next-btn").on('click', function() {
+            handleModalNavigation('next');
+        });
+        
+        // Stop video playback and hide controls when the modal is closed
         $('#mediaModal').on('hidden.bs.modal', function (e) {
             $("#modalMediaContent").empty();
+            $("#modal-prev-btn").hide();
+            $("#modal-next-btn").hide();
         });
+        
+        // --- End Modal Navigation Logic ---
+
 
       $(function () {
         "use strict";
