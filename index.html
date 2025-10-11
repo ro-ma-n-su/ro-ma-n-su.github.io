@@ -256,7 +256,7 @@
       /* Rule 2: Video Thumbnail Container (Must maintain 16:9 ratio for video aesthetic) */
       .video-thumbnail-container {
           max-height: 450px !important; /* Set a reasonable max-height for the video container */
-          aspect-ratio: 16 / 9; /* Force 16:9 aspect ratio */
+          aspect-ratio: 16 / 9;
           position: relative;
           display: block;
           overflow: hidden;
@@ -342,33 +342,78 @@
           opacity: 1;
           text-shadow: none;
       }
-      
-      /* Modal Navigation Button Styles */
+
+      /* --- START: Future-Style Modal Navigation Button Fix --- */
+
+      /* 1. Base style for the buttons (Hidden by default, positioned over the media) */
       .modal .carousel-control-prev,
       .modal .carousel-control-next {
-          width: 5%;
-          filter: drop-shadow(0 0 5px var(--pink-neon));
-          opacity: 0.8;
+          width: 60px; /* Wider click area for easier access */
+          height: 100%; /* Full height of the media container */
+          top: 0;
+          opacity: 0; /* HIDDEN by default */
+          transition: opacity 0.3s ease-in-out;
+          /* Transparent background to ensure content is visible */
+          background: transparent !important; /* Ensure background is fully transparent */
+          border: none !important; /* CRITICAL: Remove border */
+          outline: none !important; /* CRITICAL: Remove outline on focus */
       }
+
+      /* 2. Hover effect (Show the controls when hovering over the modal content) */
+      .modal-content:hover .carousel-control-prev,
+      .modal-content:hover .carousel-control-next {
+          opacity: 1; /* SHOW on hover */
+      }
+
+      /* 3. Positioning the specific controls */
+      .modal .carousel-control-prev {
+          left: 0;
+      }
+      .modal .carousel-control-next {
+          right: 0;
+      }
+
+      /* 4. Icon styling (Simple, stark neon chevron) */
       .modal .carousel-control-prev-icon,
       .modal .carousel-control-next-icon {
-          background-image: none; /* Remove default icon */
+          background-image: none;
+          width: 100%;
+          height: 100%;
+          display: flex; 
+          align-items: center;
+          justify-content: center;
       }
+
+      /* Custom icon using Font Awesome in ::after pseudoelement - FUTURISTIC STYLE */
       .modal .carousel-control-prev-icon::after {
           content: "\f104"; /* Font Awesome Chevron Left */
           font-family: 'Font Awesome 5 Free';
           font-weight: 900;
-          font-size: 2rem;
+          font-size: 3rem; /* Larger icon */
           color: var(--blue-neon);
+          text-shadow: 0 0 10px var(--blue-neon); /* Neon Glow */
+          line-height: 1; 
+          transition: color 0.2s, text-shadow 0.2s;
       }
       .modal .carousel-control-next-icon::after {
           content: "\f105"; /* Font Awesome Chevron Right */
           font-family: 'Font Awesome 5 Free';
           font-weight: 900;
-          font-size: 2rem;
+          font-size: 3rem; /* Larger icon */
           color: var(--blue-neon);
+          text-shadow: 0 0 10px var(--blue-neon); /* Neon Glow */
+          line-height: 1; 
+          transition: color 0.2s, text-shadow 0.2s;
       }
 
+      /* Hover over the actual button to make the icon glow brighter */
+      .modal .carousel-control-prev:hover .carousel-control-prev-icon::after,
+      .modal .carousel-control-next:hover .carousel-control-next-icon::after {
+          color: var(--light); /* Change color slightly */
+          text-shadow: 0 0 15px var(--blue-neon), 0 0 25px var(--blue-neon); /* Brighter glow */
+      }
+      /* --- END: Future-Style Modal Navigation Button Fix --- */
+      
       /* Ensure the YouTube player is responsive */
       .video-wrapper {
           position: relative;
@@ -1001,15 +1046,22 @@
             
             // 4. Update modal navigation buttons visibility and data
             if (totalItems > 1) {
+                // Buttons are VISUALLY controlled by CSS hover effect
                 $modalPrevBtn.show().data('carousel-id', carouselId).data('slide-index', slideIndex);
                 $modalNextBtn.show().data('carousel-id', carouselId).data('slide-index', slideIndex);
                 
-                // Hide button if at the end of the carousel
+                // Hide button (but keep it functional) if at the end of the carousel
+                // We use CSS for visual opacity, so here we only control visibility based on index
                 if (slideIndex === 0) {
-                    $modalPrevBtn.hide();
+                    $modalPrevBtn.css('visibility', 'hidden');
+                } else {
+                    $modalPrevBtn.css('visibility', 'visible');
                 }
+                
                 if (slideIndex === totalItems - 1) {
-                    $modalNextBtn.hide();
+                    $modalNextBtn.css('visibility', 'hidden');
+                } else {
+                    $modalNextBtn.css('visibility', 'visible');
                 }
             } else {
                 $modalPrevBtn.hide();
@@ -1027,18 +1079,24 @@
         // Handler for Previous/Next button clicks
         function handleModalNavigation(direction) {
             const currentCarouselId = $("#currentCarouselId").val();
-            let currentSlideIndex = parseInt($("#currentSlideIndex").val());
+            let currentSlideIndex = parseInt($("#currentCarouselId").val() ? $("#currentSlideIndex").val() : -1);
+            
+            // Safety check for initialization failure (should not happen with the new code)
+            if (currentCarouselId === '' || currentSlideIndex === -1) return;
+            
             const $parentCarousel = $(`#${currentCarouselId}`);
             const $allItems = $parentCarousel.find('.carousel-item');
             const totalItems = $allItems.length;
             
             let newSlideIndex;
             if (direction === 'prev') {
-                newSlideIndex = (currentSlideIndex - 1 + totalItems) % totalItems;
+                newSlideIndex = (currentSlideIndex - 1);
             } else { // 'next'
-                newSlideIndex = (currentSlideIndex + 1) % totalItems;
+                newSlideIndex = (currentSlideIndex + 1);
             }
             
+            if (newSlideIndex < 0 || newSlideIndex >= totalItems) return;
+
             // Get the new slide's data attributes
             const $newSlide = $allItems.filter(`[data-slide-index="${newSlideIndex}"]`);
             const newMediaType = $newSlide.data('media-type');
@@ -1062,8 +1120,8 @@
         // Stop video playback and hide controls when the modal is closed
         $('#mediaModal').on('hidden.bs.modal', function (e) {
             $("#modalMediaContent").empty();
-            $("#modal-prev-btn").hide();
-            $("#modal-next-btn").hide();
+            $("#modal-prev-btn").hide().css('visibility', 'visible'); // Reset visibility
+            $("#modal-next-btn").hide().css('visibility', 'visible'); // Reset visibility
         });
         
         // --- End Modal Navigation Logic ---
