@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Roman's Career Timeline</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --text-light: #f5f5f5;
+            --accent-neon: #00ffff; /* Neon Cyan for the Data Flow line */
+            --accent-complement: #00ff66; /* Neon Green for secondary accents */
+        }
+        
+        body {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Roboto', sans-serif;
+            padding-top: 56px;
+            overflow-x: hidden;
+        }
+
+        /* --- Navbar Styling --- */
+        .navbar-custom {
+            background-color: var(--bg-dark);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        .nav-link, .navbar-brand {
+            color: var(--text-light) !important;
+        }
+        .navbar-brand span {
+            color: var(--accent-neon);
+        }
+
+        /* --- Timeline Core Structure --- */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        /* New Static Base Line */
+        .timeline-line-base {
+            position: absolute;
+            width: 6px;
+            background-color: var(--accent-neon);
+            top: 0;
+            left: 50%;
+            margin-left: -3px;
+            opacity: 0.3; /* Subtle background line */
+            z-index: 0;
+        }
+        /* The Animated Flow Line */
+        .timeline-flow-fill {
+            position: absolute;
+            width: 6px;
+            background-color: var(--accent-neon);
+            top: 0;
+            left: 50%;
+            margin-left: -3px;
+            height: 0;
+            transition: height 0.3s ease-out;
+            z-index: 1;
+        }
+
+        /* --- Milestone Container Layout --- */
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            box-sizing: border-box; 
+        }
+        .timeline-container.left {
+            left: 0;
+        }
+        .timeline-container.right {
+            left: 50%;
+        }
+
+        /* Milestone Connector Dot */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -12.5px; 
+            background-color: var(--bg-dark);
+            border: 4px solid var(--accent-complement);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .timeline-container.right::after {
+            left: -12.5px;
+        }
+        
+        /* Arrow connecting card to line */
+        .timeline-container::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            border: medium solid var(--bg-dark);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--bg-dark);
+            right: 30px;
+        }
+        .timeline-container.right::before {
+            left: 30px;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--bg-dark) transparent transparent;
+            right: auto;
+        }
+        
+        /* Card content padding is applied here, not on the flip components */
+        .timeline-content {
+            padding: 0; 
+            background-color: transparent;
+            border-radius: 6px;
+            box-shadow: none; 
+        }
+
+        /* --- Flip Card Styles (Custom Sizing) --- */
+        .flip-card-container {
+            margin-bottom: 20px; 
+        }
+        .flip-card {
+            background-color: transparent;
+            height: 100%;
+            perspective: 1000px; 
+            cursor: pointer;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); 
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%; 
+            text-align: left;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .flip-card-container.is-flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            padding: 20px; 
+            border-radius: 6px;
+            box-sizing: border-box;
+            background: var(--bg-dark);
+            word-wrap: break-word;
+        }
+        .flip-card-back {
+            background-color: var(--bg-dark);
+            color: var(--accent-complement);
+            transform: rotateY(180deg);
+            font-size: 0.95em;
+            position: relative; 
+        }
+        .flip-card-back ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 15px;
+        }
+        .flip-card-back li::before {
+            content: "➡️";
+            margin-right: 5px;
+            color: var(--accent-neon);
+        }
+        .flip-card-image {
+            width: 100%;
+            max-height: 130px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-top: 10px;
+            border: 1px solid var(--accent-neon);
+        }
+        /* Image Visibility Fix */
+        .flip-card-back .flip-card-image {
+            display: block !important;
+        }
+        
+        /* Bold Text Fix */
+        .flip-card-front strong {
+            font-weight: 700;
+            color: var(--text-light); /* Standard lingo bold text is light white */
+        }
+        .flip-card-back strong {
+            color: var(--accent-complement) !important; /* Gen-Z bold text is NEON GREEN */
+            font-weight: 700;
+        }
+        
+        /* Sizing Fix: Flip card inner should wrap content */
+        .flip-card {
+            height: auto; 
+        }
+        .flip-card-inner {
+            height: auto;
+        }
+        .flip-card-front {
+            position: relative; 
+        }
+        .flip-card-container.is-flipped .flip-card-front {
+            position: absolute; 
+        }
+        .flip-card-back {
+            position: absolute; 
+            top: 0;
+            left: 0;
+        }
+        .flip-card-container.is-flipped .flip-card-back {
+            position: relative; 
+        }
+
+
+        /* --- Center Alignment for Final Card --- */
+        .timeline-container.center {
+            width: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 40px; 
+            margin-bottom: 40px;
+        }
+        .timeline-container.center::after, .timeline-container.center::before {
+            display: none;
+        }
+        .timeline-container.center .flip-card-back ul {
+            text-align: left;
+            max-width: fit-content; 
+            margin: 15px auto 0;
+        }
+        
+        /* Button Styles */
+        .action-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .action-button.standard {
+            background-color: var(--accent-neon);
+            color: var(--bg-dark);
+        }
+        .action-button.standard:hover {
+            background-color: var(--text-light);
+            color: var(--bg-dark);
+        }
+        .action-button.genz {
+            background-color: var(--accent-complement);
+            color: var(--bg-dark);
+        }
+        .action-button.genz:hover {
+            background-color: var(--text-light);
+            color: var(--bg-dark);
+        }
+
+        /* Responsive timeline */
+        @media screen and (max-width: 600px) {
+            .timeline-line-base, .timeline-flow-fill {
+                left: 31px;
+            }
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-container.right {
+                left: 0%;
+            }
+            .timeline-container.center {
+                width: 100%;
+                left: 0;
+                transform: translateX(0);
+                padding: 10px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-custom">
+        <a class="navbar-brand" href="#">Roman's <span>Timeline</span></a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Projects</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-5">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-4 font-weight-bold" style="color:var(--accent-neon);">The Data Pivot: A Career Flow</h2>
+                <p class="text-muted">Psst, genZ, click the card! 🤫</p>
+            </div>
+        </div>
+        <div class="timeline">
+            <div id="timeline-base" class="timeline-line-base"></div>
+            <div id="flowFill" class="timeline-flow-fill"></div>
+
+            <div id="m1" class="timeline-container left flip-card-container">
+                <div class="timeline-content flip-card" onclick="this.closest('.flip-card-container').classList.toggle('is-flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h4 class="font-weight-bold" style="color:var(--accent-neon);">2018: The Academic Shift & Catalyst</h4>
+                            <p><strong>Part 1 (Academic):</strong> Thesis focus on Econophysics was aborted as the supervising professor had not engaged with the topic for over ten years, requiring a definitive shift to a new area for the final degree.</p>
+                            <p><strong>Part 2 (Career Catalyst):</strong> A discussion comparing Econophysics to solving business problems led to the realization that the methodology had <strong>similarity with Data Science</strong>. Immediately initiated self-directed training, tackling <strong>Python</strong> and foundational <strong>SQL</strong>, though SQL proved an initial challenge.</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h4 class="font-weight-bold">2018: The Vibe Check</h4>
+                            <ul>
+                                <li><strong>Academic L:</strong> Econophysics thesis <strong>ghosted</strong> (prof hadn't touched it in 10 yrs). <strong>Had to switch thesis topic.</strong></li>
+                                <li><strong>Career L:</strong> Friend group called me out: <em>"Isn’t that similar to Data Science?"</em> 🤯 Started Python/SQL grind, but <strong>SQL was confusing AF.</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="m2" class="timeline-container right flip-card-container">
+                <div class="timeline-content flip-card" onclick="this.closest('.flip-card-container').classList.toggle('is-flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h4 class="font-weight-bold" style="color:var(--accent-neon);">2019: Academic Closure & Recognition</h4>
+                            <p>Successfully completed the degree requirements with the new specialization. Research was recognized with a prestigious <strong>award at an international conference</strong>, marking the formal conclusion of the academic chapter.</p>
+                            <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="flip-card-image">
+                        </div>
+                        <div class="flip-card-back">
+                            <h4 class="font-weight-bold">2019: Academic Flex Complete</h4>
+                            <ul>
+                                <li><strong>New specialization degree completed.</strong></li>
+                                <li>International conference <strong>award secured.</strong> Flexed hard on the academic side. (OK, what's next?)</li>
+                            </ul>
+                            <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="flip-card-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="m3" class="timeline-container left flip-card-container">
+                <div class="timeline-content flip-card" onclick="this.closest('.flip-card-container').classList.toggle('is-flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h4 class="font-weight-bold" style="color:var(--accent-neon);">2019: Internship Era & Portfolio Build</h4>
+                            <p>Secured first Data Science internship by leveraging direct outreach and <strong>LinkedIn networking</strong>, resulting in a direct reply from the startup CEO. Used the internship to aggressively master <strong>SQL</strong> and <strong>Python</strong> application, and quickly acquire proficiency in <strong>Power BI</strong>.</p>
+                            <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="flip-card-image">
+                        </div>
+                        <div class="flip-card-back">
+                            <h4 class="font-weight-bold">2019: The Hustle Slay</h4>
+                            <ul>
+                                <li>Internship secured by <strong>DMing the CEO</strong>. <strong>Hustle rewarded.</strong></li>
+                                <li>Immediately fixed the SQL knowledge gap, mastered <strong>Power BI</strong>. <strong>Unlocking Pro Skills.</strong> 🔓</li>
+                            </ul>
+                            <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="flip-card-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="m4" class="timeline-container center flip-card-container">
+                <div class="timeline-content flip-card" onclick="this.closest('.flip-card-container').classList.toggle('is-flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h4 class="font-weight-bold text-center" style="color:var(--accent-neon);">2020 - Current: Expert & Educator</h4>
+                            <ul class="text-left" style="max-width: fit-content; margin: 0 auto; padding-left: 0; list-style-type: none;">
+                                <li style="margin-bottom: 10px;">Launched <strong>full-time career in Data Science & Analytics</strong> (2020), now with <strong>5 years</strong> of experience.</li>
+                                <li style="margin-bottom: 10px;"><strong>Added part-time teaching/lecturing role</strong> (2021) to share practical methodology, now with <strong>4 years</strong> of experience.</li>
+                                <li><strong>Current Status:</strong> Seasoned Data Expert, Part-Time Educator, and Content Creator.</li>
+                            </ul>
+                             <div class="text-center">
+                                <a href="index.html" class="action-button standard">More details here</a>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <h4 class="font-weight-bold text-center">2020 - Current: Certified Data Master</h4>
+                            <ul>
+                                <li><strong>2020:</strong> Full-time Data Expert era started.</li>
+                                <li><strong>2021:</strong> <strong>Added</strong> the teaching/lecturing side hustle.</li>
+                                <li><strong>Current Status:</strong> Data expert, content creator, and <strong>still passing the knowledge check.</strong> 🫡</li>
+                            </ul>
+                             <div class="text-center">
+                                <a href="index.html" class="action-button genz">Main Page Go Brrr</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            const flowFill = document.getElementById('flowFill');
+            const timelineBase = document.getElementById('timeline-base'); // New base line element
+            const timeline = document.querySelector('.timeline');
+            const m4 = document.getElementById('m4');
+            
+            // --- Custom function to ensure container resizes to the currently visible face ---
+            function syncCardHeight(container) {
+                const inner = container.querySelector('.flip-card-inner');
+                const front = container.querySelector('.flip-card-front');
+                const back = container.querySelector('.flip-card-back');
+                
+                let targetHeight;
+                if (container.classList.contains('is-flipped')) {
+                    // Back face is visible/takes up space (relative pos in CSS fix)
+                    targetHeight = back.offsetHeight;
+                } else {
+                    // Front face is visible/takes up space (relative pos in CSS fix)
+                    targetHeight = front.offsetHeight;
+                }
+
+                // Apply height to the flip-card element to ensure the border/shadow wraps correctly
+                const flipCard = container.querySelector('.flip-card');
+                if (targetHeight > 0) {
+                     flipCard.style.height = `${targetHeight}px`;
+                }
+            }
+            
+            // Override the default click handler to also sync the height
+            document.querySelectorAll('.flip-card').forEach(card => {
+                card.onclick = function() {
+                    const container = this.closest('.flip-card-container');
+                    // Check if the click target is the button itself or inside it
+                    if (event.target.closest('.action-button')) {
+                        return; // Do nothing if button is clicked, let the link handle it
+                    }
+
+                    container.classList.toggle('is-flipped');
+                    // Use a slight delay to allow the flip transition to begin and content to settle
+                    setTimeout(() => syncCardHeight(container), 200); 
+                };
+            });
+            // --- End Card Sizing Fix ---
+
+
+            function updateFlowLine() {
+                const timelineRect = timeline.getBoundingClientRect();
+                const timelineTop = timelineRect.top + window.scrollY;
+                const m4Top = m4.offsetTop; 
+                const scrollTop = window.scrollY;
+                const windowHeight = window.innerHeight;
+
+                // --- Base Line ---
+                if (timelineBase.style.height === "0px" || timelineBase.style.height !== `${m4Top}px`) {
+                     timelineBase.style.height = `${m4Top}px`;
+                }
+                
+                // --- Flow Line ---
+                let currentFlowHeight = scrollTop - timelineTop + (windowHeight / 2);
+
+                if (currentFlowHeight > m4Top) {
+                    currentFlowHeight = m4Top;
+                }
+                
+                if (currentFlowHeight < 0) {
+                    currentFlowHeight = 0;
+                }
+                
+                flowFill.style.height = `${currentFlowHeight}px`;
+
+                // Initial sync for all cards
+                document.querySelectorAll('.flip-card-container').forEach(syncCardHeight);
+            }
+
+            // Initial call and attach to scroll/resize events
+            window.addEventListener('scroll', updateFlowLine);
+            window.addEventListener('resize', updateFlowLine);
+            updateFlowLine(); // Run immediately on load
+            
+            // Re-run the update logic slightly after load to account for image loading and layout shifts
+            setTimeout(updateFlowLine, 500);
+            setTimeout(updateFlowLine, 1500); // Second check for safety
+        });
+    </script>
+</body>
+</html>
