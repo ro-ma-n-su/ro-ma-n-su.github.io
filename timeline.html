@@ -88,7 +88,7 @@
             left: 50%;
             margin-left: -3px;
             border-radius: 3px;
-            z-index: 1; /* Ensure lines are behind dots and cards */
+            z-index: 1; 
         }
         .timeline-line-base {
             background-color: var(--timeline-neon);
@@ -97,21 +97,20 @@
         .timeline-flow-fill {
             background-color: var(--timeline-neon);
             height: 0;
-            transition: height 0.3s ease-out; /* Enable the smooth visual effect */
+            transition: height 0.3s ease-out; 
             z-index: 2; 
         }
 
-        /* --- ITEM WRAPPER: NOW BLOCK FLOW BASED FOR RELIABLE OFFSETTOP --- */
+        /* --- ITEM WRAPPER: BLOCK FLOW BASED --- */
         .timeline-item {
             position: relative;
-            clear: both; /* Ensures the item stacks after the previous one */
-            margin-bottom: 360px; /* Default spacing between items */
-            overflow: hidden; /* Use clearfix to contain floating children and ensure margin is applied */
+            clear: both; 
+            margin-bottom: 360px; 
+            overflow: hidden; 
         }
         
-        /* New rule: Reduce margin after the very last timeline item */
+        /* Rule: Reduce margin after the very last timeline item */
         .timeline-item:last-child {
-            /* FORCING the lower margin to override any other conflicting rule (Fixing previous issue) */
             margin-bottom: 60px !important; 
         }
 
@@ -127,10 +126,10 @@
         
         /* Positioning the card content */
         .timeline-item:not(.center-aligned) .timeline-container.left { 
-            float: left; /* Use float for left side */
+            float: left; 
         }
         .timeline-item:not(.center-aligned) .timeline-container.right { 
-            float: right; /* Use float for right side */
+            float: right; 
         }
 
         /* Card Dots (Must be above the lines) */
@@ -141,7 +140,7 @@
             right: -12.5px; 
             background-color: var(--bg-dark);
             border: 4px solid var(--timeline-green);
-            top: 30px; /* ADJUSTED: Increased from 15px to 30px to align with card content top */
+            top: 15px; 
             border-radius: 50%;
             z-index: 3; 
         }
@@ -150,7 +149,7 @@
         /* Card Arrows */
         .timeline-container::before {
             content: " ";
-            height: 0; position: absolute; top: 37px; width: 0; z-index: 1; /* top: 37px to align with 30px dot center */
+            height: 0; position: absolute; top: 22px; width: 0; z-index: 1; 
             border: medium solid var(--bg-dark);
             border-width: 10px 0 10px 10px;
             border-color: transparent transparent transparent var(--bg-dark);
@@ -167,54 +166,36 @@
         /* Centered Cards (2018 & 2020) */
         .timeline-item.center-aligned {
              display: block;
-             clear: both; /* Ensure center items also clear floats */
+             clear: both; 
         }
         .timeline-container.center {
             width: 60%; 
-            float: none; /* No float needed */
-            margin: 0 auto; /* Center the block element */
+            float: none; 
+            margin: 0 auto; 
             margin-top: 40px; 
             clear: both; 
         }
         .timeline-container.center::after, .timeline-container.center::before { display: none; }
         
         
-        /* --- External Media Container (Image) --- */
-        .timeline-media {
-            position: absolute;
-            width: 50%;
-            padding: 0 50px; 
-            top: 30px; /* ADJUSTED: Increased from 15px to 30px to align with card content top */
-            z-index: 10; 
-            pointer-events: none; 
-            display: flex; /* Use flex to center the content within the 50% width */
-            align-items: center;
-            height: 250px; /* Fixed height for the container box */
+        /* --- Internal Image Style (Clickable for Modal) --- */
+        .card-image-inside {
+            display: block;
+            max-width: 100%; 
+            max-height: 270px; 
+            width: auto;
+            object-fit: cover;
+            border-radius: 4px; 
+            margin: 15px auto 0; 
+            border: 1px solid var(--timeline-neon);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.15); 
+            cursor: zoom-in; /* Indicate clickability */
+            transition: transform 0.2s;
         }
-        
-        .timeline-item .timeline-media.media-left {
-            left: 0;
-            justify-content: flex-end; /* Push content to the right edge */
-            padding-right: 70px;
+        .card-image-inside:hover {
+            transform: scale(1.02);
         }
-        
-        .timeline-item .timeline-media.media-right {
-            right: 0; 
-            justify-content: flex-start; /* Push content to the left edge */
-            padding-left: 70px;
-        }
-        
-        .timeline-media img {
-            max-width: 100%;
-            max-height: 220px; 
-            width: auto; /* Use auto width to respect aspect ratio based on height */
-            object-fit: contain; 
-            border-radius: 6px;
-            border: 2px solid var(--timeline-neon);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); 
-            pointer-events: auto; 
-            margin: auto; 
-        }
+
 
         /* --- Flip Card Styles --- */
         .flip-card-container { 
@@ -251,14 +232,7 @@
         
         .flip-card-front h4 { color: var(--timeline-neon) !important; }
         .flip-card-back h4, .flip-card-back strong { color: var(--timeline-green) !important; }
-
-        /* Class for mobile fallback images */
-        .mobile-only-image {
-            display: none;
-            width: 100%; max-height: 270px; object-fit: cover;
-            border-radius: 4px; margin-top: 10px; border: 1px solid var(--timeline-neon);
-        }
-
+        
         /* --- ACTION BUTTON STYLES (2020 Card) --- */
         .action-button {
             display: inline-block;
@@ -291,6 +265,51 @@
             color: var(--timeline-green);
             box-shadow: 0 0 20px rgba(0, 255, 102, 1);
         }
+        
+        /* --- Modal/Lightbox Styles --- */
+        .modal-overlay {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9); 
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
+        }
+        .modal-close {
+            position: fixed; /* Use fixed so it stays in place when scrolling */
+            top: 20px;
+            right: 35px;
+            color: var(--timeline-neon);
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            opacity: 0.8;
+            padding: 10px 15px; /* Increase hit area */
+        }
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #fff;
+            opacity: 1;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
 
         /* Responsive timeline */
@@ -304,7 +323,7 @@
                 width: 100%; 
                 padding-left: 70px; 
                 padding-right: 25px;
-                float: none !important; /* Remove float on mobile */
+                float: none !important; 
                 clear: both;
             }
             .timeline-container.right { left: 0%; margin-left: 0; }
@@ -313,10 +332,6 @@
                 margin: 0 auto;
                 padding-left: 25px;
             }
-
-            /* Hide external media and show internal media on mobile */
-            .timeline-media { display: none; }
-            .mobile-only-image { display: block; }
 
             /* Fix the dots position on mobile */
             .timeline-container::after { left: 19px !important; right: auto !important; }
@@ -327,7 +342,7 @@
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="51">
 
-    <!-- Navbar Start -->
+    <!-- Navbar Start (Keeping the structure simple for this context) -->
     <nav
       class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5"
       id="navbar"
@@ -384,7 +399,7 @@
             <div id="timeline-base" class="timeline-line-base"></div>
             <div id="flowFill" class="timeline-flow-fill"></div>
 
-            <!-- Card 1: 2018 (CENTERED) - m1 -->
+            <!-- Card 1: 2018 (CENTERED) - m1 (NO IMAGE) -->
             <div class="timeline-item center-aligned">
                 <div id="m1" class="timeline-container center flip-card-container">
                     <div class="timeline-content flip-card">
@@ -406,13 +421,8 @@
                 </div>
             </div>
 
-            <!-- Card 2: 2019 Closure (RIGHT) - Image on LEFT - m2 -->
+            <!-- Card 2: 2019 Closure (RIGHT) - Image INSIDE - m2 -->
             <div class="timeline-item">
-                <!-- Image on Left - position: absolute relies on the block flow of the card to determine vertical position -->
-                <div class="timeline-media media-left">
-                    <!-- Image path updated as requested in previous step -->
-                    <img src="pics/physicsconference.jpg" alt="International Conference Award Documentation" />
-                </div>
                 <!-- Card Content on Right -->
                 <div class="timeline-container right">
                     <div id="m2" class="flip-card-container"> 
@@ -421,8 +431,7 @@
                                 <div class="flip-card-front">
                                     <h4 class="font-weight-bold">2019: Academic Closure & Recognition</h4>
                                     <p>Successfully completed the degree requirements with the new specialization. Research was recognized with a prestigious <strong>award at an international conference</strong>, marking the formal conclusion of the academic chapter.</p>
-                                    <!-- Mobile Fallback Image -->
-                                    <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="mobile-only-image">
+                                    <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="card-image-inside">
                                 </div>
                                 <div class="flip-card-back">
                                     <h4 class="font-weight-bold">2019: Academic Flex Complete</h4>
@@ -430,8 +439,7 @@
                                         <li><strong>New specialization degree completed.</strong></li>
                                         <li>International conference <strong>award secured.</strong> Flexed hard on the academic side. (OK, what's next?)</li>
                                     </ul>
-                                    <!-- Mobile Fallback Image -->
-                                    <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="mobile-only-image">
+                                     <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="card-image-inside">
                                 </div>
                             </div>
                         </div>
@@ -439,7 +447,7 @@
                 </div>
             </div>
 
-            <!-- Card 3: 2019 Internship (LEFT) - Image on RIGHT - m3 -->
+            <!-- Card 3: 2019 Internship (LEFT) - Image INSIDE - m3 -->
             <div class="timeline-item">
                 <!-- Card Content on Left -->
                 <div class="timeline-container left">
@@ -449,8 +457,7 @@
                                 <div class="flip-card-front">
                                     <h4 class="font-weight-bold">2019: Internship Era & Portfolio Build</h4>
                                     <p>Secured first Data Science internship by leveraging direct outreach and <strong>LinkedIn networking</strong>, resulting in a direct reply from the startup CEO. Used the internship to aggressively master <strong>SQL</strong> and <strong>Python</strong> application, and quickly acquire proficiency in <strong>Power BI</strong>.</p>
-                                    <!-- Mobile Fallback Image -->
-                                    <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="mobile-only-image">
+                                    <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="card-image-inside">
                                 </div>
                                 <div class="flip-card-back">
                                     <h4 class="font-weight-bold">2019: The Hustle Slay</h4>
@@ -458,17 +465,11 @@
                                         <li>Internship secured by <strong>DMing the CEO</strong>. <strong>Hustle rewarded.</strong></li>
                                         <li>Immediately fixed the SQL knowledge gap, mastered <strong>Power BI</strong>. <strong>Unlocking Pro Skills.</strong> 🔓</li>
                                     </ul>
-                                    <!-- Mobile Fallback Image -->
-                                    <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="mobile-only-image">
+                                    <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="card-image-inside">
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Image on Right -->
-                <div class="timeline-media media-right">
-                    <!-- Image path updated as requested in previous step -->
-                    <img src="pics/dataintern.jpg" alt="Data Internship Work Documentation" />
                 </div>
             </div>
 
@@ -534,6 +535,15 @@
         </div>
     </div>
     <!-- Footer End -->
+    
+    <!-- Image Modal/Lightbox Start -->
+    <div id="imageModal" class="modal-overlay">
+        <!-- Close button -->
+        <span class="modal-close" id="closeModal">&times;</span>
+        <!-- Modal Image -->
+        <img id="modalImage" class="modal-content" src="" alt="Full view image">
+    </div>
+    <!-- Image Modal/Lightbox End -->
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
@@ -551,6 +561,12 @@
             const m1 = document.getElementById('m1'); 
             const m4 = document.getElementById('m4'); 
             const cardContainers = document.querySelectorAll('.flip-card-container');
+            
+            // Modal elements
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModalBtn = document.getElementById('closeModal');
+            const cardImages = document.querySelectorAll('.card-image-inside');
             // ==========================================================
 
             // Initial UI setup
@@ -604,7 +620,7 @@
 
                     let maxHeight = Math.max(frontHeight, backHeight);
                     maxHeight = Math.max(maxHeight, 200); // Enforce min height
-                    maxHeight += 50; // Safety buffer
+                    maxHeight += 60; // Increased safety buffer for content + button visibility (Fix 2)
                     
                     container.style.height = `${maxHeight}px`; 
 
@@ -667,6 +683,40 @@
                 }
             }
             
+            // --- MODAL / LIGHTBOX LOGIC (Fix 3) ---
+            
+            // Open modal function
+            function openModal(imageSrc) {
+                modalImage.src = imageSrc;
+                imageModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+
+            // Close modal function
+            function closeModal() {
+                imageModal.style.display = 'none';
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+            
+            // Event listeners for closing the modal
+            closeModalBtn.addEventListener('click', closeModal);
+            imageModal.addEventListener('click', (e) => {
+                // Close if clicking the overlay, but not the image itself
+                if (e.target === imageModal) {
+                    closeModal();
+                }
+            });
+            
+            // Event listeners for opening the modal from card images
+            cardImages.forEach(img => {
+                img.addEventListener('click', (e) => {
+                    // Stop event propagation to prevent the card from flipping (default action)
+                    e.stopPropagation(); 
+                    openModal(e.target.src);
+                });
+            });
+
+
             // --- INITIALIZATION - Wait for ALL assets to load and layout to settle ---
             function initialSetup() {
                 // Initial run
@@ -691,7 +741,8 @@
             // Re-sync the card's height right after a flip 
             document.querySelectorAll('.flip-card').forEach(card => {
                 card.addEventListener('click', (event) => {
-                    if (event.target.closest('.action-button')) {
+                    // Check if the click target or its parent is the action button or the image, if so, don't flip
+                    if (event.target.closest('.action-button') || event.target.closest('.card-image-inside')) {
                         return;
                     }
 
