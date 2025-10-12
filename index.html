@@ -89,14 +89,43 @@
       }
       #navbar .nav-link {
           color: var(--blue-neon) !important; 
+          font-weight: 700; /* ADDED: Make navbar text bold */
       }
-      #navbar .nav-link:hover,
-      #navbar .nav-link.active {
+      /* Adjust active/hover for dropdown items */
+      #navbar .nav-item .nav-link.active:not(.dropdown-item) {
         color: var(--pink-neon) !important; 
+      }
+      #navbar .nav-item .nav-link:hover:not(.dropdown-item) {
+        color: var(--pink-neon) !important; 
+      }
+      
+      /* Navbar Dropdown Styling */
+      .dropdown-menu {
+          background-color: var(--dark) !important;
+          border: 1px solid var(--pink-neon) !important;
+      }
+      .dropdown-item {
+          color: var(--blue-neon) !important;
+          /* Ensure dropdown items match regular nav links on hover */
+      }
+      .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
+          background-color: var(--pink-neon) !important;
+          color: var(--dark) !important;
+      }
+      
+      /* ADDED: CSS for hover dropdown functionality on desktop (Hides the dropdown arrow) */
+      @media (min-width: 992px) {
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .nav-item.dropdown .nav-link {
+             cursor: pointer; /* Indicate it's clickable/hoverable */
+        }
       }
       
       /* Neon Blue Background for Header Section */
       #home {
+          position: relative; /* CRITICAL for absolute arrow positioning */
           background-color: var(--blue-neon) !important;
       }
       /* Contrast text color for Header H3 and Typed output */
@@ -107,6 +136,73 @@
       /* H1 Name Size Adjustment */
       #home h1.display-3 {
           font-size: 3rem !important; 
+      }
+      
+      /* --- NEW: Custom Button Styling (Horizontal, Neon Blue Fill, White Outline) --- */
+      .custom-hero-btn {
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0.75rem 1.5rem; 
+          font-size: 1.25rem; 
+          line-height: 1.5;
+          border-radius: 0.3rem; 
+          text-decoration: none !important;
+
+          color: var(--light) !important; 
+          background-color: var(--blue-neon) !important;
+          border: 2px solid var(--light) !important; 
+          transition: all 0.3s ease;
+          
+          margin-right: 15px; 
+          margin-bottom: 10px; 
+          font-weight: 700;
+      }
+
+      .custom-hero-btn:hover {
+          color: var(--blue-neon) !important; /* CHANGED: Neon blue text */
+          background-color: var(--dark) !important; /* CHANGED: Black fill */
+          border-color: var(--dark) !important; /* Retained: White outline */
+          transform: translateY(-2px);
+          box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5); /* CHANGED: White shadow */
+      }
+
+      @media (max-width: 991.98px) {
+          /* Stack buttons on small screens */
+          .custom-hero-btn {
+              width: 100%; 
+              margin-right: 0 !important;
+              margin-bottom: 15px !important;
+          }
+      }
+
+      /* --- NEW: Floating Scroll Down Arrow --- */
+      .scroll-down-arrow {
+          position: absolute;
+          bottom: 50px; /* MODIFIED: Higher position */
+          left: 50%;
+          transform: translateX(-50%);
+          color: var(--light); /* MODIFIED: White color */
+          font-size: 2.5rem;
+          animation: bounce 2s infinite;
+          z-index: 10;
+          text-decoration: none !important;
+          filter: drop-shadow(0 0 5px var(--light)); /* MODIFIED: White glow */
+      }
+      .scroll-down-arrow:hover {
+          color: var(--light); /* Dark shadow when hovered over the blue background */
+          filter: drop-shadow(0 0 5px var(--dark));
+      }
+      @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+              transform: translateY(0) translateX(-50%);
+          }
+          40% {
+              transform: translateY(-20px) translateX(-50%);
+          }
+          60% {
+              transform: translateY(-10px) translateX(-50%);
+          }
       }
       
       /* 1. Animation CSS for directional rolling effect */
@@ -473,12 +569,23 @@
         id="navbarCollapse"
       >
         <div class="navbar-nav m-auto">
-          <a href="#home" class="nav-item nav-link active">Home</a>
-          <a href="#about" class="nav-item nav-link">About</a>
-          <a href="#skills" class="nav-item nav-link">Skills</a>
-          <a href="#what-i-did" class="nav-item nav-link">Project</a>
-          <a href="#teaching" class="nav-item nav-link">Educator</a>
-          <a href="#connect" class="nav-item nav-link">Contact</a>
+            
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link active" id="homeDropdown" aria-haspopup="true" aria-expanded="false">Home</a>
+                <div class="dropdown-menu border-0 m-0" style="background-color: var(--dark);">
+                    <a href="#home" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Top of Page</a>
+                    <a href="#about" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">About</a>
+                    <a href="#skills" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Skills</a>
+                    <a href="#what-i-did" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Project</a>
+                    <a href="#teaching" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Educator</a>
+                    <a href="#connect" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Contact</a>
+                </div>
+            </div>
+            
+            <a href="timeline.html" class="nav-item nav-link">Timeline</a>
+            <a href="quiz.html" class="nav-item nav-link">Quiz</a>
+            <a href="quest.html" class="nav-item nav-link">Quest</a>
+            
         </div>
       </div>
     </nav>
@@ -514,9 +621,29 @@
             <div class="typed-greeting d-none">
               Call me|Halo, gw
             </div>
-          </div>
+
+            <div class="mt-5 pt-3 d-flex flex-wrap justify-content-center justify-content-lg-start animation-element fade-in-up">
+                
+                <a href="timeline.html" class="custom-hero-btn">
+                    <i class="fa fa-route mr-2"></i> My Journey
+                </a>
+                
+                <a href="quiz.html" class="custom-hero-btn">
+                    <i class="fa fa-question-circle mr-2"></i> Try Quizzes
+                </a>
+                
+                <a href="quest.html" class="custom-hero-btn">
+                    <i class="fa fa-rocket mr-2"></i> Take on Quest
+                </a>
+            </div>
+            </div>
         </div>
       </div>
+      
+      <a href="#about" class="scroll-down-arrow d-none d-md-block" title="Scroll down to see more">
+          <i class="fa fa-angle-double-down"></i>
+      </a>
+
     </div>
     <div class="container-fluid py-5" id="about">
       <div class="container">
@@ -1179,9 +1306,10 @@
           return false;
         });
 
-        // Smooth scrolling on the navbar
-        $("#navbar a").on("click", function (event) {
-          if (this.hash !== "") {
+        // Smooth scrolling for all internal hash links (including navbar and new buttons)
+        $('a[href^="#"]').on("click", function (event) {
+          // Check if the link has a hash and is not just '#'
+          if (this.hash !== "" && this.hash.length > 1) { 
             event.preventDefault();
 
             $("html, body").animate(
@@ -1192,9 +1320,11 @@
               "swing" 
             );
             
-            // Hide the mobile menu after clicking a link
-            if ($('.navbar-toggler').is(':visible')) {
-                $('.navbar-toggler').click();
+            // Hide the mobile menu after clicking a link (only if the link is in the navbar)
+            if ($(this).hasClass('nav-item') || $(this).hasClass('dropdown-item')) {
+                if ($('.navbar-toggler').is(':visible')) {
+                    $('.navbar-toggler').click();
+                }
             }
           }
         });
