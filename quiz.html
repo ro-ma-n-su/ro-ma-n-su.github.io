@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL Quiz - Roman</title>
     
-    <!-- Dependencies from index(8).html -->
     <link href="img/favicon.ico" rel="icon" />
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -23,7 +22,6 @@
       rel="stylesheet"
     />
 
-    <!-- Combined Styles: index(8).html styles first, then quiz.html styles -->
     <style>
       /* --- START INDEX(8).HTML STYLES (REQUIRED FOR NAVBAR/FOOTER CONSISTENCY) --- */
       :root {
@@ -49,7 +47,7 @@
         min-height: 100vh;
         
         margin: 0;
-        padding-top: 90px; /* Space for fixed navbar */
+        padding-top: 60px; /* Space for fixed navbar */
         padding: 0;
         box-sizing: border-box;
         
@@ -161,12 +159,39 @@
             flex-grow: 1; /* Key for pushing the footer to the bottom */
             width: 100%;
             display: flex;
-            justify-content: center; /* Center the terminal wrapper */
-            align-items: flex-start;
+            flex-direction: column; /* Allows stacking title/subtitle above terminal */
+            justify-content: flex-start; /* Aligns content at the top */
+            align-items: center; /* Center the terminal wrapper */
             padding: 20px 10px; /* Add padding around the main content */
             margin-top: 72px; /* Offset the fixed navbar (adjusting from previous 80px) */
         }
         
+        /* New Title/Subtitle Styling - Removed text-shadows as requested */
+        #quiz-header-marketing {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            /* Removed color/shadow definitions here */
+        }
+
+        #quiz-header-marketing h1 {
+            font-size: 2.5em;
+            font-weight: 900;
+            color: var(--color-neon-blue); /* Updated: Use Yellow */
+            margin-bottom: 0;
+            text-shadow: none; /* Updated: Removed shadow */
+            white-space: nowrap; /* Added: Attempt to ensure single line */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #quiz-header-marketing p {
+            font-size: 1.1em;
+            color: var(--color-neon-yellow); /* Updated: Use Cyan/Blue */
+            text-shadow: none; /* Updated: Removed shadow */
+        }
+
         /* Terminal Wrapper - The Main Box */
         #terminal-wrapper {
             width: 100%;
@@ -342,7 +367,6 @@
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="51">
 
-    <!-- 1. NAVBAR (FIXED: Structure updated to Home, Timeline, Quiz, Quest) -->
     <nav class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5" id="navbar">
         <a href="index.html" class="navbar-brand d-block d-lg-none">
             <h1 class="m-0" style="color: var(--blue-neon) !important;">Roman's Portfolio</h1>
@@ -370,12 +394,13 @@
             </div>
         </div>
     </nav>
-    <!-- Navbar End -->
-
-    <!-- NEW CONTENT WRAPPER (Handles flex-grow and vertical alignment) -->
     <div id="quiz-page-content">
+        <div id="quiz-header-marketing">
+            <h1>Confident in your SQL skill? Try this quiz!</h1>
+            <p>Nggak Bisa Bahasa Enggres? Try the Language button!</p>
+        </div>
+        
         <div id="terminal-wrapper">
-            <!-- Terminal Content Header -->
             <header id="quiz-controls">
                 <div>
                     <button id="lang-toggle" class="neon-button">
@@ -389,7 +414,6 @@
             
             <hr class="neon-divider">
 
-            <!-- Main Quiz Area -->
             <main id="quiz-container" class="terminal-content" style="display: none;">
                 <h2 id="quiz-topic-title">SQL Fundamentals</h2>
                 <div id="progress-bar">
@@ -413,16 +437,12 @@
                 </div>
             </main>
             
-            <!-- Results Area -->
             <div id="results-container" class="terminal-content" style="display: none;">
                 </div>
 
             <hr class="neon-divider">
         </div>
     </div>
-    <!-- End Quiz Page Content Wrapper -->
-
-    <!-- 2. FOOTER (Font now correct, still anchored) -->
     <div class="container-fluid footer-container py-5" style="width: 100%;">
         <div class="container text-center py-5">
             <h4 class="mb-4">Connect & Find My Content</h4>
@@ -445,9 +465,6 @@
             </p>
         </div>
     </div>
-    <!-- Footer End -->
-
-    <!-- JavaScript Libraries for Bootstrap/Navbar -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 
@@ -509,6 +526,8 @@
         let currentLang = 'en'; // 'en' or 'id'
         const passThreshold = 70; // 70% to pass
         const NUM_QUESTIONS = 10;
+        let quizActive = false; // Track if a quiz is in progress
+
         
         // DOM Elements
         const terminalWrapper = document.getElementById('terminal-wrapper');
@@ -532,6 +551,7 @@
             currentQuestionIndex = 0;
             score = 0;
             selectedOption = null;
+            quizActive = false;
             
             // Hide everything except the controls header
             quizContainer.style.display = 'none';
@@ -542,10 +562,17 @@
             // Show start button
             startQuizBtn.style.display = 'inline-block';
             
-            // Set initial language text
-            langDisplay.textContent = currentLang.toUpperCase();
-            startQuizBtn.textContent = currentLang === 'en' ? `Start SQL Quiz (${NUM_QUESTIONS} Qs)` : `Mulai Kuis SQL (${NUM_QUESTIONS} Soal)`;
+            // Set initial language text (and button text)
+            updateLanguageUI();
         }
+        
+        function updateLanguageUI() {
+             langDisplay.textContent = currentLang.toUpperCase();
+             startQuizBtn.textContent = currentLang === 'en' ? `Start SQL Quiz (${NUM_QUESTIONS} Qs)` : `Mulai Kuis SQL (${NUM_QUESTIONS} Soal)`;
+             
+             // Removed subtitle update logic as the text is now hardcoded in the HTML
+        }
+
 
         function startQuiz() {
             // 1. Randomly select questions
@@ -555,6 +582,7 @@
             // 2. Reset and Show Quiz UI
             currentQuestionIndex = 0;
             score = 0;
+            quizActive = true;
             resultsContainer.style.display = 'none';
             startQuizBtn.style.display = 'none';
             quizContainer.style.display = 'block';
@@ -572,12 +600,24 @@
             const q = currentQuestions[currentQuestionIndex];
             const options = q.options;
 
+            // Check if feedback is visible from a previous, answered question. If so, re-render it.
+            const isAnswered = q.answered;
+            const isCorrect = q.answered && q.isCorrect;
+
             // Reset UI for new question
-            selectedOption = null;
+            // Note: selectedOption can hold a value if we switch languages on an unanswered question
+            selectedOption = q.selectedAnswer || null; 
             feedbackDiv.style.display = 'none';
             nextBtn.style.display = 'none';
-            submitBtn.style.display = 'inline-block';
-            submitBtn.disabled = true; // Disable until an option is selected
+            
+            // The submit button status depends on whether the question has been answered
+            if (isAnswered) {
+                submitBtn.style.display = 'none';
+            } else {
+                submitBtn.style.display = 'inline-block';
+                submitBtn.disabled = selectedOption === null; 
+            }
+            
             questionDisplay.classList.remove('correct', 'incorrect');
             
             // Update Progress Bar
@@ -588,9 +628,12 @@
             // Build Question HTML
             let optionsHtml = '';
             for (const key in options) {
+                const checked = selectedOption === key ? 'checked' : '';
+                const disabled = isAnswered ? 'disabled' : '';
+
                 optionsHtml += `
                     <label class="option-label" data-option="${key}">
-                        <input type="radio" name="question-${q.id}" value="${key}" onclick="handleOptionSelect('${key}')">
+                        <input type="radio" name="question-${q.id}" value="${key}" ${checked} ${disabled} onclick="handleOptionSelect('${key}')">
                         <span class="option-text">(${key.toUpperCase()}) ${options[key][currentLang]}</span>
                     </label>
                 `;
@@ -607,31 +650,73 @@
                 </div>
             `;
             
-            // Attach click handler to labels for better UX
-            document.querySelectorAll('.option-label').forEach(label => {
-                label.onclick = function() {
-                    const option = this.getAttribute('data-option');
-                    handleOptionSelect(option);
-                    // Manually check the radio button inside the label
-                    this.querySelector('input[type="radio"]').checked = true;
-                };
-            });
+            // Attach click handler to labels for better UX (only if not answered)
+            if (!isAnswered) {
+                document.querySelectorAll('.option-label').forEach(label => {
+                    label.onclick = function() {
+                        const option = this.getAttribute('data-option');
+                        handleOptionSelect(option);
+                        // Manually check the radio button inside the label
+                        this.querySelector('input[type="radio"]').checked = true;
+                    };
+                });
+            }
+
+
+            // If already answered, show feedback and next button immediately
+            if (isAnswered) {
+                // Apply correct/incorrect class to question box
+                questionDisplay.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+                // Highlight correct/incorrect choice
+                const optionLabels = questionDisplay.querySelectorAll('.option-label');
+                optionLabels.forEach(label => {
+                    const optionKey = label.querySelector('input[type="radio"]').value;
+                    label.classList.remove('correct', 'incorrect');
+                    if (optionKey === q.correctAnswer) {
+                        label.classList.add('correct');
+                    } else if (optionKey === selectedOption && !isCorrect) {
+                        label.classList.add('incorrect');
+                    }
+                });
+                
+                // Show feedback text
+                feedbackResult.textContent = isCorrect ? 
+                    (currentLang === 'en' ? ":: ACCESS GRANTED :: Correct!" : ":: AKSES DITERIMA :: Benar!") : 
+                    (currentLang === 'en' ? ":: ACCESS DENIED :: Incorrect." : ":: AKSES DITOLAK :: Salah.");
+                
+                feedbackExplanation.innerHTML = `
+                    <p><strong>${currentLang === 'en' ? 'Explanation' : 'Penjelasan'}:</strong></p>
+                    <p>${q.explanation[currentLang]}</p>
+                `;
+                feedbackDiv.style.display = 'block';
+
+                // Show next button
+                nextBtn.textContent = currentLang === 'en' ? "Next Question >>" : "Pertanyaan Selanjutnya >>";
+                nextBtn.style.display = 'inline-block';
+            }
         }
 
         function handleOptionSelect(option) {
             selectedOption = option;
+            // Store selected answer temporarily in the question object
+            currentQuestions[currentQuestionIndex].selectedAnswer = option; 
             submitBtn.disabled = false;
         }
 
         function submitAnswer() {
             if (!selectedOption) {
                 console.error("No option selected.");
-                // Since alerts are banned, we rely on the button being disabled, but good to have a console check.
                 return;
             }
 
             const q = currentQuestions[currentQuestionIndex];
             const isCorrect = selectedOption === q.correctAnswer;
+            
+            // Mark question as answered and store result
+            q.answered = true;
+            q.isCorrect = isCorrect;
+            q.selectedAnswer = selectedOption; 
             
             // Disable interactions
             submitBtn.style.display = 'none';
@@ -680,11 +765,29 @@
         }
 
         function toggleLanguage() {
+            const previousLang = currentLang;
             currentLang = currentLang === 'en' ? 'id' : 'en';
-            initializeQuiz();
+            
+            updateLanguageUI(); // Update button text
+            
+            // Only re-render the current state if a quiz is in progress or finished
+            if (quizActive) {
+                if (currentQuestionIndex < NUM_QUESTIONS) {
+                    // Re-render the current question in the new language
+                    displayQuestion();
+                } else {
+                    // Re-render results in the new language
+                    showResults();
+                }
+            } else {
+                // If not active, just ensure UI is reset and language text is updated.
+                initializeQuiz(); 
+            }
         }
 
         function showResults() {
+            quizActive = false; // Mark quiz as complete
+
             // Update final progress bar
             barInner.style.width = '100%';
             indexDisplay.textContent = `${NUM_QUESTIONS} / ${NUM_QUESTIONS}`;
