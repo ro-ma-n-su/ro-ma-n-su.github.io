@@ -105,7 +105,7 @@
         .timeline-item {
             position: relative;
             clear: both; /* Ensures the item stacks after the previous one */
-            margin-bottom: 270px; /* Vertical spacing between items */
+            margin-bottom: 360px; /* Vertical spacing between items (INCREASED FROM 270PX) */
         }
         
         /* Container Layout & Dots */
@@ -161,7 +161,7 @@
         .timeline-item.center-aligned {
              display: block;
              clear: both; /* Ensure center items also clear floats */
-             margin-bottom: 270px; /* Spacing handled here too */
+             margin-bottom: 360px; /* Spacing handled here too (INCREASED FROM 270PX) */
         }
         .timeline-container.center {
             width: 60%; 
@@ -179,8 +179,8 @@
             position: absolute;
             width: 50%;
             padding: 0 50px; 
-            top: 50%; 
-            transform: translateY(-50%);
+            top: 15px; /* Aligned to the top of the card content (Fix horizontal misalignment) */
+            /* Removed vertical centering: top: 50%; transform: translateY(-50%); */
             z-index: 10; 
             pointer-events: none; 
             display: flex; /* Use flex to center the content within the 50% width */
@@ -408,7 +408,7 @@
             <div class="timeline-item">
                 <!-- Image on Left - position: absolute relies on the block flow of the card to determine vertical position -->
                 <div class="timeline-media media-left">
-                    <!-- REMOVED PLACEHOLDER - Using the user's local path with no fallback -->
+                    <!-- Image path updated as requested in previous step -->
                     <img src="pics/physicsconference.jpg" alt="International Conference Award Documentation" />
                 </div>
                 <!-- Card Content on Right -->
@@ -419,7 +419,7 @@
                                 <div class="flip-card-front">
                                     <h4 class="font-weight-bold">2019: Academic Closure & Recognition</h4>
                                     <p>Successfully completed the degree requirements with the new specialization. Research was recognized with a prestigious <strong>award at an international conference</strong>, marking the formal conclusion of the academic chapter.</p>
-                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <!-- Mobile Fallback Image -->
                                     <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="mobile-only-image">
                                 </div>
                                 <div class="flip-card-back">
@@ -428,7 +428,7 @@
                                         <li><strong>New specialization degree completed.</strong></li>
                                         <li>International conference <strong>award secured.</strong> Flexed hard on the academic side. (OK, what's next?)</li>
                                     </ul>
-                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <!-- Mobile Fallback Image -->
                                     <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="mobile-only-image">
                                 </div>
                             </div>
@@ -449,7 +449,7 @@
                                 <div class="flip-card-front">
                                     <h4 class="font-weight-bold">2019: Internship Era & Portfolio Build</h4>
                                     <p>Secured first Data Science internship by leveraging direct outreach and <strong>LinkedIn networking</strong>, resulting in a direct reply from the startup CEO. Used the internship to aggressively master <strong>SQL</strong> and <strong>Python</strong> application, and quickly acquire proficiency in <strong>Power BI</strong>.</p>
-                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <!-- Mobile Fallback Image -->
                                     <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="mobile-only-image">
                                 </div>
                                 <div class="flip-card-back">
@@ -458,7 +458,7 @@
                                         <li>Internship secured by <strong>DMing the CEO</strong>. <strong>Hustle rewarded.</strong></li>
                                         <li>Immediately fixed the SQL knowledge gap, mastered <strong>Power BI</strong>. <strong>Unlocking Pro Skills.</strong> 🔓</li>
                                     </ul>
-                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <!-- Mobile Fallback Image -->
                                     <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="mobile-only-image">
                                 </div>
                             </div>
@@ -467,7 +467,7 @@
                 </div>
                 <!-- Image on Right -->
                 <div class="timeline-media media-right">
-                    <!-- REMOVED PLACEHOLDER - Using the user's local path with no fallback -->
+                    <!-- Image path updated as requested in previous step -->
                     <img src="pics/dataintern.jpg" alt="Data Internship Work Documentation" />
                 </div>
             </div>
