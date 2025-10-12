@@ -4,1409 +4,711 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL Quiz - Roman</title>
+    
+    <!-- Dependencies from index(8).html -->
+    <link href="img/favicon.ico" rel="icon" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link 
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+      rel="stylesheet"
+    />
+
+    <!-- Combined Styles: index(8).html styles first, then quiz.html styles -->
     <style>
-        /* Custom Neon Colors and Base Colors */
-        :root {
-            --dark: #212529; /* User-requested darker background */
-            --light: #f8f9fa; /* User-requested lighter color */
-            --text-color: #f8f9fa; /* User-requested text color */
+      /* --- START INDEX(8).HTML STYLES (REQUIRED FOR NAVBAR/FOOTER CONSISTENCY) --- */
+      :root {
+        /* Defining the new Neon colors (TikTok style) */
+        --pink-neon: #FE2C55; /* Bright Pink Neon (Used for A/T/A/R details) */
+        --blue-neon: #25F4EE; /* Electric Cyan/Blue Neon (Used for major titles/branding) */
+        --dark: #212529;
+        --light: #f8f9fa;
+        --text-color: #f8f9fa;
+        --linkedin-blue: #0A66C2; /* LinkedIn Blue */
 
-            /* --- SWAPPED COLORS (Yellow Primary, Blue Accent) --- */
-            --color-neon-blue: #FFF000; /* Used for borders, dividers, standard buttons (Yellow) */
-            --color-neon-yellow: #25F4EE; /* Used for primary accent, progress bar, checked radio (Blue) */
+        /* Quiz-specific colors (Swapped Primary/Accent for Terminal Theme) */
+        --color-neon-blue: #FFF000; /* Yellow for borders/dividers */
+        --color-neon-yellow: #25F4EE; /* Cyan/Blue for primary accent */
+      }
+
+      /* FIX: Ensure Roboto is the base font for consistent look */
+      body {
+        font-family: 'Roboto', sans-serif; 
+        /* Core Flexbox for Sticky Footer */
+        display: flex;
+        flex-direction: column; 
+        min-height: 100vh;
+        
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        
+        background-color: var(--dark); 
+        color: var(--text-color); 
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        color: var(--text-color);
+      }
+      
+      .primary-color, .text-primary {
+        color: var(--pink-neon) !important;
+      }
+
+      .secondary-color, .text-secondary {
+        color: var(--blue-neon) !important;
+      }
+      
+      .btn-linkedin {
+          background-color: var(--linkedin-blue);
+          color: var(--light) !important;
+          border-color: var(--linkedin-blue);
+      }
+      .btn-linkedin:hover {
+          background-color: #084c93; /* Slightly darker shade on hover */
+          border-color: #084c93;
+          color: var(--light) !important;
+      }
+      
+      /* Social Button Styling */
+      .btn-social {
+        border-radius: 50%;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* --- Navbar/Sidebar Styling --- */
+      #navbar {
+        background: var(--dark) !important; 
+        border-bottom: 2px solid var(--pink-neon); 
+      }
+      #navbar .navbar-brand h1 {
+          color: var(--blue-neon) !important; 
+      }
+      #navbar .nav-link {
+          color: var(--blue-neon) !important; 
+          font-weight: 700; 
+      }
+      /* Adjust active/hover for dropdown items */
+      #navbar .nav-item .nav-link.active:not(.dropdown-item) {
+        color: var(--pink-neon) !important; 
+      }
+      #navbar .nav-item .nav-link:hover:not(.dropdown-item) {
+        color: var(--pink-neon) !important; 
+      }
+      
+      /* Navbar Dropdown Styling */
+      .dropdown-menu {
+          background-color: var(--dark) !important;
+          border: 1px solid var(--pink-neon) !important;
+      }
+      .dropdown-item {
+          color: var(--blue-neon) !important;
+      }
+      .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
+          background-color: var(--pink-neon) !important;
+          color: var(--dark) !important;
+      }
+      
+      /* ADDED: CSS for hover dropdown functionality on desktop */
+      @media (min-width: 992px) {
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
         }
+        .nav-item.dropdown .nav-link {
+             cursor: pointer;
+        }
+      }
+      
+      /* Footer Styling for contrast */
+      .footer-container { 
+        background-color: var(--blue-neon) !important; 
+        color: var(--dark) !important; 
+      }
+      .footer-container h4, .footer-container p, .footer-container a { 
+        color: var(--dark) !important; 
+      }
+      .footer-social a { 
+        border: 1px solid var(--dark); 
+        color: var(--dark); 
+        background: var(--light); 
+      }
+      .footer-social a:hover { 
+        background: var(--dark); 
+        border-color: var(--light); 
+        color: var(--light) !important; 
+      }
+      /* --- END INDEX(8).HTML STYLES --- */
 
-        /* Global Styles */
-        body {
-            background-color: var(--dark); 
-            color: var(--text-color); 
-            font-family: 'Consolas', 'Monaco', monospace; 
+      /* --- START QUIZ.HTML STYLES (OVERRIDING/SPECIFIC) --- */
+
+        /* NEW: Wrapper for all content below the fixed navbar. This container GROWS to push the footer down. */
+        #quiz-page-content {
+            flex-grow: 1; /* Key for pushing the footer to the bottom */
+            width: 100%;
             display: flex;
-            justify-content: center;
-            align-items: flex-start; 
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            justify-content: center; /* Center the terminal wrapper */
+            align-items: flex-start;
+            padding: 20px 10px; /* Add padding around the main content */
+            margin-top: 72px; /* Offset the fixed navbar (adjusting from previous 80px) */
         }
-
+        
         /* Terminal Wrapper - The Main Box */
         #terminal-wrapper {
             width: 100%;
             max-width: 800px;
             padding: 20px;
+            /* Applying terminal font ONLY HERE */
+            font-family: 'Consolas', 'Monaco', monospace; 
             /* Using --color-neon-blue (Yellow) for the main border/shadow */
             border: 3px solid var(--color-neon-blue);
             box-shadow: 0 0 15px var(--color-neon-blue);
             background: rgba(0, 0, 0, 0.8);
         }
 
-        /* Text and Elements */
-        h2, h3, p {
-            color: var(--text-color);
-            /* Using --color-neon-blue (Yellow) for main text shadow */
-            text-shadow: 0 0 5px var(--color-neon-blue);
-        }
+        /* Terminal-like Content Styling */
         .terminal-content {
             padding: 10px 0;
         }
-        .primary-accent-text {
-            /* Using --color-neon-yellow (Blue) for primary accent text */
+
+        /* Neon Buttons */
+        .neon-button {
+            background-color: transparent;
+            border: 2px solid var(--color-neon-blue);
+            color: var(--color-neon-blue);
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px var(--color-neon-blue);
+        }
+
+        .neon-button:hover:not(:disabled) {
+            background-color: var(--color-neon-blue);
+            color: var(--dark);
+            box-shadow: 0 0 15px var(--color-neon-blue);
+        }
+
+        .neon-button.primary-accent {
+            border-color: var(--color-neon-yellow);
             color: var(--color-neon-yellow);
-            text-shadow: 0 0 8px var(--color-neon-yellow);
+            box-shadow: 0 0 8px var(--color-neon-yellow);
+        }
+
+        .neon-button.primary-accent:hover:not(:disabled) {
+            background-color: var(--color-neon-yellow);
+            color: var(--dark);
+            box-shadow: 0 0 15px var(--color-neon-yellow);
+        }
+
+        .neon-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Divider */
         .neon-divider {
             border: none;
-            /* Using --color-neon-blue (Yellow) for the divider */
             border-top: 1px dashed var(--color-neon-blue);
             box-shadow: 0 0 5px var(--color-neon-blue);
             margin: 15px 0;
         }
 
-        /* Header Controls Layout */
-        #quiz-controls {
-            display: flex; 
-            justify-content: space-between; 
-            gap: 10px; 
-            flex-wrap: wrap; 
-            align-items: center;
-        }
-        /* Style for the left-aligned group */
-        #quiz-controls > div {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        /* Neon Buttons & Links */
-        .neon-button {
-            background: transparent;
-            /* Using --color-neon-blue (Yellow) for standard buttons */
-            border: 2px solid var(--color-neon-blue);
-            color: var(--color-neon-blue);
-            padding: 10px 20px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 0 8px var(--color-neon-blue), inset 0 0 8px var(--color-neon-blue);
-            text-decoration: none; 
-            display: inline-block;
-            text-align: center;
-        }
-        .neon-button:hover:not(:disabled) {
-            color: var(--dark);
-            /* Using --color-neon-blue (Yellow) for standard button hover fill */
-            background-color: var(--color-neon-blue);
-            box-shadow: 0 0 15px var(--color-neon-blue), 0 0 25px var(--color-neon-blue);
-        }
-        .neon-button:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        /* Primary Accent Button (Blue) */
-        .neon-button.primary-accent {
-            /* Using --color-neon-yellow (Blue) for accent buttons */
-            border-color: var(--color-neon-yellow);
+        /* Question and Options */
+        .question-box h3 {
             color: var(--color-neon-yellow);
-            box-shadow: 0 0 8px var(--color-neon-yellow), inset 0 0 8px var(--color-neon-yellow);
-        }
-        .neon-button.primary-accent:hover:not(:disabled) {
-            color: var(--dark);
-            /* Using --color-neon-yellow (Blue) for accent button hover fill */
-            background-color: var(--color-neon-yellow);
-            box-shadow: 0 0 15px var(--color-neon-yellow), 0 0 25px var(--color-neon-yellow);
         }
 
-        /* Options / Question Box */
-        .question-box {
-            margin-bottom: 20px;
-            padding: 15px;
-            /* Light yellow background based on #FFF000 */
-            border: 1px solid var(--color-neon-blue);
-            background: rgba(255, 240, 0, 0.05); 
+        #options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
         }
+        
         .option-label {
-            display: block;
-            margin: 8px 0;
+            display: flex;
+            align-items: center;
             padding: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.2s;
-            font-weight: bold;
+            user-select: none;
         }
+
         .option-label:hover {
-            /* Light yellow background based on #FFF000 */
-            background-color: rgba(255, 240, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.05);
         }
-        input[type="radio"] {
+
+        .option-label input[type="radio"] {
             margin-right: 10px;
-            /* Hide default radio and use custom styles */
-            display: none; 
         }
-        /* Custom radio button effect */
-        input[type="radio"]:checked + .option-text {
-            /* Using --color-neon-yellow (Blue) for checked text */
+
+        /* Feedback Styling */
+        .question-box.correct {
+            border-left: 5px solid limegreen;
+            padding-left: 10px;
+        }
+        .question-box.incorrect {
+            border-left: 5px solid var(--pink-neon);
+            padding-left: 10px;
+        }
+
+        .option-label.correct {
+            background-color: rgba(0, 128, 0, 0.2);
+            border-color: limegreen;
+            box-shadow: 0 0 5px limegreen;
+        }
+
+        .option-label.incorrect {
+            background-color: rgba(255, 0, 0, 0.2);
+            border-color: var(--pink-neon);
+            box-shadow: 0 0 5px var(--pink-neon);
+        }
+        
+        #feedback-result {
             color: var(--color-neon-yellow);
             text-shadow: 0 0 5px var(--color-neon-yellow);
         }
-        .option-text {
-            transition: color 0.2s, text-shadow 0.2s;
-        }
-
-        /* Feedback Colors */
-        .correct {
-            /* Using --color-neon-yellow (Blue) for correct feedback */
-            color: var(--color-neon-yellow);
-            text-shadow: 0 0 5px var(--color-neon-yellow);
-            border-color: var(--color-neon-yellow) !important;
-            /* Light blue background based on #25F4EE */
-            background-color: rgba(37, 244, 238, 0.2); 
-        }
-        .incorrect {
-            color: #FF6347; /* Standardized red for incorrect */
-            text-shadow: 0 0 5px #FF6347;
-            border-color: #FF6347 !important;
-            background-color: rgba(255, 99, 71, 0.2);
-        }
-
-        /* Hard Tag Style (New) */
+        
         .hard-tag {
-            color: var(--color-neon-yellow);
-            border: 1px solid var(--color-neon-yellow);
-            padding: 2px 5px;
-            font-size: 0.8em;
+            background: var(--pink-neon);
+            color: var(--dark);
+            padding: 2px 6px;
             margin-left: 10px;
-            display: inline-block;
-            box-shadow: 0 0 5px var(--color-neon-yellow);
-            vertical-align: middle;
-            text-shadow: none;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 900;
         }
-
+        
         /* Progress Bar */
         #progress-bar {
-            margin: 10px 0 20px 0;
-            font-weight: bold;
+            position: relative;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--color-neon-yellow);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
         }
         #bar-inner {
-            height: 5px;
-            /* Using --color-neon-yellow (Blue) for progress bar */
-            background-color: var(--color-neon-yellow);
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--color-neon-yellow);
             width: 0%;
-            margin-top: 5px;
-            transition: width 0.5s ease-out;
-            box-shadow: 0 0 10px var(--color-neon-yellow);
+            transition: width 0.5s ease;
+            z-index: 1;
+        }
+        #question-index-display {
+            position: relative;
+            z-index: 2;
+            font-weight: 700;
+            color: var(--dark); /* Color against the yellow progress bar */
+            mix-blend-mode: difference; /* Ensures visibility over the bar */
         }
 
-        /* Footer */
-        #page-footer p {
-            /* Using --color-neon-blue (Yellow) for footer text */
-            color: var(--color-neon-blue);
-            margin: 5px 0;
-            font-size: 0.85em;
-            text-shadow: none;
-        }
 
         /* Responsive adjustments */
         @media (max-width: 600px) {
             #terminal-wrapper {
-                padding: 10px;
+                padding: 15px;
             }
-            .neon-button {
-                padding: 8px 15px;
-                flex-grow: 1; 
-            }
-            #quiz-controls {
-                flex-direction: column; 
-            }
-            #quiz-controls > div {
-                flex-direction: column; 
-                width: 100%;
+            #quiz-page-content {
+                margin-top: 60px; /* Adjust top margin for smaller navbar on mobile */
             }
         }
+    /* --- END QUIZ.HTML STYLES --- */
     </style>
 </head>
-<body>
+<body data-spy="scroll" data-target="#navbar" data-offset="51">
 
-    <div id="terminal-wrapper">
-
-        <header id="quiz-controls">
-            <div>
-                <button id="lang-toggle" class="neon-button">
-                    LANGUAGE: <span id="current-lang-display">EN</span>
-                </button>
-                <button id="start-quiz-btn" class="neon-button primary-accent">
-                    Start SQL Quiz (10 Qs)
-                </button>
-            </div>
-            
-            <a href="index.html" class="neon-button">
-                &lt;&lt; Back to Main
-            </a>
-        </header>
-        
-        <hr class="neon-divider">
-
-        <main id="quiz-container" class="terminal-content" style="display: none;">
-            <h2 id="quiz-topic-title">SQL Fundamentals</h2>
-            <div id="progress-bar">
-                <span id="question-index-display">0 / 10</span>
-                <div id="bar-inner"></div>
-            </div>
-
-            <div id="question-display" class="question-box">
+    <!-- 1. NAVBAR (FIXED: Structure updated to Home, Timeline, Quiz, Quest) -->
+    <nav class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5" id="navbar">
+        <a href="index.html" class="navbar-brand d-block d-lg-none">
+            <h1 class="m-0" style="color: var(--blue-neon) !important;">Roman's Portfolio</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse" >
+            <div class="navbar-nav m-auto">
+                <div class="nav-item dropdown">
+                    <a href="index.html" class="nav-link" id="homeDropdown" aria-haspopup="true" aria-expanded="false">Home</a>
+                    <div class="dropdown-menu border-0 m-0" style="background-color: var(--dark);">
+                        <a href="#home" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Top of Page</a>
+                    <a href="#about" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">About</a>
+                    <a href="#skills" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Skills</a>
+                    <a href="#what-i-did" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Project</a>
+                    <a href="#teaching" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Educator</a>
+                    <a href="#connect" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Contact</a>
                 </div>
+            </div>
             
-            <button id="submit-answer-btn" class="neon-button primary-accent" style="display: none;">
-                Submit Answer
-            </button>
+            <a href="timeline.html" class="nav-item nav-link">Timeline</a>
+            <a href="quiz.html" class="nav-item nav-link active">Quiz</a>
+            <a href="quest.html" class="nav-item nav-link">Quest</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
 
-            <div id="feedback" style="display: none;">
-                <h3 id="feedback-result"></h3>
-                <p id="feedback-explanation"></p>
-                <button id="next-question-btn" class="neon-button">
-                    Next Question >>
+    <!-- NEW CONTENT WRAPPER (Handles flex-grow and vertical alignment) -->
+    <div id="quiz-page-content">
+        <div id="terminal-wrapper">
+            <!-- Terminal Content Header -->
+            <header id="quiz-controls">
+                <div>
+                    <button id="lang-toggle" class="neon-button">
+                        LANGUAGE: <span id="current-lang-display">EN</span>
+                    </button>
+                    <button id="start-quiz-btn" class="neon-button primary-accent">
+                        Start SQL Quiz (10 Qs)
+                    </button>
+                </div>
+            </header>
+            
+            <hr class="neon-divider">
+
+            <!-- Main Quiz Area -->
+            <main id="quiz-container" class="terminal-content" style="display: none;">
+                <h2 id="quiz-topic-title">SQL Fundamentals</h2>
+                <div id="progress-bar">
+                    <span id="question-index-display">0 / 10</span>
+                    <div id="bar-inner"></div>
+                </div>
+
+                <div id="question-display" class="question-box">
+                    </div>
+                
+                <button id="submit-answer-btn" class="neon-button primary-accent" style="display: none;">
+                    Submit Answer
                 </button>
-            </div>
-        </main>
-        
-        <div id="results-container" class="terminal-content" style="display: none;">
-            </div>
 
-        <hr class="neon-divider">
+                <div id="feedback" style="display: none;">
+                    <h3 id="feedback-result"></h3>
+                    <p id="feedback-explanation"></p>
+                    <button id="next-question-btn" class="neon-button">
+                        Next Question >>
+                    </button>
+                </div>
+            </main>
+            
+            <!-- Results Area -->
+            <div id="results-container" class="terminal-content" style="display: none;">
+                </div>
 
-        <footer id="page-footer">
-            <p>// Access Log: Terminal Connected</p>
-            <p>// Designed by Roman</p>
-            <p>// Status: Ready</p>
-        </footer>
+            <hr class="neon-divider">
+        </div>
     </div>
+    <!-- End Quiz Page Content Wrapper -->
+
+    <!-- 2. FOOTER (Font now correct, still anchored) -->
+    <div class="container-fluid footer-container py-5" style="width: 100%;">
+        <div class="container text-center py-5">
+            <h4 class="mb-4">Connect & Find My Content</h4>
+            <div class="d-flex justify-content-center mb-4 footer-social">
+                <a class="btn btn-social mx-2" href="https://www.linkedin.com/in/romansyasetyo" target="_blank"
+                    ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a class="btn btn-social mx-2" href="YOUR_INSTAGRAM_URL" target="_blank" title="Published soon"
+                    ><i class="fab fa-instagram"></i
+                ></a>
+                <a class="btn btn-social mx-2" href="YOUR_TIKTOK_URL" target="_blank" title="Published soon"
+                    ><i class="fab fa-tiktok"></i
+                ></a>
+                <a class="btn btn-social mx-2" href="https://www.youtube.com/@crazyrichdata" target="_blank"
+                    ><i class="fab fa-youtube"></i
+                ></a>
+            </div>
+            <p class="m-0">
+                &copy; <a class="font-weight-bold" href="#">Roman's Portfolio</a>. All Rights Reserved.
+            </p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries for Bootstrap/Navbar -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 
     <script>
         // --- 1. QUIZ DATA (45 SQL Questions from sqlQuestions_full.js) ---
-
         const ALL_QUESTIONS = [
-          {
-            id: 1001,
-            topic: "SQL",
-            question: {
-              en: "Which clause filters rows before aggregation?",
-              id: "Klausa mana yang memfilter baris sebelum proses agregasi?"
-            },
-            options: {
-              a: { en: "FILTER", id: "FILTER" },
-              b: { en: "WHERE", id: "WHERE" },
-              c: { en: "HAVING", id: "HAVING" },
-              d: { en: "GROUP BY", id: "GROUP BY" }
-            },
-            correctAnswer: "b",
-            explanation: {
-              en: "WHERE filters rows before GROUP BY; HAVING filters after aggregation.",
-              id: "WHERE memfilter baris sebelum GROUP BY; HAVING dipakai setelah agregasi."
-            }
-          },
-          {
-            id: 1002,
-            topic: "SQL",
-            question: {
-              en: "How do you sort results by created_at newest first?",
-              id: "Gimana cara mengurutkan hasil berdasarkan created_at dari yang terbaru?"
-            },
-            options: {
-              a: { en: "ORDER BY created_at DESC", id: "ORDER BY created_at DESC" },
-              b: { en: "GROUP BY created_at", id: "GROUP BY created_at" },
-              c: { en: "ORDER BY created_at ASC", id: "ORDER BY created_at ASC" },
-              d: { en: "ORDER created_at DESC", id: "ORDER created_at DESC" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "Use ORDER BY ... DESC to sort newest first.",
-              id: "Gunakan ORDER BY ... DESC untuk mengurutkan dari terbaru."
-            }
-          },
-          {
-            id: 1003,
-            topic: "SQL",
-            question: {
-              en: "Which JOIN returns only rows that have matching keys in both tables?",
-              id: "JOIN mana yang hanya mengembalikan baris yang punya kecocokan di kedua tabel?"
-            },
-            options: {
-              a: { en: "FULL JOIN", id: "FULL JOIN" },
-              b: { en: "LEFT JOIN", id: "LEFT JOIN" },
-              c: { en: "INNER JOIN", id: "INNER JOIN" },
-              d: { en: "RIGHT JOIN", id: "RIGHT JOIN" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "INNER JOIN returns rows present in both tables where the join condition matches.",
-              id: "INNER JOIN mengembalikan baris yang ada di kedua tabel saat kondisi join cocok."
-            }
-          },
-          {
-            id: 1004,
-            topic: "SQL",
-            question: {
-              en: "Given employees(name, salary), write the conceptual query to get the employee with the highest salary per department.",
-              id: "Diberikan employees(name, dept, salary), jelaskan konsep query untuk mendapatkan karyawan dengan salary tertinggi per departemen."
-            },
-            options: {
-              a: { en: "Use DISTINCT ON (dept) (DB-specific)", id: "Pakai DISTINCT ON (dept) (tergantung DB)" },
-              b: { en: "Use MAX(salary) with GROUP BY dept", id: "Pakai MAX(salary) dengan GROUP BY dept" },
-              c: { en: "Use ROW_NUMBER() PARTITION BY dept ORDER BY salary DESC and filter row_number = 1", id: "Pakai ROW_NUMBER() PARTITION BY dept ORDER BY salary DESC lalu filter row_number = 1" },
-              d: { en: "Use ORDER BY dept, salary LIMIT 1", id: "Pakai ORDER BY dept, salary LIMIT 1" }
-            },
-            correctAnswer: "c",
-            hard: true,
-            explanation: {
-              en: "ROW_NUMBER with partitioning picks top row per group; MAX+GROUP BY gives the max value but not the full row easily.",
-              id: "ROW_NUMBER dengan partition bisa pilih baris teratas tiap grup; MAX+GROUP BY hanya keluarkan nilai max sulit dapat seluruh baris."
-            }
-          },
-          {
-            id: 1005,
-            topic: "SQL",
-            question: {
-              en: "What keyword removes duplicate rows from a SELECT result?",
-              id: "Keyword apa yang menghapus baris duplikat dari hasil SELECT?"
-            },
-            options: {
-              a: { en: "DISTINCT", id: "DISTINCT" },
-              b: { en: "UNIQUE", id: "UNIQUE" },
-              c: { en: "FILTER", id: "FILTER" },
-              d: { en: "GROUP BY", id: "GROUP BY" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "DISTINCT returns unique rows only.",
-              id: "DISTINCT menampilkan hanya baris unik."
-            }
-          },
-          {
-            id: 1006,
-            topic: "SQL",
-            question: {
-              en: "Which operator checks membership in a set of values?",
-              id: "Operator apa yang ngecek apakah nilai ada di dalam suatu list?"
-            },
-            options: {
-              a: { en: "BETWEEN", id: "BETWEEN" },
-              b: { en: "EXISTS", id: "EXISTS" },
-              c: { en: "IN", id: "IN" },
-              d: { en: "LIKE", id: "LIKE" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "IN is used to check if a value equals any in a list.",
-              id: "IN dipakai untuk cek apakah nilai sama dengan salah satu nilai di list."
-            }
-          },
-          {
-            id: 1007,
-            topic: "SQL",
-            question: {
-              en: "Which function returns the maximum value in a column?",
-              id: "Fungsi apa yang mengembalikan nilai tertinggi di sebuah kolom?"
-            },
-            options: {
-              a: { en: "MAX()", id: "MAX()" },
-              b: { en: "SUM()", id: "SUM()" },
-              c: { en: "MIN()", id: "MIN()" },
-              d: { en: "AVG()", id: "AVG()" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "MAX() returns the maximum value.",
-              id: "MAX() mengembalikan nilai maksimum."
-            }
-          },
-          {
-            id: 1008,
-            topic: "SQL",
-            question: {
-              en: "Which clause filters groups after aggregation?",
-              id: "Klausa mana yang memfilter grup setelah agregasi?"
-            },
-            options: {
-              a: { en: "ORDER BY", id: "ORDER BY" },
-              b: { en: "WHERE", id: "WHERE" },
-              c: { en: "FILTER", id: "FILTER" },
-              d: { en: "HAVING", id: "HAVING" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "HAVING applies conditions to aggregated groups.",
-              id: "HAVING dipakai untuk kondisi pada grup setelah agregasi."
-            }
-          },
-          {
-            id: 1009,
-            topic: "SQL",
-            question: {
-              en: "Which SQL gets the average value of a numeric column?",
-              id: "Fungsi mana yang menghitung rata-rata dari kolom numerik?"
-            },
-            options: {
-              a: { en: "SUM()", id: "SUM()" },
-              b: { en: "MEDIAN()", id: "MEDIAN()" },
-              c: { en: "COUNT()", id: "COUNT()" },
-              d: { en: "AVG()", id: "AVG()" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "AVG() computes the mean.",
-              id: "AVG() menghitung rata-rata."
-            }
-          },
-          {
-            id: 1010,
-            topic: "SQL",
-            question: {
-              en: "Which keyword limits the number of rows returned in MySQL/Postgres?",
-              id: "Keyword apa yang membatasi jumlah baris yang dikembalikan di MySQL/Postgres?"
-            },
-            options: {
-              a: { en: "LIMIT", id: "LIMIT" },
-              b: { en: "FETCH FIRST", id: "FETCH FIRST" },
-              c: { en: "ROWNUM", id: "ROWNUM" },
-              d: { en: "TOP", id: "TOP" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "LIMIT caps rows in MySQL/Postgres.",
-              id: "LIMIT membatasi jumlah baris di MySQL/Postgres."
-            }
-          },
-          {
-            id: 1011,
-            topic: "SQL",
-            question: {
-              en: "Given orders(order_id, customer_id, total), which query finds average total per customer?",
-              id: "Diberikan orders(order_id, customer_id, total), query mana yang menghitung rata-rata total per customer?"
-            },
-            options: {
-              a: { en: "SELECT customer_id, AVG(total) FROM orders GROUP BY customer_id;", id: "SELECT customer_id, AVG(total) FROM orders GROUP BY customer_id;" },
-              b: { en: "SELECT AVG(total) FROM orders;", id: "SELECT AVG(total) FROM orders;" },
-              c: { en: "SELECT DISTINCT customer_id, total FROM orders;", id: "SELECT DISTINCT customer_id, total FROM orders;" },
-              d: { en: "SELECT customer_id, SUM(total) FROM orders;", id: "SELECT customer_id, SUM(total) FROM orders;" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "GROUP BY customer_id with AVG(total) computes per-customer average.",
-              id: "GROUP BY customer_id dengan AVG(total) menghitung rata-rata per customer."
-            }
-          },
-          {
-            id: 1012,
-            topic: "SQL",
-            question: {
-              en: "Which window function assigns sequential numbers to rows within a partition?",
-              id: "Fungsi window mana yang memberi nomor berurutan ke baris dalam partition?"
-            },
-            options: {
-              a: { en: "RANK()", id: "RANK()" },
-              b: { en: "NTILE()", id: "NTILE()" },
-              c: { en: "DENSE_RANK()", id: "DENSE_RANK()" },
-              d: { en: "ROW_NUMBER()", id: "ROW_NUMBER()" }
-            },
-            correctAnswer: "d",
-            hard: true,
-            explanation: {
-              en: "ROW_NUMBER gives a unique sequential number per partition.",
-              id: "ROW_NUMBER memberikan nomor urut unik per partition."
-            }
-          },
-          {
-            id: 1013,
-            topic: "SQL",
-            question: {
-              en: "Which JOIN keeps all rows from the left table even if there's no match on the right?",
-              id: "JOIN mana yang mempertahankan semua baris dari table kiri walaupun tidak ada match di kanan?"
-            },
-            options: {
-              a: { en: "RIGHT JOIN", id: "RIGHT JOIN" },
-              b: { en: "LEFT JOIN", id: "LEFT JOIN" },
-              c: { en: "FULL JOIN", id: "FULL JOIN" },
-              d: { en: "INNER JOIN", id: "INNER JOIN" }
-            },
-            correctAnswer: "b",
-            explanation: {
-              en: "LEFT JOIN includes unmatched left rows.",
-              id: "LEFT JOIN menampilkan baris kiri meskipun tidak ada pasangan."
-            }
-          },
-          {
-            id: 1014,
-            topic: "SQL",
-            question: {
-              en: "Which clause rearranges rows by a given column or columns?",
-              id: "Klausa apa yang mengurutkan baris berdasarkan kolom tertentu?"
-            },
-            options: {
-              a: { en: "HAVING", id: "HAVING" },
-              b: { en: "SORT BY", id: "SORT BY" },
-              c: { en: "GROUP BY", id: "GROUP BY" },
-              d: { en: "ORDER BY", id: "ORDER BY" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "ORDER BY sorts results.",
-              id: "ORDER BY untuk mengurutkan hasil."
-            }
-          },
-          {
-            id: 1015,
-            topic: "SQL",
-            question: {
-              en: "Which pattern pivots rows into columns when PIVOT isn't available?",
-              id: "Pattern apa untuk pivot baris jadi kolom jika PIVOT gak ada?"
-            },
-            options: {
-              a: { en: "SUM(CASE WHEN condition THEN value ELSE 0 END) grouped by key", id: "SUM(CASE WHEN condition THEN value ELSE 0 END) digroup berdasarkan key" },
-              b: { en: "UNION ALL of selects", id: "UNION ALL dari beberapa SELECT" },
-              c: { en: "CROSS JOIN with filters", id: "CROSS JOIN dengan filter" },
-              d: { en: "GROUP BY alone", id: "GROUP BY saja" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "Using CASE inside SUM/aggregation is common manual pivot.",
-              id: "Menggunakan CASE di dalam agregasi adalah cara manual umum untuk pivot."
-            }
-          },
-          {
-            id: 1016,
-            topic: "SQL",
-            question: {
-              en: "What does COUNT(*) return?",
-              id: "Apa yang dikembalikan COUNT(*)?"
-            },
-            options: {
-              a: { en: "Sum of values", id: "Jumlah nilai" },
-              b: { en: "Number of non-null values in a column", id: "Jumlah nilai non-null di kolom" },
-              c: { en: "Number of rows in the result set", id: "Jumlah baris di result set" },
-              d: { en: "Maximum value", id: "Nilai maksimum" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "COUNT(*) counts rows regardless of NULLs.",
-              id: "COUNT(*) menghitung baris tanpa memperhatikan NULL."
-            }
-          },
-          {
-            id: 1017,
-            topic: "SQL",
-            question: {
-              en: "Which operator is used to test for NULL values?",
-              id: "Operator apa yang dipakai untuk cek NULL?"
-            },
-            options: {
-              a: { en: "LIKE NULL", id: "LIKE NULL" },
-              b: { en: "= NULL", id: "= NULL" },
-              c: { en: "IS NULL", id: "IS NULL" },
-              d: { en: "IS EMPTY", id: "IS EMPTY" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "Use IS NULL to test for NULL.",
-              id: "Gunakan IS NULL untuk ngecek NULL."
-            }
-          },
-          {
-            id: 1018,
-            topic: "SQL",
-            question: {
-              en: "Which construct checks existence efficiently per row?",
-              id: "Konstruksi mana yang cek eksistensi per baris dengan efisien?"
-            },
-            options: {
-              a: { en: "JOIN", id: "JOIN" },
-              b: { en: "IN (subquery)", id: "IN (subquery)" },
-              c: { en: "COUNT(subquery)", id: "COUNT(subquery)" },
-              d: { en: "EXISTS (correlated subquery)", id: "EXISTS (subquery korelasi)" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "EXISTS stops at first match and is efficient for existence checks.",
-              id: "EXISTS berhenti di match pertama, efisien untuk cek eksistensi."
-            }
-          },
-          {
-            id: 1019,
-            topic: "SQL",
-            question: {
-              en: "How to compute revenue share per row using window functions?",
-              id: "Gimana hitung share revenue tiap baris pake window function?"
-            },
-            options: {
-              a: { en: "revenue / SUM(revenue)", id: "revenue / SUM(revenue)" },
-              b: { en: "revenue / SUM(revenue) OVER()", id: "revenue / SUM(revenue) OVER()" },
-              c: { en: "revenue / SUM()", id: "revenue / SUM()" },
-              d: { en: "revenue / TOTAL(revenue)", id: "revenue / TOTAL(revenue)" }
-            },
-            correctAnswer: "b",
-            hard: true,
-            explanation: {
-              en: "SUM(...) OVER() gives the total across all rows for per-row share calculation.",
-              id: "SUM(...) OVER() memberikan total keseluruhan baris sehingga bisa hitung persentase tiap baris."
-            }
-          },
-          {
-            id: 1020,
-            topic: "SQL",
-            question: {
-              en: "Which SQL finds rows where a column contains 'apple' anywhere in text?",
-              id: "Query mana yang mengembalikan baris jika kolom mengandung 'apple' di mana saja?"
-            },
-            options: {
-              a: { en: "WHERE col LIKE '%apple%'", id: "WHERE col LIKE '%apple%'" },
-              b: { en: "WHERE col LIKE 'apple%'", id: "WHERE col LIKE 'apple%'" },
-              c: { en: "WHERE col = 'apple'", id: "WHERE col = 'apple'" },
-              d: { en: "WHERE col LIKE '%apple'", id: "WHERE col LIKE '%apple'" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "Use % on both sides to find substring anywhere.",
-              id: "Pakai % di kiri dan kanan untuk cari substring di mana saja."
-            }
-          },
-          {
-            id: 1021,
-            topic: "SQL",
-            question: {
-              en: "Which function returns the row number within a partition ordered by date?",
-              id: "Fungsi apa yang mengembalikan nomor baris dalam partition berdasarkan urutan tanggal?"
-            },
-            options: {
-              a: { en: "DENSE_RANK() OVER ...", id: "DENSE_RANK() OVER ..." },
-              b: { en: "ROW_NUMBER() OVER (PARTITION BY ... ORDER BY date)", id: "ROW_NUMBER() OVER (PARTITION BY ... ORDER BY date)" },
-              c: { en: "NTILE() OVER ...", id: "NTILE() OVER ..." },
-              d: { en: "RANK() OVER ...", id: "RANK() OVER ..." }
-            },
-            correctAnswer: "b",
-            explanation: {
-              en: "ROW_NUMBER gives unique sequential numbers per partition.",
-              id: "ROW_NUMBER memberi nomor urut unik per partition."
-            }
-          },
-          {
-            id: 1022,
-            topic: "SQL",
-            question: {
-              en: "Which clause is used to rename a column in the output?",
-              id: "Klausa apa yang digunakan untuk mengganti nama kolom di output?"
-            },
-            options: {
-              a: { en: "ALIAS", id: "ALIAS" },
-              b: { en: "SET NAME", id: "SET NAME" },
-              c: { en: "RENAME", id: "RENAME" },
-              d: { en: "AS", id: "AS" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "Use AS to alias columns.",
-              id: "Pakai AS untuk memberi alias pada kolom."
-            }
-          },
-          {
-            id: 1023,
-            topic: "SQL",
-            question: {
-              en: "Which pattern is safe to find rows in A not in B (consider NULLs)?",
-              id: "Pattern mana yang aman untuk menemukan baris di A yang tidak ada di B (pertimbangkan NULL)?"
-            },
-            options: {
-              a: { en: "NOT IN (SELECT key FROM B)", id: "NOT IN (SELECT key FROM B)" },
-              b: { en: "INNER JOIN B WHERE B.key IS NULL", id: "INNER JOIN B WHERE B.key IS NULL" },
-              c: { en: "LEFT JOIN B ON ... WHERE B.key IS NULL", id: "LEFT JOIN B ON ... WHERE B.key IS NULL" },
-              d: { en: "EXCEPT SELECT FROM B", id: "EXCEPT SELECT FROM B" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "LEFT JOIN ... IS NULL is safe even when subquery may contain NULLs.",
-              id: "LEFT JOIN ... IS NULL aman ketika subquery mengandung NULL."
-            }
-          },
-          {
-            id: 1024,
-            topic: "SQL",
-            question: {
-              en: "Which query returns the latest order per customer (conceptual)?",
-              id: "Query mana yang mengembalikan order terbaru per customer (konsep)?"
-            },
-            options: {
-              a: { en: "Use ROW_NUMBER() PARTITION BY customer_id ORDER BY order_date DESC and filter rn = 1", id: "Pakai ROW_NUMBER() PARTITION BY customer_id ORDER BY order_date DESC lalu filter rn = 1" },
-              b: { en: "Use MAX(order_date) GROUP BY customer_id", id: "Pakai MAX(order_date) GROUP BY customer_id" },
-              c: { en: "Use ORDER BY order_date LIMIT 1", id: "Pakai ORDER BY order_date LIMIT 1" },
-              d: { en: "Use DISTINCT ON (customer_id) (DB-specific)", id: "Pakai DISTINCT ON (customer_id) (tergantung DB)" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "ROW_NUMBER with partition gives the full row for latest order per customer.",
-              id: "ROW_NUMBER dengan partition memberi baris lengkap untuk order terbaru tiap customer."
-            }
-          },
-          {
-            id: 1025,
-            topic: "SQL",
-            question: {
-              en: "Which window frame computes a 7-day moving average ordered by date?",
-              id: "Frame window mana yang menghitung moving average 7-hari berdasarkan urutan tanggal?"
-            },
-            options: {
-              a: { en: "AVG(value) GROUP BY date", id: "AVG(value) GROUP BY date" },
-              b: { en: "AVG(value) OVER ()", id: "AVG(value) OVER ()" },
-              c: { en: "SUM(value) / 7", id: "SUM(value) / 7" },
-              d: { en: "AVG(value) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)", id: "AVG(value) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)" }
-            },
-            correctAnswer: "d",
-            hard: true,
-            explanation: {
-              en: "Window with 6 PRECEDING to CURRENT ROW gives 7-row rolling average.",
-              id: "Frame 6 PRECEDING hingga CURRENT ROW menghitung rata-rata rolling 7 baris."
-            }
-          },
-          {
-            id: 1026,
-            topic: "SQL",
-            question: {
-              en: "Which operator is case-insensitive pattern match in Postgres?",
-              id: "Operator apa yang case-insensitive untuk pattern match di Postgres?"
-            },
-            options: {
-              a: { en: "LIKE", id: "LIKE" },
-              b: { en: "LOWER + LIKE", id: "LOWER + LIKE" },
-              c: { en: "ILIKE", id: "ILIKE" },
-              d: { en: "REGEXP", id: "REGEXP" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "ILIKE is Postgres' case-insensitive LIKE.",
-              id: "ILIKE adalah LIKE tanpa case di Postgres."
-            }
-          },
-          {
-            id: 1027,
-            topic: "SQL",
-            question: {
-              en: "Which function ignores NULLs in its calculation by default (e.g., SUM)?",
-              id: "Fungsi mana yang mengabaikan NULL secara default (mis. SUM)?"
-            },
-            options: {
-              a: { en: "SUM()/AVG() ignore NULLs", id: "SUM()/AVG() mengabaikan NULL" },
-              b: { en: "COUNT(col) counts NULLs", id: "COUNT(kolom) menghitung NULL" },
-              c: { en: "SUM counts NULL as zero", id: "SUM menganggap NULL = 0" },
-              d: { en: "COUNT(*) ignores NULLs", id: "COUNT(*) mengabaikan NULL" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "SUM and AVG ignore NULLs; COUNT(*) counts rows regardless of NULL.",
-              id: "SUM/AVG mengabaikan NULL; COUNT(*) menghitung baris tanpa peduli NULL."
-            }
-          },
-          {
-            id: 1028,
-            topic: "SQL",
-            question: {
-              en: "Which query finds the second-highest salary (conceptual)?",
-              id: "Query mana yang mencari gaji tertinggi kedua (konsep)?"
-            },
-            options: {
-              a: { en: "SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees);", id: "SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees);" },
-              b: { en: "SELECT DISTINCT salary LIMIT 2", id: "SELECT DISTINCT salary LIMIT 2" },
-              c: { en: "SELECT salary FROM employees ORDER BY salary DESC LIMIT 2;", id: "SELECT salary FROM employees ORDER BY salary DESC LIMIT 2;" },
-              d: { en: "Use RANK() and filter rank = 2", id: "Pakai RANK() dan filter rank = 2" }
-            },
-            correctAnswer: "a",
-            hard: true,
-            explanation: {
-              en: "Subquery finds global max; outer MAX under that finds second highest.",
-              id: "Subquery dapat MAX global; MAX di luar mencari nilai tertinggi kedua."
-            }
-          },
-          {
-            id: 1029,
-            topic: "SQL",
-            question: {
-              en: "Which pattern gets top N per group preserving ties?",
-              id: "Pattern mana yang mengambil top N per grup dan mempertahankan ties?"
-            },
-            options: {
-              a: { en: "Use DENSE_RANK() = N", id: "Pakai DENSE_RANK() = N" },
-              b: { en: "Use ROW_NUMBER() and filter <= N", id: "Pakai ROW_NUMBER() lalu filter <= N" },
-              c: { en: "Use LIMIT inside GROUP BY", id: "LIMIT di dalam GROUP BY" },
-              d: { en: "Use RANK() and filter rank <= N", id: "Pakai RANK() lalu filter rank <= N" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "RANK assigns same rank to ties so rank <= N keeps all ties at N.",
-              id: "RANK memberikan peringkat sama pada ties sehingga rank <= N mempertahankan ties."
-            }
-          },
-          {
-            id: 1030,
-            topic: "SQL",
-            question: {
-              en: "Which of these returns cumulative sum over ordered rows?",
-              id: "Mana yang mengembalikan cumulative sum atas baris yang terurut?"
-            },
-            options: {
-              a: { en: "SUM(col) WHERE date <= current", id: "SUM(col) WHERE date <= current" },
-              b: { en: "SUM(col) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)", id: "SUM(col) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)" },
-              c: { en: "SUM(col) OVER ()", id: "SUM(col) OVER ()" },
-              d: { en: "SUM(col) GROUP BY date", id: "SUM(col) GROUP BY date" }
-            },
-            correctAnswer: "b",
-            hard: true,
-            explanation: {
-              en: "SUM with ORDER BY and a frame yields running total.",
-              id: "SUM dengan ORDER BY dan frame menghasilkan running total."
-            }
-          },
-          {
-            id: 1031,
-            topic: "SQL",
-            question: {
-              en: "Which clause would you use to filter groups having count > 1?",
-              id: "Klausa mana yang dipakai untuk memfilter grup yang memiliki count > 1?"
-            },
-            options: {
-              a: { en: "GROUP BY COUNT > 1", id: "GROUP BY COUNT > 1" },
-              b: { en: "HAVING COUNT(*) > 1", id: "HAVING COUNT(*) > 1" },
-              c: { en: "FILTER COUNT > 1", id: "FILTER COUNT > 1" },
-              d: { en: "WHERE COUNT(*) > 1", id: "WHERE COUNT(*) > 1" }
-            },
-            correctAnswer: "b",
-            explanation: {
-              en: "HAVING filters aggregated groups based on aggregates like COUNT.",
-              id: "HAVING memfilter grup setelah agregasi berdasarkan fungsi agregat."
-            }
-          },
-          {
-            id: 1032,
-            topic: "SQL",
-            question: {
-              en: "What does COALESCE(col, 0) do?",
-              id: "Apa fungsi COALESCE(col, 0)?"
-            },
-            options: {
-              a: { en: "Converts to zero always", id: "Selalu menjadikannya nol" },
-              b: { en: "Returns first non-null value (col or 0)", id: "Mengembalikan nilai non-null pertama (col atau 0)" },
-              c: { en: "Deletes NULL rows", id: "Menghapus baris NULL" },
-              d: { en: "Counts NULL as value", id: "Menghitung NULL sebagai nilai" }
-            },
-            correctAnswer: "b",
-            hard: true,
-            explanation: {
-              en: "COALESCE returns the first non-NULL argument.",
-              id: "COALESCE mengembalikan argumen pertama yang bukan NULL."
-            }
-          },
-          {
-            id: 1033,
-            topic: "SQL",
-            question: {
-              en: "Which approach gets distinct combinations of two columns?",
-              id: "Cara mana mendapatkan kombinasi unik dari dua kolom?"
-            },
-            options: {
-              a: { en: "SELECT col1, col2", id: "SELECT col1, col2" },
-              b: { en: "ORDER BY col1, col2", id: "ORDER BY col1, col2" },
-              c: { en: "GROUP BY col1, col2", id: "GROUP BY col1, col2" },
-              d: { en: "SELECT DISTINCT col1, col2 FROM t", id: "SELECT DISTINCT col1, col2 FROM t" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "DISTINCT or GROUP BY on same columns yields unique combos.",
-              id: "DISTINCT atau GROUP BY pada kolom yang sama menghasilkan kombinasi unik."
-            }
-          },
-          {
-            id: 1034,
-            topic: "SQL",
-            question: {
-              en: "Which query checks if any row exists satisfying a condition?",
-              id: "Query mana yang mengecek apakah ada baris yang memenuhi kondisi?"
-            },
-            options: {
-              a: { en: "WHERE EXISTS (SELECT 1 FROM t WHERE condition)", id: "WHERE EXISTS (SELECT 1 FROM t WHERE condition)" },
-              b: { en: "WHERE IN (SELECT ...)", id: "WHERE IN (SELECT ...)" },
-              c: { en: "WHERE SUM(...) > 0", id: "WHERE SUM(...) > 0" },
-              d: { en: "WHERE COUNT(*) > 0", id: "WHERE COUNT(*) > 0" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "EXISTS returns true on first match; efficient for existence checks.",
-              id: "EXISTS true saat ada match pertama; efisien untuk cek eksistensi."
-            }
-          },
-          {
-            id: 1035,
-            topic: "SQL",
-            question: {
-              en: "Which of these returns rows where a value is NULL?",
-              id: "Mana yang mengembalikan baris ketika nilai adalah NULL?"
-            },
-            options: {
-              a: { en: "WHERE col = ''", id: "WHERE col = ''" },
-              b: { en: "WHERE col IS EMPTY", id: "WHERE col IS EMPTY" },
-              c: { en: "WHERE col IS NULL", id: "WHERE col IS NULL" },
-              d: { en: "WHERE col = NULL", id: "WHERE col = NULL" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "Use IS NULL to test for NULL; = NULL doesn't work as expected.",
-              id: "Gunakan IS NULL untuk cek NULL; = NULL tidak berfungsi seperti yang diharapkan."
-            }
-          },
-          {
-            id: 1036,
-            topic: "SQL",
-            question: {
-              en: "Which pattern selects customers who bought X but not Y?",
-              id: "Pattern mana yang memilih customer yang beli X tapi tidak Y?"
-            },
-            options: {
-              a: { en: "Use CROSS JOIN and filter", id: "CROSS JOIN lalu filter" },
-              b: { en: "Use INTERSECT/EXCEPT", id: "Pakai INTERSECT/EXCEPT" },
-              c: { en: "JOIN orders X and exclude Y with WHERE", id: "JOIN orders X dan exclude Y dengan WHERE" },
-              d: { en: "Group by customer with SUM(CASE WHEN item='X' THEN 1 ELSE 0 END) > 0 and SUM(CASE WHEN item='Y' THEN 1 ELSE 0 END) = 0", id: "GROUP BY customer dengan SUM(CASE WHEN item='X' THEN 1 ELSE 0 END) > 0 dan SUM(CASE WHEN item='Y' THEN 1 ELSE 0 END) = 0" }
-            },
-            correctAnswer: "d",
-            hard: true,
-            explanation: {
-              en: "Conditional aggregation or EXISTS/NOT EXISTS are common solutions.",
-              id: "Agregasi kondisional atau EXISTS/NOT EXISTS adalah solusi umum."
-            }
-          },
-          {
-            id: 1037,
-            topic: "SQL",
-            question: {
-              en: "Which function ranks rows and leaves no gaps between ranks for ties?",
-              id: "Fungsi mana yang memberi peringkat tanpa celah saat tie?"
-            },
-            options: {
-              a: { en: "ROW_NUMBER()", id: "ROW_NUMBER()" },
-              b: { en: "DENSE_RANK()", id: "DENSE_RANK()" },
-              c: { en: "RANK()", id: "RANK()" },
-              d: { en: "NTILE()", id: "NTILE()" }
-            },
-            correctAnswer: "b",
-            explanation: {
-              en: "DENSE_RANK doesn't leave gaps after ties; RANK does.",
-              id: "DENSE_RANK tidak meninggalkan celah setelah tie; RANK meninggalkan celah."
-            }
-          },
-          {
-            id: 1038,
-            topic: "SQL",
-            question: {
-              en: "Which SQL returns both matched and unmatched rows from both tables?",
-              id: "SQL mana yang mengembalikan baris cocok dan tidak cocok dari kedua tabel?"
-            },
-            options: {
-              a: { en: "FULL OUTER JOIN", id: "FULL OUTER JOIN" },
-              b: { en: "INNER JOIN", id: "INNER JOIN" },
-              c: { en: "LEFT JOIN", id: "LEFT JOIN" },
-              d: { en: "CROSS JOIN", id: "CROSS JOIN" }
-            },
-            correctAnswer: "a",
-            explanation: {
-              en: "FULL OUTER JOIN returns matches and unmatched rows from both sides (DB support vary).",
-              id: "FULL OUTER JOIN mengembalikan baris match dan tidak match dari kedua sisi (tergantung dukungan DB)."
-            }
-          },
-          {
-            id: 1039,
-            topic: "SQL",
-            question: {
-              en: "Which pattern is used to pivot small categorical data into columns using CASE?",
-              id: "Pattern apa yang dipakai untuk pivot kategori kecil jadi kolom pakai CASE?"
-            },
-            options: {
-              a: { en: "PIVOT clause if supported", id: "PIVOT jika didukung" },
-              b: { en: "UNION ALL selects", id: "UNION ALL beberapa SELECT" },
-              c: { en: "SUM(CASE WHEN category='A' THEN val ELSE 0 END) AS A_val, ...", id: "SUM(CASE WHEN category='A' THEN val ELSE 0 END) AS A_val, ..." },
-              d: { en: "CROSS JOIN", id: "CROSS JOIN" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "CASE + aggregation is portable pivot technique.",
-              id: "CASE + agregasi adalah teknik pivot yang portable."
-            }
-          },
-          {
-            id: 1040,
-            topic: "SQL",
-            question: {
-              en: "Which clause allows window functions to define partitions?",
-              id: "Klausa apa yang memungkinkan window function mendefinisikan partition?"
-            },
-            options: {
-              a: { en: "HAVING", id: "HAVING" },
-              b: { en: "PARTITION BY outside OVER", id: "PARTITION BY di luar OVER" },
-              c: { en: "OVER (PARTITION BY ...)", id: "OVER (PARTITION BY ...)" },
-              d: { en: "GROUP BY", id: "GROUP BY" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "Window functions use OVER(...) and may include PARTITION BY.",
-              id: "Window function memakai OVER(...) yang bisa memasukkan PARTITION BY."
-            }
-          },
-          {
-            id: 1041,
-            topic: "SQL",
-            question: {
-              en: "Which operator would you use to check membership and is useful with subqueries?",
-              id: "Operator apa untuk cek membership yang berguna dengan subquery?"
-            },
-            options: {
-              a: { en: "EXISTS", id: "EXISTS" },
-              b: { en: "IN", id: "IN" },
-              c: { en: "LIKE", id: "LIKE" },
-              d: { en: "BETWEEN", id: "BETWEEN" }
-            },
-            correctAnswer: "b",
-            explanation: {
-              en: "IN tests membership against a list or subquery result.",
-              id: "IN mengecek keanggotaan terhadap list atau hasil subquery."
-            }
-          },
-          {
-            id: 1042,
-            topic: "SQL",
-            question: {
-              en: "How to compute cumulative count of orders per customer ordered by date?",
-              id: "Bagaimana menghitung jumlah kumulatif order per customer berdasarkan tanggal?"
-            },
-            options: {
-              a: { en: "SUM(CASE WHEN ...)", id: "SUM(CASE WHEN ...)" },
-              b: { en: "COUNT(*) GROUP BY customer_id", id: "COUNT(*) GROUP BY customer_id" },
-              c: { en: "RANK() OVER ...", id: "RANK() OVER ..." },
-              d: { en: "COUNT(*) OVER (PARTITION BY customer_id ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)", id: "COUNT(*) OVER (PARTITION BY customer_id ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)" }
-            },
-            correctAnswer: "d",
-            explanation: {
-              en: "COUNT as a window function with ORDER BY yields cumulative counts.",
-              id: "COUNT sebagai window function dengan ORDER BY menghasilkan hitungan kumulatif."
-            }
-          },
-          {
-            id: 1043,
-            topic: "SQL",
-            question: {
-              en: "Hard: Design a query that finds users whose latest metric exceeds their 90-day rolling average (conceptual).",
-              id: "Hard: Rancang query yang menemukan user yang metrik terbarunya melebihi rata-rata rolling 90-hari mereka (konsep)."
-            },
-            options: {
-              a: { en: "Use simple AVG over all time", id: "Pakai AVG seluruh waktu" },
-              b: { en: "Compute 90-day rolling avg via AVG(val) OVER (PARTITION BY user ORDER BY date ROWS BETWEEN 89 PRECEDING AND CURRENT ROW) and compare latest row (use ROW_NUMBER=1 in subquery/CTE)", id: "Hitung rata-rata 90-hari dengan AVG(val) OVER (PARTITION BY user ORDER BY date ROWS BETWEEN 89 PRECEDING AND CURRENT ROW) dan bandingkan baris terbaru (gunakan ROW_NUMBER=1 di subquery/CTE)" },
-              c: { en: "Use GROUP BY date", id: "GROUP BY date" },
-              d: { en: "Use MAX over 90 days", id: "Pakai MAX 90-hari" }
-            },
-            correctAnswer: "b",
-            hard: true,
-            explanation: {
-              en: "This needs rolling window + identifying latest row — typically done via window functions with CTE/subquery.",
-              id: "Butuh rolling window + identifikasi baris terbaru — biasanya pakai window function dengan CTE/subquery."
-            }
-          },
-          {
-            id: 1044,
-            topic: "SQL",
-            question: {
-              en: "Which function returns the difference between two dates in days (conceptual)?",
-              id: "Fungsi apa yang mengembalikan selisih dua tanggal dalam hari (konsep)?"
-            },
-            options: {
-              a: { en: "EXTRACT(YEAR FROM ...)", id: "EXTRACT(YEAR FROM ...)" },
-              b: { en: "DATEADD", id: "DATEADD" },
-              c: { en: "DATEDIFF(date1, date2) or date1 - date2 depending on DB", id: "DATEDIFF(date1, date2) atau date1 - date2 tergantung DB" },
-              d: { en: "TIMESTAMPDIFF only", id: "TIMESTAMPDIFF saja" }
-            },
-            correctAnswer: "c",
-            explanation: {
-              en: "Different DBs provide DATEDIFF or date arithmetic.",
-              id: "DB berbeda menawarkan DATEDIFF atau aritmetika tanggal."
-            }
-          },
-          {
-            id: 1045,
-            topic: "SQL",
-            question: {
-              en: "Hard: Which approach gets top-selling product per month including full row details?",
-              id: "Hard: Pendekatan mana untuk mendapatkan produk terlaris per bulan termasuk detail barisnya?"
-            },
-            options: {
-              a: { en: "Use CROSS JOIN months and products", id: "CROSS JOIN bulan dan produk" },
-              b: { en: "Aggregate sales per product-month, then use ROW_NUMBER() PARTITION BY month ORDER BY total DESC in a CTE and pick rn=1", id: "Agregasi sales per product-month, lalu pakai ROW_NUMBER() PARTITION BY month ORDER BY total DESC di CTE dan ambil rn=1" },
-              c: { en: "Use DISTINCT ON month (DB-specific)", id: "DISTINCT ON month (spesifik DB)" },
-              d: { en: "Use GROUP BY product and LIMIT 1", id: "GROUP BY product lalu LIMIT 1" }
-            },
-            correctAnswer: "b",
-            hard: true,
-            explanation: {
-              en: "Aggregate then rank per month is common pattern to keep full row details for top item.",
-              id: "Agregasi lalu ranking per bulan adalah pola umum untuk dapat baris lengkap produk teratas."
-            }
-          }
+          {id: 1001, topic: "SQL", question: {en: "Which clause filters rows before aggregation?", id: "Klausa mana yang memfilter baris sebelum proses agregasi?"}, options: {a: { en: "FILTER", id: "FILTER" }, b: { en: "WHERE", id: "WHERE" }, c: { en: "HAVING", id: "HAVING" }, d: { en: "GROUP BY", id: "GROUP BY" }}, correctAnswer: "b", explanation: {en: "WHERE filters rows before GROUP BY; HAVING filters after aggregation.", id: "WHERE memfilter baris sebelum GROUP BY; HAVING dipakai setelah agregasi."}},
+          {id: 1002, topic: "SQL", question: {en: "What keyword is used to return only distinct values?", id: "Kata kunci apa yang digunakan untuk mengembalikan hanya nilai yang berbeda?"}, options: {a: { en: "UNIQUE", id: "UNIK" }, b: { en: "SELECT DISTINCT", id: "SELECT DISTINCT" }, c: { en: "DIFFERENT", id: "BERBEDA" }, d: { en: "GROUP", id: "GRUP" }}, correctAnswer: "b", explanation: {en: "The DISTINCT keyword is used in conjunction with SELECT to retrieve only unique values.", id: "Kata kunci DISTINCT digunakan bersama dengan SELECT untuk mengambil hanya nilai unik."}},
+          {id: 1003, topic: "SQL", question: {en: "Which SQL command is used to retrieve data from a database?", id: "Perintah SQL mana yang digunakan untuk mengambil data dari database?"}, options: {a: { en: "GET", id: "AMBIL" }, b: { en: "SELECT", id: "SELECT" }, c: { en: "EXTRACT", id: "EKSTRAK" }, d: { en: "OPEN", id: "BUKA" }}, correctAnswer: "b", explanation: {en: "The SELECT statement is used to query and retrieve data from a database.", id: "Pernyataan SELECT digunakan untuk membuat kueri dan mengambil data dari database."}},
+          {id: 1004, topic: "SQL", question: {en: "Which SQL command is used to insert new data into a database?", id: "Perintah SQL mana yang digunakan untuk memasukkan data baru ke dalam database?"}, options: {a: { en: "ADD ROW", id: "TAMBAH BARIS" }, b: { en: "INSERT INTO", id: "INSERT INTO" }, c: { en: "NEW DATA", id: "DATA BARU" }, d: { en: "SAVE", id: "SIMPAN" }}, correctAnswer: "b", explanation: {en: "The INSERT INTO statement is used to add new records to a table.", id: "Pernyataan INSERT INTO digunakan untuk menambahkan catatan baru ke tabel."}},
+          {id: 1005, topic: "SQL", question: {en: "Which operator is used to search for a specified pattern in a column?", id: "Operator mana yang digunakan untuk mencari pola tertentu di kolom?"}, options: {a: { en: "EXISTS", id: "EXISTS" }, b: { en: "LIKE", id: "LIKE" }, c: { en: "MATCH", id: "COCOK" }, d: { en: "IN", id: "IN" }}, correctAnswer: "b", explanation: {en: "The LIKE operator is used in a WHERE clause to search for a specified pattern.", id: "Operator LIKE digunakan dalam klausa WHERE untuk mencari pola tertentu."}},
+          {id: 1006, topic: "SQL", question: {en: "Which command is used to delete all rows in a table without deleting the table itself?", id: "Perintah mana yang digunakan untuk menghapus semua baris dalam tabel tanpa menghapus tabel itu sendiri?"}, options: {a: { en: "DROP TABLE", id: "DROP TABLE" }, b: { en: "DELETE ALL", id: "HAPUS SEMUA" }, c: { en: "TRUNCATE TABLE", id: "TRUNCATE TABLE" }, d: { en: "REMOVE ROWS", id: "HAPUS BARIS" }}, correctAnswer: "c", explanation: {en: "TRUNCATE TABLE quickly removes all rows from a table. DELETE FROM table_name also works but TRUNCATE is generally faster and resets auto-increment.", id: "TRUNCATE TABLE dengan cepat menghapus semua baris dari tabel. DELETE FROM table_name juga berfungsi tetapi TRUNCATE umumnya lebih cepat dan mengatur ulang auto-increment."}},
+          {id: 1007, topic: "SQL", question: {en: "Which aggregate function calculates the number of rows?", id: "Fungsi agregat mana yang menghitung jumlah baris?"}, options: {a: { en: "SUM()", id: "SUM()" }, b: { en: "COUNT()", id: "COUNT()" }, c: { en: "NUM()", id: "NUM()" }, d: { en: "AVG()", id: "AVG()" }}, correctAnswer: "b", explanation: {en: "COUNT() is used to count the number of rows that match a specified criterion.", id: "COUNT() digunakan untuk menghitung jumlah baris yang sesuai dengan kriteria tertentu."}},
+          {id: 1008, topic: "SQL", question: {en: "What does SQL stand for?", id: "Apa kepanjangan dari SQL?"}, options: {a: { en: "Standard Query Language", id: "Standard Query Language" }, b: { en: "Structured Query Language", id: "Structured Query Language" }, c: { en: "Simple Query Logic", id: "Simple Query Logic" }, d: { en: "Sequential Language", id: "Sequential Language" }}, correctAnswer: "b", explanation: {en: "SQL stands for Structured Query Language.", id: "SQL adalah singkatan dari Structured Query Language."}},
+          {id: 1009, topic: "SQL", question: {en: "Which JOIN returns all rows from the left table, and the matched rows from the right table?", id: "JOIN mana yang mengembalikan semua baris dari tabel kiri, dan baris yang cocok dari tabel kanan?"}, options: {a: { en: "INNER JOIN", id: "INNER JOIN" }, b: { en: "RIGHT JOIN", id: "RIGHT JOIN" }, c: { en: "LEFT JOIN", id: "LEFT JOIN" }, d: { en: "FULL JOIN", id: "FULL JOIN" }}, correctAnswer: "c", explanation: {en: "A LEFT JOIN (or LEFT OUTER JOIN) returns all rows from the left table, and the matched rows from the right table. If there is no match, NULL is used for columns from the right table.", id: "LEFT JOIN (atau LEFT OUTER JOIN) mengembalikan semua baris dari tabel kiri, dan baris yang cocok dari tabel kanan. Jika tidak ada yang cocok, NULL digunakan untuk kolom dari tabel kanan."}},
+          {id: 1010, topic: "SQL", question: {en: "Which clause is used to sort the result-set of a query?", id: "Klausa mana yang digunakan untuk mengurutkan hasil kueri?"}, options: {a: { en: "SORT BY", id: "SORT BY" }, b: { en: "ARRANGE BY", id: "ARRANGE BY" }, c: { en: "ORDER BY", id: "ORDER BY" }, d: { en: "GROUP BY", id: "GROUP BY" }}, correctAnswer: "c", explanation: {en: "The ORDER BY clause is used to sort the result-set in ascending or descending order.", id: "Klausa ORDER BY digunakan untuk mengurutkan hasil dalam urutan menaik atau menurun."}},
+          {id: 1011, topic: "SQL", question: {en: "The standard way to check for a NULL value in SQL is:", id: "Cara standar untuk memeriksa nilai NULL di SQL adalah:"}, options: {a: { en: "= NULL", id: "= NULL" }, b: { en: "IS NULL", id: "IS NULL" }, c: { en: "NULL_CHECK", id: "NULL_CHECK" }, d: { en: "== NULL", id: "== NULL" }}, correctAnswer: "b", explanation: {en: "In SQL, you cannot use arithmetic comparison operators (=, <, >) with NULL; you must use IS NULL or IS NOT NULL.", id: "Dalam SQL, Anda tidak dapat menggunakan operator perbandingan aritmatika (=, <, >) dengan NULL; Anda harus menggunakan IS NULL atau IS NOT NULL."}},
+          {id: 1012, topic: "SQL", question: {en: "Which SQL command is used to modify existing records in a table?", id: "Perintah SQL mana yang digunakan untuk memodifikasi catatan yang ada di tabel?"}, options: {a: { en: "MODIFY", id: "MODIFIKASI" }, b: { en: "UPDATE", id: "UPDATE" }, c: { en: "EDIT", id: "EDIT" }, d: { en: "CHANGE", id: "UBAH" }}, correctAnswer: "b", explanation: {en: "The UPDATE statement is used to change existing data in a table.", id: "Pernyataan UPDATE digunakan untuk mengubah data yang ada di tabel."}},
+          {id: 1013, topic: "SQL", question: {en: "What is the primary key constraint used for?", id: "Untuk apa batasan primary key digunakan?"}, options: {a: { en: "To link two tables", id: "Untuk menautkan dua tabel" }, b: { en: "To ensure a column is never NULL", id: "Untuk memastikan kolom tidak pernah NULL" }, c: { en: "To uniquely identify each record", id: "Untuk mengidentifikasi setiap catatan secara unik" }, d: { en: "To enforce data types", id: "Untuk memberlakukan tipe data" }}, correctAnswer: "c", explanation: {en: "A primary key uniquely identifies each record/row in a table and must contain UNIQUE values, and cannot contain NULL values.", id: "Primary key secara unik mengidentifikasi setiap catatan/baris dalam tabel dan harus berisi nilai UNIK, dan tidak boleh berisi nilai NULL."}},
+          {id: 1014, topic: "SQL", question: {en: "Which statement is used to return a limited number of rows in a result set (in MySQL)?", id: "Pernyataan mana yang digunakan untuk mengembalikan jumlah baris terbatas dalam hasil (di MySQL)?"}, options: {a: { en: "TOP", id: "TOP" }, b: { en: "LIMIT", id: "LIMIT" }, c: { en: "MAX_ROWS", id: "MAX_ROWS" }, d: { en: "ROWNUM", id: "ROWNUM" }}, correctAnswer: "b", explanation: {en: "The LIMIT clause is used in MySQL and PostgreSQL to restrict the number of rows returned by the SELECT statement.", id: "Klausa LIMIT digunakan di MySQL dan PostgreSQL untuk membatasi jumlah baris yang dikembalikan oleh pernyataan SELECT."}},
+          {id: 1015, topic: "SQL", question: {en: "Which is not a standard aggregate function in SQL?", id: "Mana yang bukan merupakan fungsi agregat standar di SQL?"}, options: {a: { en: "MAX()", id: "MAX()" }, b: { en: "LAST()", id: "LAST()" }, c: { en: "SUM()", id: "SUM()" }, d: { en: "AVG()", id: "AVG()" }}, correctAnswer: "b", explanation: {en: "MAX, SUM, and AVG are standard. LAST() is often a window function or vendor-specific, but not a standard aggregate.", id: "MAX, SUM, dan AVG adalah standar. LAST() seringkali merupakan window function atau spesifik vendor, tetapi bukan agregat standar."}},
+          {id: 1016, topic: "SQL", question: {en: "Which command removes both the table structure and its data?", id: "Perintah mana yang menghapus struktur tabel dan datanya?"}, options: {a: { en: "DELETE", id: "DELETE" }, b: { en: "TRUNCATE", id: "TRUNCATE" }, c: { en: "DROP", id: "DROP" }, d: { en: "REMOVE", id: "HAPUS" }}, correctAnswer: "c", explanation: {en: "The DROP TABLE command completely removes a table definition and all its data, making it a DDL command.", id: "Perintah DROP TABLE sepenuhnya menghapus definisi tabel dan semua datanya, menjadikannya perintah DDL."}},
+          {id: 1017, topic: "SQL", question: {en: "What is the purpose of the GROUP BY clause?", id: "Apa tujuan klausa GROUP BY?"}, options: {a: { en: "To select unique values", id: "Untuk memilih nilai unik" }, b: { en: "To join two tables", id: "Untuk menggabungkan dua tabel" }, c: { en: "To summarize data based on common column values", id: "Untuk meringkas data berdasarkan nilai kolom umum" }, d: { en: "To sort the results", id: "Untuk mengurutkan hasilnya" }}, correctAnswer: "c", explanation: {en: "GROUP BY groups rows that have the same values in specified columns into summary rows, typically with an aggregate function.", id: "GROUP BY mengelompokkan baris yang memiliki nilai yang sama di kolom tertentu ke dalam baris ringkasan, biasanya dengan fungsi agregat."}},
+          {id: 1018, topic: "SQL", question: {en: "What keyword is used to assign a temporary name to a table or a column?", id: "Kata kunci apa yang digunakan untuk menetapkan nama sementara ke tabel atau kolom?"}, options: {a: { en: "NAME", id: "NAME" }, b: { en: "ALIAS", id: "ALIAS" }, c: { en: "AS", id: "AS" }, d: { en: "TEMP", id: "TEMP" }}, correctAnswer: "c", explanation: {en: "The AS keyword is used to create an alias for a column or a table.", id: "Kata kunci AS digunakan untuk membuat alias untuk kolom atau tabel."}},
+          {id: 1019, topic: "SQL", question: {en: "What is DDL primarily used for?", id: "Untuk apa DDL terutama digunakan?"}, options: {a: { en: "Managing data manipulation", id: "Mengelola manipulasi data" }, b: { en: "Defining and modifying the database schema", id: "Mendefinisikan dan memodifikasi skema database" }, c: { en: "Controlling user access", id: "Mengontrol akses pengguna" }, d: { en: "Executing transactions", id: "Melaksanakan transaksi" }}, correctAnswer: "b", explanation: {en: "DDL stands for Data Definition Language, used to define and modify the structure/schema of the database (e.g., CREATE, DROP, ALTER).", id: "DDL adalah singkatan dari Data Definition Language, digunakan untuk mendefinisikan dan memodifikasi struktur/skema database (misalnya, CREATE, DROP, ALTER)."}},
+          {id: 1020, topic: "SQL", question: {en: "Which type of subquery returns a single value to be used in the outer query?", id: "Jenis subkueri mana yang mengembalikan satu nilai untuk digunakan dalam kueri luar?"}, options: {a: { en: "Correlated Subquery", id: "Subkueri Berkorelasi" }, b: { en: "Scalar Subquery", id: "Subkueri Skalar" }, c: { en: "Row Subquery", id: "Subkueri Baris" }, d: { en: "Table Subquery", id: "Subkueri Tabel" }}, correctAnswer: "b", explanation: {en: "A scalar subquery returns a single row and a single column (a single value), and can be used in most places where a single value is expected.", id: "Subkueri skalar mengembalikan satu baris dan satu kolom (satu nilai), dan dapat digunakan di sebagian besar tempat di mana satu nilai diharapkan."}},
+          {id: 1021, topic: "SQL", question: {en: "Which constraint ensures that all values in a column are different?", id: "Batasan mana yang memastikan bahwa semua nilai dalam kolom berbeda?"}, options: {a: { en: "PRIMARY KEY", id: "PRIMARY KEY" }, b: { en: "FOREIGN KEY", id: "FOREIGN KEY" }, c: { en: "UNIQUE", id: "UNIQUE" }, d: { en: "NOT NULL", id: "NOT NULL" }}, correctAnswer: "c", explanation: {en: "The UNIQUE constraint ensures that all values in a column are unique. Unlike PRIMARY KEY, a table can have multiple UNIQUE constraints and can contain NULL values (depending on the RDBMS).", id: "Batasan UNIQUE memastikan bahwa semua nilai dalam kolom unik. Tidak seperti PRIMARY KEY, sebuah tabel dapat memiliki beberapa batasan UNIQUE dan dapat berisi nilai NULL (tergantung pada RDBMS)."}},
+          {id: 1022, topic: "SQL", question: {en: "What is the correct syntax to create a new user called 'data_analyst' with a password 'secure'?", id: "Apa sintaks yang benar untuk membuat pengguna baru bernama 'data_analyst' dengan kata sandi 'secure'?"}, options: {a: { en: "CREATE USER 'data_analyst' PASSWORD 'secure'", id: "CREATE USER 'data_analyst' PASSWORD 'secure'" }, b: { en: "GRANT USER 'data_analyst' IDENTIFIED BY 'secure'", id: "GRANT USER 'data_analyst' IDENTIFIED BY 'secure'" }, c: { en: "CREATE USER 'data_analyst' IDENTIFIED BY 'secure'", id: "CREATE USER 'data_analyst' IDENTIFIED BY 'secure'" }, d: { en: "ADD USER 'data_analyst' IDENTIFIED WITH 'secure'", id: "ADD USER 'data_analyst' IDENTIFIED WITH 'secure'" }}, correctAnswer: "c", explanation: {en: "The standard SQL command for creating a user is typically CREATE USER ... IDENTIFIED BY ...", id: "Perintah SQL standar untuk membuat pengguna biasanya adalah CREATE USER ... IDENTIFIED BY ..."}},
+          {id: 1023, topic: "SQL", question: {en: "Which set operator returns the common rows between two result sets?", id: "Operator set mana yang mengembalikan baris umum antara dua set hasil?"}, options: {a: { en: "UNION", id: "UNION" }, b: { en: "EXCEPT (or MINUS)", id: "EXCEPT (atau MINUS)" }, c: { en: "INTERSECT", id: "INTERSECT" }, d: { en: "JOIN", id: "JOIN" }}, correctAnswer: "c", explanation: {en: "INTERSECT returns only the rows that are present in both the first and second result sets.", id: "INTERSECT hanya mengembalikan baris yang ada di set hasil pertama dan kedua."}},
+          {id: 1024, topic: "SQL", question: {en: "The command to undo a transaction that has not been permanently saved to the database is:", id: "Perintah untuk membatalkan transaksi yang belum disimpan secara permanen ke database adalah:"}, options: {a: { en: "UNDO", id: "UNDO" }, b: { en: "ROLLBACK", id: "ROLLBACK" }, c: { en: "REVERT", id: "REVERT" }, d: { en: "UNSAVE", id: "UNSAVE" }}, correctAnswer: "b", explanation: {en: "ROLLBACK is a Transaction Control Language (TCL) command used to undo work done since the last COMMIT or ROLLBACK.", id: "ROLLBACK adalah perintah Transaction Control Language (TCL) yang digunakan untuk membatalkan pekerjaan yang dilakukan sejak COMMIT atau ROLLBACK terakhir."}},
+          {id: 1025, topic: "SQL", question: {en: "What is a Foreign Key used for?", id: "Untuk apa Foreign Key digunakan?"}, options: {a: { en: "To uniquely identify a row", id: "Untuk mengidentifikasi baris secara unik" }, b: { en: "To prevent NULL values", id: "Untuk mencegah nilai NULL" }, c: { en: "To link data between two tables", id: "Untuk menautkan data antar dua tabel" }, d: { en: "To define the data type of a column", id: "Untuk menentukan tipe data kolom" }}, correctAnswer: "c", explanation: {en: "A Foreign Key is a field (or collection of fields) in one table that refers to the Primary Key in another table, establishing a link.", id: "Foreign Key adalah bidang (atau kumpulan bidang) di satu tabel yang merujuk ke Primary Key di tabel lain, membangun tautan."}},
+          {id: 1026, topic: "SQL", question: {en: "Which of these is NOT a DML command?", id: "Manakah di antara ini yang BUKAN perintah DML?"}, options: {a: { en: "INSERT", id: "INSERT" }, b: { en: "UPDATE", id: "UPDATE" }, c: { en: "ALTER", id: "ALTER" }, d: { en: "DELETE", id: "DELETE" }}, correctAnswer: "c", explanation: {en: "ALTER TABLE is a DDL (Data Definition Language) command, used for changing the structure. INSERT, UPDATE, and DELETE are DML (Data Manipulation Language).", id: "ALTER TABLE adalah perintah DDL (Data Definition Language), yang digunakan untuk mengubah struktur. INSERT, UPDATE, dan DELETE adalah DML (Data Manipulation Language)."}},
+          {id: 1027, topic: "SQL", question: {en: "What is the purpose of the INDEX in a database table?", id: "Apa tujuan INDEX dalam tabel database?"}, options: {a: { en: "To enforce uniqueness", id: "Untuk memberlakukan keunikan" }, b: { en: "To link tables together", id: "Untuk menautkan tabel bersama" }, c: { en: "To speed up data retrieval", id: "Untuk mempercepat pengambilan data" }, d: { en: "To store large binary files", id: "Untuk menyimpan file biner besar" }}, correctAnswer: "c", explanation: {en: "An index is a pointer to data in a table. It is used to quickly locate data without having to search every row (improving performance).", id: "Indeks adalah penunjuk ke data dalam tabel. Indeks digunakan untuk menemukan data dengan cepat tanpa harus mencari setiap baris (meningkatkan kinerja)."}},
+          {id: 1028, topic: "SQL", question: {en: "What is the default sort order for the ORDER BY clause?", id: "Apa urutan pengurutan default untuk klausa ORDER BY?"}, options: {a: { en: "DESC", id: "DESC" }, b: { en: "RANDOM", id: "RANDOM" }, c: { en: "ASC", id: "ASC" }, d: { en: "By Index", id: "Berdasarkan Indeks" }}, correctAnswer: "c", explanation: {en: "The default sort order is ASC (Ascending). You must explicitly use DESC for Descending order.", id: "Urutan pengurutan default adalah ASC (Ascending). Anda harus secara eksplisit menggunakan DESC untuk urutan Descending."}},
+          {id: 1029, topic: "SQL", question: {en: "Which SQL clause is executed first in a typical SELECT statement?", id: "Klausa SQL mana yang dieksekusi pertama dalam pernyataan SELECT biasa?"}, options: {a: { en: "SELECT", id: "SELECT" }, b: { en: "FROM", id: "FROM" }, c: { en: "WHERE", id: "WHERE" }, d: { en: "ORDER BY", id: "ORDER BY" }}, correctAnswer: "b", explanation: {en: "The logical order of execution starts with FROM (which determines the tables), followed by WHERE (filtering), GROUP BY, HAVING, SELECT, and finally ORDER BY.", id: "Urutan logis eksekusi dimulai dengan FROM (yang menentukan tabel), diikuti oleh WHERE (pemfilteran), GROUP BY, HAVING, SELECT, dan terakhir ORDER BY."}},
+          {id: 1030, topic: "SQL", question: {en: "Which operator is equivalent to using >= AND < (e.g., in checking ranges)?", id: "Operator mana yang setara dengan menggunakan >= DAN < (misalnya, dalam memeriksa rentang)?"}, options: {a: { en: "IN", id: "IN" }, b: { en: "LIKE", id: "LIKE" }, c: { en: "BETWEEN", id: "BETWEEN" }, d: { en: "RANGE", id: "RANGE" }}, correctAnswer: "c", explanation: {en: "The BETWEEN operator selects values within a given range (inclusive), meaning BETWEEN A AND B is equivalent to >= A AND <= B.", id: "Operator BETWEEN memilih nilai dalam rentang tertentu (inklusif), artinya BETWEEN A AND B setara dengan >= A AND <= B."}},
+          {id: 1031, topic: "SQL", question: {en: "In the context of the relational model, what is a 'tuple'?", id: "Dalam konteks model relasional, apa itu 'tuple'?"}, options: {a: { en: "A column", id: "Kolom" }, b: { en: "A table", id: "Tabel" }, c: { en: "A row/record", id: "Baris/catatan" }, d: { en: "A database", id: "Database" }}, correctAnswer: "c", explanation: {en: "In relational algebra, a tuple refers to a row or a record in a table.", id: "Dalam aljabar relasional, tuple mengacu pada baris atau catatan dalam tabel."}},
+          {id: 1032, topic: "SQL", question: {en: "Which command is used to add, delete, or modify columns in an existing table?", id: "Perintah mana yang digunakan untuk menambah, menghapus, atau memodifikasi kolom di tabel yang sudah ada?"}, options: {a: { en: "CREATE TABLE", id: "CREATE TABLE" }, b: { en: "UPDATE TABLE", id: "UPDATE TABLE" }, c: { en: "ALTER TABLE", id: "ALTER TABLE" }, d: { en: "MODIFY TABLE", id: "MODIFY TABLE" }}, correctAnswer: "c", explanation: {en: "ALTER TABLE is a DDL command used to change the structure of an existing table.", id: "ALTER TABLE adalah perintah DDL yang digunakan untuk mengubah struktur tabel yang sudah ada."}},
+          {id: 1033, topic: "SQL", question: {en: "Which constraint is automatically created when a PRIMARY KEY is defined?", id: "Batasan mana yang dibuat secara otomatis ketika PRIMARY KEY didefinisikan?"}, options: {a: { en: "FOREIGN KEY", id: "FOREIGN KEY" }, b: { en: "UNIQUE", id: "UNIQUE" }, c: { en: "CHECK", id: "CHECK" }, d: { en: "DEFAULT", id: "DEFAULT" }}, correctAnswer: "b", explanation: {en: "A Primary Key must inherently contain unique values, so a UNIQUE constraint is automatically enforced, along with NOT NULL.", id: "Primary Key secara inheren harus berisi nilai unik, sehingga batasan UNIQUE secara otomatis diberlakukan, bersama dengan NOT NULL."}},
+          {id: 1034, topic: "SQL", question: {en: "When using the UNION operator, how many columns must the result sets have?", id: "Saat menggunakan operator UNION, berapa banyak kolom yang harus dimiliki oleh set hasil?"}, options: {a: { en: "The same number of columns", id: "Jumlah kolom yang sama" }, b: { en: "Different numbers of columns", id: "Jumlah kolom yang berbeda" }, c: { en: "At least two columns", id: "Minimal dua kolom" }, d: { en: "Only one column", id: "Hanya satu kolom" }}, correctAnswer: "a", explanation: {en: "For UNION, UNION ALL, INTERSECT, and EXCEPT/MINUS, the SELECT statements must have the same number of columns and compatible data types.", id: "Untuk UNION, UNION ALL, INTERSECT, dan EXCEPT/MINUS, pernyataan SELECT harus memiliki jumlah kolom yang sama dan tipe data yang kompatibel."}},
+          {id: 1035, topic: "SQL", question: {en: "What is the main difference between UNION and UNION ALL?", id: "Apa perbedaan utama antara UNION dan UNION ALL?"}, options: {a: { en: "UNION ALL sorts the result", id: "UNION ALL mengurutkan hasil" }, b: { en: "UNION removes duplicate rows", id: "UNION menghapus baris duplikat" }, c: { en: "UNION ALL requires the same column names", id: "UNION ALL membutuhkan nama kolom yang sama" }, d: { en: "UNION works only with two tables", id: "UNION hanya bekerja dengan dua tabel" }}, correctAnswer: "b", explanation: {en: "UNION combines result sets and removes duplicate rows; UNION ALL combines them but keeps all duplicate rows.", id: "UNION menggabungkan set hasil dan menghapus baris duplikat; UNION ALL menggabungkannya tetapi menyimpan semua baris duplikat."}},
+          {id: 1036, topic: "SQL", question: {en: "Which clause is necessary when using an aggregate function without GROUP BY?", id: "Klausa mana yang diperlukan saat menggunakan fungsi agregat tanpa GROUP BY?"}, options: {a: { en: "WHERE", id: "WHERE" }, b: { en: "HAVING", id: "HAVING" }, c: { en: "ORDER BY", id: "ORDER BY" }, d: { en: "None, it's optional", id: "Tidak ada, itu opsional" }}, correctAnswer: "d", explanation: {en: "If no GROUP BY is present, the aggregate function is applied to the entire result set, and no additional clause is required.", id: "Jika tidak ada GROUP BY, fungsi agregat diterapkan ke seluruh set hasil, dan tidak ada klausa tambahan yang diperlukan."}},
+          {id: 1037, topic: "SQL", question: {en: "The EXISTS operator is typically used in conjunction with a:", id: "Operator EXISTS biasanya digunakan bersamaan dengan:"}, options: {a: { en: "JOIN clause", id: "Klausa JOIN" }, b: { en: "Subquery", id: "Subkueri" }, c: { en: "Aggregate function", id: "Fungsi agregat" }, d: { en: "ORDER BY clause", id: "Klausa ORDER BY" }}, correctAnswer: "b", explanation: {en: "EXISTS is used to test for the existence of any records in a subquery, returning TRUE if the subquery returns one or more rows.", id: "EXISTS digunakan untuk menguji keberadaan catatan apa pun dalam subkueri, mengembalikan TRUE jika subkueri mengembalikan satu atau lebih baris."}},
+          {id: 1038, topic: "SQL", question: {en: "What does the acronym TCL stand for?", id: "Apa kepanjangan dari akronim TCL?"}, options: {a: { en: "Table Creation Language", id: "Table Creation Language" }, b: { en: "Transaction Control Language", id: "Transaction Control Language" }, c: { en: "Test Case Language", id: "Test Case Language" }, d: { en: "Temporary Command Language", id: "Temporary Command Language" }}, correctAnswer: "b", explanation: {en: "TCL stands for Transaction Control Language (e.g., COMMIT, ROLLBACK, SAVEPOINT).", id: "TCL adalah singkatan dari Transaction Control Language (misalnya, COMMIT, ROLLBACK, SAVEPOINT)."}},
+          {id: 1039, topic: "SQL", question: {en: "What is the term for a stored query that can be executed as a program or function?", id: "Apa istilah untuk kueri tersimpan yang dapat dieksekusi sebagai program atau fungsi?"}, options: {a: { en: "Macro", id: "Makro" }, b: { en: "Trigger", id: "Pemicu" }, c: { en: "Stored Procedure", id: "Stored Procedure" }, d: { en: "View", id: "View" }}, correctAnswer: "c", explanation: {en: "A Stored Procedure is a set of SQL statements with a name that are pre-compiled and stored in the database, offering improved performance and security.", id: "Stored Procedure adalah sekumpulan pernyataan SQL dengan nama yang telah dikompilasi sebelumnya dan disimpan dalam database, menawarkan peningkatan kinerja dan keamanan."}},
+          {id: 1040, topic: "SQL", question: {en: "Which SQL command is used to remove an index from a table?", id: "Perintah SQL mana yang digunakan untuk menghapus indeks dari tabel?"}, options: {a: { en: "DELETE INDEX", id: "DELETE INDEX" }, b: { en: "REMOVE INDEX", id: "REMOVE INDEX" }, c: { en: "DROP INDEX", id: "DROP INDEX" }, d: { en: "ALTER INDEX", id: "ALTER INDEX" }}, correctAnswer: "c", explanation: {en: "The DROP INDEX command is used to delete an index from the table, often requiring the table name as well (e.g., DROP INDEX index_name ON table_name).", id: "Perintah DROP INDEX digunakan untuk menghapus indeks dari tabel, seringkali juga memerlukan nama tabel (misalnya, DROP INDEX index_name ON table_name)."}},
+          {id: 1041, topic: "SQL", question: {en: "What is a 'View' in SQL?", id: "Apa itu 'View' di SQL?"}, options: {a: { en: "A physical copy of a table", id: "Salinan fisik dari sebuah tabel" }, b: { en: "A virtual table based on the result-set of an SQL statement", id: "Tabel virtual berdasarkan hasil dari pernyataan SQL" }, c: { en: "A graphical representation of the database schema", id: "Representasi grafis dari skema database" }, d: { en: "A temporary table created during query execution", id: "Tabel sementara yang dibuat selama eksekusi kueri" }}, correctAnswer: "b", explanation: {en: "A View is a virtual table whose content is defined by a query. It does not store data but shows the result of the query whenever it is accessed.", id: "View adalah tabel virtual yang kontennya ditentukan oleh kueri. View tidak menyimpan data tetapi menunjukkan hasil kueri setiap kali diakses."}},
+          {id: 1042, topic: "SQL", question: {en: "Which term describes the process of ensuring data accuracy and consistency over its entire life cycle?", id: "Istilah mana yang menggambarkan proses memastikan keakuratan dan konsistensi data selama seluruh siklus hidupnya?"}, options: {a: { en: "Data Normalization", id: "Normalisasi Data" }, b: { en: "Data Integrity", id: "Integritas Data" }, c: { en: "Data Encryption", id: "Enkripsi Data" }, d: { en: "Data Redundancy", id: "Redundansi Data" }}, correctAnswer: "b", explanation: {en: "Data Integrity refers to maintaining and ensuring the accuracy and consistency of data (often enforced via constraints like PRIMARY KEY, FOREIGN KEY, etc.).", id: "Integritas Data mengacu pada pemeliharaan dan penjaminan keakuratan dan konsistensi data (seringkali diberlakukan melalui batasan seperti PRIMARY KEY, FOREIGN KEY, dll.)."}},
+          {id: 1043, topic: "SQL", question: {en: "Which term is used for the column that points to the primary key of another table?", id: "Istilah mana yang digunakan untuk kolom yang menunjuk ke primary key tabel lain?"}, options: {a: { en: "Candidate Key", id: "Candidate Key" }, b: { en: "Super Key", id: "Super Key" }, c: { en: "Foreign Key", id: "Foreign Key" }, d: { en: "Alternate Key", id: "Alternate Key" }}, correctAnswer: "c", explanation: {en: "The Foreign Key is the column that links two tables by referencing the Primary Key of the parent table.", id: "Foreign Key adalah kolom yang menautkan dua tabel dengan mereferensikan Primary Key dari tabel induk."}},
+          {id: 1044, topic: "SQL", question: {en: "Which normalization form requires that there are no partial dependencies of non-key attributes on a composite primary key?", id: "Bentuk normalisasi mana yang mensyaratkan tidak ada ketergantungan parsial atribut non-key pada primary key komposit?"}, options: {a: { en: "1NF", id: "1NF" }, b: { en: "2NF", id: "2NF" }, c: { en: "3NF", id: "3NF" }, d: { en: "BCNF", id: "BCNF" }}, correctAnswer: "b", explanation: {en: "Second Normal Form (2NF) addresses partial dependency: every non-key attribute must be fully dependent on the entire composite primary key.", id: "Bentuk Normal Kedua (2NF) menangani ketergantungan parsial: setiap atribut non-kunci harus sepenuhnya bergantung pada seluruh primary key komposit."}},
+          {id: 1045, topic: "SQL", question: {en: "Which is the most appropriate constraint to put on the `email` column of a `users` table?", id: "Constraint mana yang paling sesuai untuk diletakkan di kolom `email` pada tabel `users`?"}, options: {a: { en: "PRIMARY KEY", id: "PRIMARY KEY" }, b: { en: "NOT NULL", id: "NOT NULL" }, c: { en: "CHECK", id: "CHECK" }, d: { en: "UNIQUE", id: "UNIQUE" }}, correctAnswer: "d", explanation: {en: "Emails must be unique for each user but are not typically used as the primary key. NOT NULL is also often applied, but UNIQUE is the key distinguishing constraint.", id: "Email harus unik untuk setiap pengguna tetapi biasanya tidak digunakan sebagai primary key. NOT NULL juga sering diterapkan, tetapi UNIQUE adalah batasan pembeda yang utama."}}
         ];
-
-        const ALL_QUESTIONS_DATA = ALL_QUESTIONS; // All available questions (45 of them)
-        const QUIZ_SIZE = 10;               // Number of questions to draw for the quiz
-
-        // --- 2. QUIZ STATE VARIABLES ---
-
-        let currentLang = 'en';
-        let quizData = [];         // Stores the 10 questions selected for the current quiz
+        
+        // --- 2. QUIZ LOGIC ---
+        let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
-
-        // --- 3. HELPER FUNCTIONS ---
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        // --- 4. CORE QUIZ LOGIC FUNCTIONS ---
+        let selectedOption = null;
+        let currentLang = 'en'; // 'en' or 'id'
+        const passThreshold = 70; // 70% to pass
+        const NUM_QUESTIONS = 10;
+        
+        // DOM Elements
+        const terminalWrapper = document.getElementById('terminal-wrapper');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const langToggleBtn = document.getElementById('lang-toggle');
+        const langDisplay = document.getElementById('current-lang-display');
+        const quizContainer = document.getElementById('quiz-container');
+        const questionDisplay = document.getElementById('question-display');
+        const indexDisplay = document.getElementById('question-index-display');
+        const barInner = document.getElementById('bar-inner');
+        const submitBtn = document.getElementById('submit-answer-btn');
+        const feedbackDiv = document.getElementById('feedback');
+        const feedbackResult = document.getElementById('feedback-result');
+        const feedbackExplanation = document.getElementById('feedback-explanation');
+        const nextBtn = document.getElementById('next-question-btn');
+        const resultsContainer = document.getElementById('results-container');
 
         function initializeQuiz() {
-            const langToggleBtn = document.getElementById('lang-toggle');
-            const startBtn = document.getElementById('start-quiz-btn');
+            // Reset state
+            currentQuestions = [];
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedOption = null;
             
-            // Check local storage for preferred language
-            const savedLang = localStorage.getItem('quizLang');
-            if (savedLang) {
-                currentLang = savedLang;
-            }
-            
-            // Initial UI setup
-            document.getElementById('current-lang-display').textContent = currentLang.toUpperCase();
-            
-            toggleLanguage(false); // Call to set initial button text (start button) without full re-render
-            
-            langToggleBtn.addEventListener('click', () => toggleLanguage(true));
-            startBtn.addEventListener('click', startQuiz);
-            
-            // Show the main controls and hide the quiz area initially
-            document.getElementById('quiz-container').style.display = 'none';
-        }
+            // Hide everything except the controls header
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'none';
+            feedbackDiv.style.display = 'none';
+            submitBtn.style.display = 'none';
 
-        // The full parameter means the function was called by a button click, triggering a full re-render
-        function toggleLanguage(full = true) {
-            if (full) {
-                currentLang = currentLang === 'en' ? 'id' : 'en';
-                localStorage.setItem('quizLang', currentLang); // Save preference
-                document.getElementById('current-lang-display').textContent = currentLang.toUpperCase();
-            }
+            // Show start button
+            startQuizBtn.style.display = 'inline-block';
             
-            // Update button text that is not dynamically generated
-            const startBtn = document.getElementById('start-quiz-btn');
-            startBtn.textContent = currentLang === 'en' 
-                ? "Start SQL Quiz (10 Qs)" 
-                : "Mulai Kuis SQL (10 Soal)";
-
-            document.getElementById('quiz-topic-title').textContent = currentLang === 'en'
-                ? "SQL Fundamentals"
-                : "Dasar-Dasar SQL";
-            
-            if (full && quizData.length > 0) {
-                if (currentQuestionIndex < QUIZ_SIZE && document.getElementById('quiz-container').style.display !== 'none') {
-                    showQuestion(quizData[currentQuestionIndex]);
-                    // If feedback is showing, re-render it to change language
-                    if(document.getElementById('feedback').style.display !== 'none') {
-                        // Re-run submitAnswer logic to update feedback text based on the stored answer
-                        reRenderFeedback(quizData[currentQuestionIndex]);
-                    }
-                } else if (document.getElementById('results-container').style.display !== 'none') {
-                    showResults(); // Re-render final results
-                }
-            }
-        }
-        
-        // Helper to update feedback text after language toggle
-        function reRenderFeedback(question) {
-            const feedbackEl = document.getElementById('feedback');
-            const userAnswer = document.querySelector('#options-group input[name="answer"]:checked')?.value;
-            
-            if (!userAnswer) return;
-            
-            const isCorrect = userAnswer === question.correctAnswer;
-            const resultText = currentLang === 'en' ? (isCorrect ? "CORRECT 🚀" : "INCORRECT ❌") : (isCorrect ? "BENAR 🚀" : "SALAH ❌");
-            const explanationText = question.explanation[currentLang];
-            
-            document.getElementById('feedback-result').textContent = resultText;
-            
-            // --- FIX APPLIED HERE (Using <strong>) ---
-            document.getElementById('feedback-explanation').innerHTML = `<strong>${currentLang === 'en' ? 'Explanation' : 'Penjelasan'}:</strong> ${explanationText}`;
-            // --- END FIX ---
-            
-            const isLastQuestion = currentQuestionIndex === QUIZ_SIZE - 1;
-            document.getElementById('next-question-btn').textContent = isLastQuestion 
-                ? (currentLang === 'en' ? "Show Results >>" : "Lihat Hasil >>") 
-                : (currentLang === 'en' ? "Next Question >>" : "Soal Berikutnya >>");
-
-            feedbackEl.style.display = 'block';
+            // Set initial language text
+            langDisplay.textContent = currentLang.toUpperCase();
+            startQuizBtn.textContent = currentLang === 'en' ? `Start SQL Quiz (${NUM_QUESTIONS} Qs)` : `Mulai Kuis SQL (${NUM_QUESTIONS} Soal)`;
         }
 
         function startQuiz() {
-            // 1. Reset state
+            // 1. Randomly select questions
+            const shuffled = ALL_QUESTIONS.sort(() => 0.5 - Math.random());
+            currentQuestions = shuffled.slice(0, NUM_QUESTIONS);
+
+            // 2. Reset and Show Quiz UI
             currentQuestionIndex = 0;
             score = 0;
-            
-            // 2. Select and shuffle 10 questions
-            const shuffledQuestions = shuffleArray([...ALL_QUESTIONS_DATA]); // Clone and shuffle all 45
-            quizData = shuffledQuestions.slice(0, QUIZ_SIZE); // Take the first 10
-            
-            // 3. Update UI visibility
-            document.getElementById('start-quiz-btn').style.display = 'none';
-            document.getElementById('results-container').style.display = 'none';
-            document.getElementById('quiz-container').style.display = 'block';
-            document.getElementById('submit-answer-btn').style.display = 'block';
-            document.getElementById('feedback').style.display = 'none'; // Hide feedback from previous round
+            resultsContainer.style.display = 'none';
+            startQuizBtn.style.display = 'none';
+            quizContainer.style.display = 'block';
 
-            // 4. Start the quiz
-            showQuestion(quizData[currentQuestionIndex]);
-
-            // Attach submit/next listeners (safely ensure they are only attached once)
-            document.getElementById('submit-answer-btn').onclick = submitAnswer;
-            document.getElementById('next-question-btn').onclick = nextQuestion;
+            // 3. Display first question
+            displayQuestion();
         }
 
-        function showQuestion(question) {
-            const qDisplay = document.getElementById('question-display');
-            const qIndexDisplay = document.getElementById('question-index-display');
-            const progressBar = document.getElementById('bar-inner');
-            
-            // Update progress bar
-            qIndexDisplay.textContent = `${currentQuestionIndex + 1} / ${QUIZ_SIZE}`;
-            const progressPercent = ((currentQuestionIndex) / QUIZ_SIZE) * 100;
-            progressBar.style.width = `${progressPercent}%`;
-
-            // Clear previous question and feedback
-            qDisplay.innerHTML = '';
-            document.getElementById('feedback').style.display = 'none';
-            document.getElementById('submit-answer-btn').style.display = 'block';
-            document.getElementById('submit-answer-btn').textContent = currentLang === 'en' ? "Submit Answer" : "Kirim Jawaban";
-
-            // --- RENDER QUESTION WITH HARD TAG ---
-            let hardTagHtml = question.hard ? '<span class="hard-tag">HARD</span>' : '';
-            let questionHTML = `<h3>Q${currentQuestionIndex + 1}: ${question.question[currentLang]} ${hardTagHtml}</h3>`;
-            
-            // Render Options (Handles a/b, a/b/c, or a/b/c/d dynamically)
-            questionHTML += '<div id="options-group">';
-            for (const key in question.options) {
-                if (question.options.hasOwnProperty(key)) {
-                    const optionText = question.options[key][currentLang];
-                    questionHTML += `
-                        <label class="option-label">
-                            <input type="radio" name="answer" value="${key}">
-                            <span class="option-text">${key.toUpperCase()}. ${optionText}</span>
-                        </label>
-                    `;
-                }
-            }
-            questionHTML += '</div>';
-
-            qDisplay.innerHTML = questionHTML;
-        }
-
-        function submitAnswer() {
-            const question = quizData[currentQuestionIndex];
-            const optionsGroup = document.getElementById('options-group');
-            const feedbackEl = document.getElementById('feedback');
-            const selectedInput = optionsGroup.querySelector('input[name="answer"]:checked');
-
-            // 1. Validation
-            if (!selectedInput) {
-                alert(currentLang === 'en' ? "Please select an answer." : "Mohon pilih jawaban.");
+        function displayQuestion() {
+            if (currentQuestionIndex >= NUM_QUESTIONS) {
+                showResults();
                 return;
             }
 
-            const userAnswer = selectedInput.value;
-            const isCorrect = userAnswer === question.correctAnswer;
+            const q = currentQuestions[currentQuestionIndex];
+            const options = q.options;
 
-            // 2. Update Score
+            // Reset UI for new question
+            selectedOption = null;
+            feedbackDiv.style.display = 'none';
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            submitBtn.disabled = true; // Disable until an option is selected
+            questionDisplay.classList.remove('correct', 'incorrect');
+            
+            // Update Progress Bar
+            indexDisplay.textContent = `${currentQuestionIndex + 1} / ${NUM_QUESTIONS}`;
+            const progress = (currentQuestionIndex / NUM_QUESTIONS) * 100;
+            barInner.style.width = `${progress}%`;
+
+            // Build Question HTML
+            let optionsHtml = '';
+            for (const key in options) {
+                optionsHtml += `
+                    <label class="option-label" data-option="${key}">
+                        <input type="radio" name="question-${q.id}" value="${key}" onclick="handleOptionSelect('${key}')">
+                        <span class="option-text">(${key.toUpperCase()}) ${options[key][currentLang]}</span>
+                    </label>
+                `;
+            }
+
+            const hardTag = q.hard ? `<span class="hard-tag">HARD</span>` : '';
+            
+            questionDisplay.innerHTML = `
+                <p><strong>${currentLang === 'en' ? 'Question' : 'Pertanyaan'} ${currentQuestionIndex + 1}:</strong>${hardTag}</p>
+                <h3 class="primary-accent-text">${q.question[currentLang]}</h3>
+                <hr class="neon-divider">
+                <div id="options-container">
+                    ${optionsHtml}
+                </div>
+            `;
+            
+            // Attach click handler to labels for better UX
+            document.querySelectorAll('.option-label').forEach(label => {
+                label.onclick = function() {
+                    const option = this.getAttribute('data-option');
+                    handleOptionSelect(option);
+                    // Manually check the radio button inside the label
+                    this.querySelector('input[type="radio"]').checked = true;
+                };
+            });
+        }
+
+        function handleOptionSelect(option) {
+            selectedOption = option;
+            submitBtn.disabled = false;
+        }
+
+        function submitAnswer() {
+            if (!selectedOption) {
+                console.error("No option selected.");
+                // Since alerts are banned, we rely on the button being disabled, but good to have a console check.
+                return;
+            }
+
+            const q = currentQuestions[currentQuestionIndex];
+            const isCorrect = selectedOption === q.correctAnswer;
+            
+            // Disable interactions
+            submitBtn.style.display = 'none';
+            questionDisplay.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+            questionDisplay.querySelectorAll('.option-label').forEach(label => label.onclick = null);
+
+            // Give visual feedback and update score
+            questionDisplay.classList.add(isCorrect ? 'correct' : 'incorrect');
             if (isCorrect) {
                 score++;
             }
 
-            // 3. Update UI to show feedback
-            document.getElementById('submit-answer-btn').style.display = 'none';
-            feedbackEl.style.display = 'block';
-            
-            const resultText = currentLang === 'en' ? (isCorrect ? "CORRECT 🚀" : "INCORRECT ❌") : (isCorrect ? "BENAR 🚀" : "SALAH ❌");
-            const explanationText = question.explanation[currentLang];
-            
-            document.getElementById('feedback-result').textContent = resultText;
-            
-            // --- FIX APPLIED HERE (Using <strong>) ---
-            document.getElementById('feedback-explanation').innerHTML = `<strong>${currentLang === 'en' ? 'Explanation' : 'Penjelasan'}:</strong> ${explanationText}`;
-            // --- END FIX ---
-            
-            // Update Next button text
-            const isLastQuestion = currentQuestionIndex === QUIZ_SIZE - 1;
-            document.getElementById('next-question-btn').textContent = isLastQuestion 
-                ? (currentLang === 'en' ? "Show Results >>" : "Lihat Hasil >>") 
-                : (currentLang === 'en' ? "Next Question >>" : "Soal Berikutnya >>");
-
-            // 4. Highlight correct/incorrect options
-            const labels = optionsGroup.querySelectorAll('.option-label');
-            labels.forEach(label => {
-                const radio = label.querySelector('input');
-                // Disable all radios
-                radio.disabled = true;
-
-                if (radio.value === question.correctAnswer) {
+            // Highlight correct/incorrect choice
+            const optionLabels = questionDisplay.querySelectorAll('.option-label');
+            optionLabels.forEach(label => {
+                const optionKey = label.querySelector('input[type="radio"]').value;
+                label.classList.remove('correct', 'incorrect');
+                if (optionKey === q.correctAnswer) {
                     label.classList.add('correct');
-                } else if (radio.value === userAnswer) {
+                } else if (optionKey === selectedOption && !isCorrect) {
                     label.classList.add('incorrect');
                 }
             });
+
+            // Show feedback
+            feedbackResult.textContent = isCorrect ? 
+                (currentLang === 'en' ? ":: ACCESS GRANTED :: Correct!" : ":: AKSES DITERIMA :: Benar!") : 
+                (currentLang === 'en' ? ":: ACCESS DENIED :: Incorrect." : ":: AKSES DITOLAK :: Salah.");
+            
+            feedbackExplanation.innerHTML = `
+                <p><strong>${currentLang === 'en' ? 'Explanation' : 'Penjelasan'}:</strong></p>
+                <p>${q.explanation[currentLang]}</p>
+            `;
+            feedbackDiv.style.display = 'block';
+
+            // Show next button
+            nextBtn.textContent = currentLang === 'en' ? "Next Question >>" : "Pertanyaan Selanjutnya >>";
+            nextBtn.style.display = 'inline-block';
+
         }
 
         function nextQuestion() {
             currentQuestionIndex++;
-            
-            if (currentQuestionIndex < QUIZ_SIZE) {
-                showQuestion(quizData[currentQuestionIndex]);
-            } else {
-                showResults();
-            }
+            selectedOption = null;
+            displayQuestion();
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            initializeQuiz();
         }
 
         function showResults() {
-            const container = document.getElementById('results-container');
-            const total = QUIZ_SIZE;
-            const percent = (score / total) * 100;
-            const passThreshold = 70; // Set a passing score threshold
-            
-            document.getElementById('quiz-container').style.display = 'none';
-            container.style.display = 'block';
+            // Update final progress bar
+            barInner.style.width = '100%';
+            indexDisplay.textContent = `${NUM_QUESTIONS} / ${NUM_QUESTIONS}`;
 
-            const feedbackMessage = currentLang === 'en' 
-                ? `Total Score: ${score} / ${total}` 
-                : `Skor Total: ${score} / ${total}`;
-            
-            // --- UPDATED TEXT: Data Sensei -> Data Expert ---
-            const finalVerdict = currentLang === 'en' 
-                ? (percent >= passThreshold ? 
-                    `// STATUS: ACCESS GRANTED. Excellent work, Data Expert! You passed the SQL knowledge check.` : 
-                    `// STATUS: ACCESS DENIED. You need a score of ${passThreshold}% or higher. Review the fundamentals and try again.`)
-                : (percent >= passThreshold ? 
-                    `// STATUS: ACCESS GRANTED. Kerja bagus, Data Expert! Anda lulus tes pengetahuan SQL.` : 
-                    `// STATUS: ACCESS DENIED. Anda butuh skor ${passThreshold}% atau lebih tinggi. Tinjau kembali dasarnya dan coba lagi.`);
-            // --- END UPDATED TEXT ---
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
 
+            const container = resultsContainer;
+            const percent = (score / NUM_QUESTIONS) * 100;
+            const feedbackMessage = currentLang === 'en' ? 
+                `Final Score: ${score} out of ${NUM_QUESTIONS}` : 
+                `Skor Akhir: ${score} dari ${NUM_QUESTIONS}`;
+            
+            const finalVerdict = currentLang === 'en' ? 
+                (percent >= 90 ? 
+                    '// STATUS: HACKER LEVEL. Exceptional SQL knowledge. You may proceed with the data stream.' : 
+                    (percent >= passThreshold ? 
+                        '// STATUS: ACCESS GRANTED. Good job, Data Expert! You passed the SQL knowledge test.' : 
+                        `// STATUS: ACCESS DENIED. You need ${passThreshold}% or higher. Review the fundamentals and try again.`))
+                : (percent >= 90 ? 
+                    '// STATUS: HACKER LEVEL. Pengetahuan SQL yang luar biasa. Anda bisa melanjutkan dengan aliran data.' : 
+                    (percent >= passThreshold ? 
+                        '// STATUS: ACCESS GRANTED. Kerja bagus, Data Expert! Anda lulus tes pengetahuan SQL.' : 
+                        `// STATUS: ACCESS DENIED. Anda butuh skor ${passThreshold}% atau lebih tinggi. Tinjau kembali dasarnya dan coba lagi.`));
+            
             const buttonText = currentLang === 'en' ? "Restart Quiz (10 Qs)" : "Mulai Ulang Kuis (10 Soal)";
 
             container.innerHTML = `
@@ -1430,6 +732,11 @@
         }
 
         // --- 5. INITIALIZE ON LOAD ---
+        langToggleBtn.onclick = toggleLanguage;
+        startQuizBtn.onclick = startQuiz;
+        submitBtn.onclick = submitAnswer;
+        nextBtn.onclick = nextQuestion;
+
         document.addEventListener('DOMContentLoaded', initializeQuiz);
     </script>
 </body>
