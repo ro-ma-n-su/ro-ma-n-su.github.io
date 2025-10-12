@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Quest of the Data Sensei</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"/>
+    
+    <style>
+        /* --- Neon/Dark Aesthetic based on user's portfolio snippets --- */
+        :root {
+            --neon-blue: #25F4EE; /* Secondary highlight color (kept for contrast) */
+            --neon-orange: #FF5C00; /* Primary highlight color */
+            --dark-bg: #212529;
+            --card-bg: #1e1e1e;
+            --text-light: #f8f9fa;
+            --text-muted: #888;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .adventure-container {
+            max-width: 900px;
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 2px solid var(--neon-orange);
+            box-shadow: 0 0 15px var(--neon-orange);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            margin: auto;
+        }
+
+        h1 {
+            color: var(--neon-orange);
+            font-weight: 700;
+            text-shadow: 0 0 8px var(--neon-orange);
+            margin-bottom: 25px;
+        }
+
+        .narrative {
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 3px solid var(--neon-blue);
+            text-align: left;
+            background-color: rgba(0, 255, 255, 0.05);
+        }
+
+        /* --- Choice Button Styling --- */
+        .choice-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--neon-blue);
+            color: var(--text-light);
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: block; 
+            width: 100%;
+            text-align: left;
+        }
+
+        .choice-btn:hover {
+            background-color: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 10px var(--neon-blue);
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+        
+        /* Styling for the Novice option to make it distinct */
+        .choice-btn.novice-choice {
+            background-color: #333; /* Darker/Muted background */
+            border-color: var(--text-muted);
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .choice-btn.novice-choice:hover {
+            background-color: #555; 
+            border-color: var(--text-light);
+            color: var(--text-light);
+            box-shadow: none;
+        }
+
+
+        .choice-btn i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: var(--neon-orange);
+            transition: color 0.3s ease;
+        }
+        
+        .choice-btn.novice-choice i {
+            color: var(--text-muted);
+        }
+
+        .choice-btn:hover i {
+            color: var(--dark-bg);
+        }
+
+        /* --- Input Styling --- */
+        .name-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--neon-orange);
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* --- Verdict Section Styling --- */
+        .verdict-box {
+            border: 2px dashed var(--neon-orange);
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 8px;
+            background-color: rgba(255, 92, 0, 0.05);
+            text-align: left;
+        }
+
+        .verdict-box h2 {
+            color: var(--neon-blue);
+            margin-top: 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .skill-list li {
+            margin-bottom: 10px;
+        }
+
+        /* This is the key styling to color the bold text in the list items */
+        .skill-list strong {
+            color: var(--neon-orange);
+        }
+
+        /* --- Footer Buttons --- */
+        .footer-buttons button,
+        .footer-buttons a {
+            font-weight: 700;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block; 
+            text-align: center; 
+        }
+
+        .retake-btn {
+            background-color: var(--neon-orange);
+            color: var(--dark-bg);
+            border: 2px solid var(--neon-orange);
+        }
+
+        .retake-btn:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 8px var(--neon-orange);
+        }
+        
+        .index-btn {
+            background-color: transparent;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+        }
+
+        .index-btn:hover {
+            background-color: var(--neon-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 8px var(--neon-blue);
+        }
+        
+        /* === Fixes for Intro Page === */
+        .intro-box {
+            max-width: 500px; 
+            margin: 0 auto;
+        }
+
+        .intro-box p.h4 {
+            font-size: 1.15rem; 
+            white-space: nowrap; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .intro-box .retake-btn {
+            display: block; 
+            text-align: center; 
+            padding-left: 0; 
+            padding-right: 0;
+            width: 100%;
+        }
+        /* ============================ */
+    </style>
+</head>
+<body>
+
+<div class="adventure-container">
+    <h1>The Quest of the Data Sensei</h1>
+    <div id="game-area">
+        </div>
+</div>
+
+<script>
+    // --- Game State Management ---
+    let userName = '';
+    let currentLayer = 0; // Start at 0 for the intro screen
+    let pathHistory = {};
+    let dominantPath = null; // Tachi (A), Kagami (B), Fude (C)
+    let noviceChoiceCount = 0; // Tracks if the user picked the novice option
+
+    const gameArea = document.getElementById('game-area');
+
+    // Helper function to replace markdown bolding with strong tags
+    const formatBold = (text) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // The universal novice choice object
+    const noviceChoice = { 
+        id: 'Novice', 
+        text: "I am not sure. My current focus is still on foundational analytics.", 
+        icon: 'fas fa-graduation-cap', 
+        nextLayer: 4 
+    };
+
+    // --- Content Data Structure ---
+    const content = {
+        0: {
+            // Initial Landing Page for Name Input
+            prompt: "Ocha-Sensei awaits your name to begin the mission.",
+            input: true,
+            buttonText: "Begin The Quest",
+            icon: 'fas fa-arrow-right'
+        },
+        1: {
+            // Layer 1: The Call and the Artifact (First Narrative Screen)
+            narrative: (name) => `The mission briefing arrives from **Ocha-Sensei**, a respected senior analyst. The message is urgent: 'The **Yokai of Low Retention** threatens the integrity of our project. You must defeat it, **${name}**. Choose the artifact that defines your analytical spirit, for it sets your course.'`,
+            prompt: "Which artifact do you carry into the Data Dojo?",
+            choices: [
+                { id: 'A', text: "The **Tachi (Long Sword)**: Focus on Action & Speed (Predictive Modeling)", icon: 'fas fa-hand-rock', path: 'A', nextLayer: 2 },
+                { id: 'B', text: "The **Kagami (Shield)**: Focus on Integrity & Foundation (Data Engineering)", icon: 'fas fa-shield-alt', path: 'B', nextLayer: 2 },
+                { id: 'C', text: "The **Fude (Brush)**: Focus on Insight & Narrative (Text Analysis)", icon: 'fas fa-feather-alt', path: 'C', nextLayer: 2 }
+            ]
+        },
+        // --- Layer 2: Core Challenge (Branches A, B, C based on L1) ---
+        2: {
+            A: {
+                narrative: (name) => `Speed is our only defense, **${name}**. Ocha-Sensei demands a predictive model in 48 hours. **Your mission is to find the fastest path to a predictive output.** But which dataset do we trust right now?`,
+                prompt: "Your Tactical Decision:",
+                choices: [
+                    { id: 'A2.1', text: "The **Untested Data**: Use the raw, uncleaned data immediately to save time, hoping the noise doesn't matter much.", nextLayer: 3, result: 'A3.1' },
+                    { id: 'A2.2', text: "The **Quick Fix**: Run a single Python cleaning script to fix only the timestamps and nulls, delaying the model by 6 hours.", nextLayer: 3, result: 'A3.2' },
+                    noviceChoice
+                ]
+            },
+            B: {
+                narrative: (name) => `The system is weak, **${name}**. No analysis is sound on poor data. **Your mission is to establish a robust and permanent data pipeline.** Do we patch the leak, or rebuild the reservoir?`,
+                prompt: "Your Foundational Decision:",
+                choices: [
+                    { id: 'B2.1', text: "The **Patch**: Fix the database entries using complex SQL Window Functions and CTEs to deduplicate data.", nextLayer: 3, result: 'B3.1' },
+                    { id: 'B2.2', text: "The **Rebuild**: Halt all operations. Design a new **dbt/Airflow** workflow to govern future data quality.", nextLayer: 3, result: 'B3.2' },
+                    noviceChoice
+                ]
+            },
+            C: {
+                narrative: (name) => `The raw numbers are silent, **${name}**. The answer lies in the unsaid. **Your mission is to find the hidden 'Why' behind the drop-off.** We need context. How do we turn whispers into evidence?`,
+                prompt: "Your Insight Decision:",
+                choices: [
+                    { id: 'C2.1', text: "The **Survey**: Propose a large-scale user survey to gather structured, quantitative feedback on content quality.", nextLayer: 3, result: 'C3.1' },
+                    { id: 'C2.2', text: "The **Scrolls**: Mine the *raw text feedback* from app reviews and support tickets for immediate, unstructured context.", nextLayer: 3, result: 'C3.2' },
+                    noviceChoice
+                ]
+            }
+        },
+        // --- Layer 3: Mid-Journey Test (Funnels into Layer 4) ---
+        3: {
+            narrative: (name, result) => {
+                const results = {
+                    'A3.1': `You launched the quick model on dirty data. **Model Failure!** It produced garbage results (50% accuracy). Ocha-Sensei gives you a stern look, **${name}**. **Immediate need: Backtrack to better data.**`,
+                    'A3.2': `The quick-fix model gives acceptable (65%) results. Ocha-Sensei approves. **Immediate need: Stabilize and understand the model's features.**`,
+                    'B3.1': `Your complex SQL solution works, but the query takes 15 minutes to run every time. Ocha-Sensei sighs. **Immediate need: Automate the slow query and make it scalable.**`,
+                    'B3.2': `Architectural Victory! The new data warehouse is clean, but the stakeholder is confused by the new system. **Immediate need: Explain the value to the business.**`,
+                    'C3.1': `The survey is launched, but results will take two weeks. Ocha-Sensei is impatient. **Immediate need: Find a faster, alternative source of insight.**`,
+                    'C3.2': `Text Overload! You have 10,000 feedback messages. Reading them all is impossible. **Immediate need: Tool to process the text at scale.**`,
+                    'Novice': `You admit the mission is too complex right now. Ocha-Sensei nods. "**${name}**, you have shown the wisdom to know your limits. Focus is a strength. We will skip ahead, but first, you must decide your reward."`
+                };
+                return results[result];
+            },
+            prompt: "The path is long, and your spirit is weary. Ocha-Sensei notices your fatigue.",
+            choices: [
+                { id: 'Next', text: "Continue the Journey and Focus on the Reward.", nextLayer: 4, icon: 'fas fa-arrow-alt-circle-right' }
+            ]
+        },
+        // --- Layer 4: The Push (Vacation) ---
+        4: {
+            narrative: (name) => `The pressure is immense, **${name}**. To find the strength for the final push, look ahead. Ocha-Sensei: 'What grand vision do you hold onto—the destination that awaits your victorious return—to re-ignite your focus?'`,
+            prompt: "Your Motivation Choice (Choose your reward):",
+            choices: [
+                { id: 'A4.1', text: "The **Bustling City**: A week exploring the hyper-modern architecture and electric energy of Tokyo/Shinjuku.", icon: 'fas fa-city', nextLayer: 5 },
+                { id: 'A4.2', text: "The **Ancient Temples**: A retreat to the serene, historical gardens and temples of Kyoto.", icon: 'fas fa-mountain', nextLayer: 5 }
+            ]
+        },
+        // --- Layer 5: The Final Solution (Funnels into Layer 6) ---
+        5: {
+            A: { // Tachi Path Challenge (MLOps)
+                narrative: (name) => `Your model is now acceptable, **${name}**, but it needs to be production-ready and auto-retrain every night. **How do you automate this and deploy it to the live application?**`,
+                prompt: "Your Final Solution:",
+                choices: [
+                    { id: 'A5.1', text: "Focus on **Container Orchestration** (Docker, Kubernetes) to manage auto-retraining and scalable deployment.", nextLayer: 6 },
+                    { id: 'A5.2', text: "Use a **Managed ML Endpoint** (SageMaker, Vertex AI) to simplify deployment and auto-scale the model API.", nextLayer: 6 },
+                    noviceChoice
+                ]
+            },
+            B: { // Kagami Path Challenge (Data Engineering)
+                narrative: (name) => `The clean data you created, **${name}**, needs to be delivered reliably and scalably to multiple dashboards and analysts. **How do you move from manual SQL scripts to an automated data product?**`,
+                prompt: "Your Final Solution:",
+                choices: [
+                    { id: 'B5.1', text: "Focus on **Data Engineering Tools** (dbt, Airflow, ETL/ELT) to manage workflow and dependencies.", nextLayer: 6 },
+                    { id: 'B5.2', text: "Focus on **Cloud Services** to manage batch jobs (AWS Glue, GCP Dataflow, Azure Data Factory).", nextLayer: 6 },
+                    noviceChoice
+                ]
+            },
+            C: { // Fude Path Challenge (Insight/Communication)
+                narrative: (name) => `You've confirmed the 'Curse of Complexity', **${name}**. Now, you must make the technical report clear and impactful enough for the non-technical C-suite. **How do you present the narrative?**`,
+                prompt: "Your Final Solution:",
+                choices: [
+                    { id: 'C5.1', text: "Create a high-fidelity **Interactive Report** (D3.js, Tableau) focused on data storytelling and emotional impact.", nextLayer: 6 },
+                    { id: 'C5.2', text: "Develop a **Stakeholder Communication Plan** and present a 5-slide deck using simple, business-focused metrics and clear next steps.", nextLayer: 6 },
+                    noviceChoice
+                ]
+            }
+        },
+        // --- Layer 6: The Verdict ---
+        6: {
+            narrative: (name, path) => {
+                const skillMaps = {
+                    'A': { title: "Tachi (Action & Speed)", icon: 'fas fa-hand-rock', skills: ["MLOps / Model Deployment & Automation", "Python Production Coding"], bonus: "Cloud Infrastructure (AWS/GCP/Azure)" },
+                    'B': { title: "Kagami (Integrity & Foundation)", icon: 'fas fa-shield-alt', skills: ["Data Engineering / Pipeline Orchestration (dbt/Airflow)", "Cloud Data Warehousing (Snowflake/BigQuery)"], bonus: "Advanced SQL Window Functions & CTEs" },
+                    'C': { title: "Fude (Insight & Narrative)", icon: 'fas fa-feather-alt', skills: ["Natural Language Processing (NLP) & LLM Prompting", "Interactive Storytelling with D3.js/GSAP"], bonus: "A/B Testing and Experimental Design" }
+                };
+                
+                let result = skillMaps[path];
+
+                // Override skills for Novice Path
+                if (noviceChoiceCount > 0) {
+                    result.skills = [
+                        "Mastering Foundational SQL (Joins, Aggregation, CTEs)", 
+                        "Data Visualization and Communication (Tableau/Power BI)"
+                    ];
+                    // Keep the bonus skill from the dominant path but frame it as "Future Mastery"
+                    result.bonus = `Future Mastery: ${result.bonus}`;
+                    result.title = "Foundational Analyst"; // Change title for Novice path
+                }
+
+
+                let html = `
+                <i class="${result.icon}" style="font-size: 3rem; color: var(--neon-orange); text-shadow: 0 0 5px var(--neon-orange);"></i>
+                <div class="verdict-box">
+                    <h2>The Treasure: Your Skill Mastery Map</h2>
+                    <p>Your journey is over, **${name}**. Ocha-Sensei meets you in the dojo and says: "You have shown remarkable intuition for **${result.title}** during this quest. This success is only the beginning. Based on the decisions you made when facing true chaos, I present your map for future mastery."</p>
+                    
+                    <h4>Ocha-Sensei’s Top 2 Recommendations:</h4>
+                    <ul class="skill-list">
+                        <li><strong>1. ${result.skills[0]}:</strong> <em>"You are a specialist. Now, master the art of the forge to ensure your blade/shield/brush can strike/hold/write tirelessly."</em></li>
+                        <li><strong>2. ${result.skills[1]}:</strong> <em>"You have demonstrated a core strength. Solidify this expertise to become indispensable."</em></li>
+                    </ul>
+                    
+                    <h4>Ocha-Sensei's Additional Secret:</h4>
+                    <ul class="skill-list" style="margin-top: -10px;">
+                        <li><strong>3. ${result.bonus}:</strong> <em>"To be a true Sensei, you must also command the supporting arts. This is your next secret discipline."</em></li>
+                    </ul>
+                </div>`;
+                return html;
+            }
+        }
+    };
+
+    // --- Game Logic Functions ---
+
+    function startGame() {
+        userName = '';
+        currentLayer = 0;
+        pathHistory = {};
+        dominantPath = null;
+        noviceChoiceCount = 0; // Reset novice counter
+        renderLayer(0);
+    }
+
+    function renderLayer(layerNum) {
+        let layerData = content[layerNum];
+        let html = '';
+        const name = userName || 'Analyst';
+
+        // Logic to select the correct branch for layers 1, 2, and 5
+        if (layerNum === 1 || layerNum === 2 || layerNum === 5) {
+            const pathKey = dominantPath;
+            layerData = content[layerNum][pathKey] || layerData;
+        }
+
+        // --- Layer 0: Name Input Screen ---
+        if (layerNum === 0) {
+            html += `
+                <div class="intro-box">
+                    <p class="h4 my-4" style="color: var(--neon-blue);">Enter your name to accept the mission from Ocha-Sensei.</p>
+                    <input type="text" id="name-input" class="name-input" placeholder="Your Name" value="${userName}" autofocus />
+                    <button class="retake-btn btn" style="width: 100%; border: none; margin-top: 15px;" onclick="handleNameInput()"><i class="${layerData.icon}"></i> ${layerData.buttonText}</button>
+                </div>
+            `;
+            gameArea.innerHTML = html;
+            document.getElementById('name-input').focus();
+            currentLayer = layerNum;
+            return; 
+        }
+
+        // --- Narrative Section (Layers 1-6) ---
+        if (layerNum > 0) {
+            let narrativeText = layerData.narrative;
+            // The path history check for Layer 3's narrative needs the L2 result
+            const historyResult = pathHistory[2] ? pathHistory[2] : null; // Changed to use the ID directly
+            
+            if (layerNum === 3 && historyResult) {
+                narrativeText = narrativeText(name, historyResult);
+            } else if (typeof narrativeText === 'function') {
+                narrativeText = narrativeText(name);
+            }
+            
+            // Render the narrative, replacing **text** with <strong>text</strong>
+            html += `<div class="narrative">${formatBold(narrativeText)}</div>`;
+        }
+
+        // --- Prompt and Choices ---
+        html += `<h3>${layerData.prompt}</h3>`;
+        html += `<div class="row justify-content-center mt-4">`;
+
+        layerData.choices.forEach(choice => {
+            const icon = choice.icon || 'fas fa-code';
+            const choiceId = choice.id;
+            
+            // Determine the click handler parameters
+            let next = choice.nextLayer || layerNum + 1;
+            let clickHandler = `handleChoice('${choiceId}', ${next})`;
+
+            // Apply specific class for the novice choice
+            const buttonClass = (choiceId === 'Novice') ? 'choice-btn novice-choice' : 'choice-btn';
+
+            // Correctly format the choice text
+            const formattedText = formatBold(choice.text);
+
+            html += `
+                <div class="col-md-6 mb-3">
+                    <button class="${buttonClass}" onclick="${clickHandler}">
+                        <i class="${icon}"></i> ${formattedText}
+                    </button>
+                </div>`;
+        });
+        html += `</div>`;
+
+        gameArea.innerHTML = html;
+        currentLayer = layerNum;
+    }
+    
+    function handleNameInput() {
+        const inputElement = document.getElementById('name-input');
+        const name = inputElement.value.trim();
+        if (!name) {
+            alert("Ocha-Sensei requires a name to begin the mission.");
+            return;
+        }
+        userName = name;
+        renderLayer(1); // Move to Layer 1 (First narrative/choice)
+    }
+
+    function handleChoice(choiceId, nextLayer) {
+        // 1. Set the dominant path on Layer 1 choice
+        if (currentLayer === 1) {
+            dominantPath = choiceId; // Set the main path (A, B, or C)
+        }
+        
+        // 2. Handle the Novice Choice and skip to Layer 4 immediately (if not already there)
+        if (choiceId === 'Novice') {
+            noviceChoiceCount++; // Increment counter
+            pathHistory[currentLayer] = choiceId;
+            nextLayer = 4; // Skip to Layer 4 (vacation)
+        } else if (currentLayer === 2) {
+             // For layer 2, store the result ID (e.g., A3.1 or A3.2) for the Layer 3 narrative
+            const choiceObject = content[currentLayer][dominantPath].choices.find(c => c.id === choiceId);
+            pathHistory[currentLayer] = choiceObject.result; 
+        } else {
+            // 3. Record the choice 
+            pathHistory[currentLayer] = choiceId;
+        }
+        
+        // 4. Move to next layer or final verdict
+        if (nextLayer === 6) {
+            renderVerdict();
+        } else {
+            renderLayer(nextLayer);
+        }
+    }
+
+    function renderVerdict() {
+        const name = userName;
+        const finalPath = dominantPath;
+        let html = content[6].narrative(name, finalPath);
+
+        // Render the verdict, replacing **text** with <strong>text</strong>
+        html = formatBold(html);
+
+        // Add the final buttons
+        html += `
+        <div class="footer-buttons mt-5">
+            <button class="btn retake-btn" onclick="startGame()"><i class="fas fa-redo-alt"></i> Retake The Quest</button>
+            <a href="index.html" class="btn index-btn"><i class="fas fa-home"></i> Return to Portfolio Index</a>
+        </div>`;
+
+        gameArea.innerHTML = html;
+    }
+
+    // Initialize the game
+    startGame();
+</script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
