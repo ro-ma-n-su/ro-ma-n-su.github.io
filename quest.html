@@ -9,13 +9,21 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"/>
     
     <style>
-        /* --- Neon/Dark Aesthetic based on user's portfolio snippets --- */
+        /* --- Root Variables Merged for Consistency --- */
         :root {
-            --neon-blue: #25F4EE; /* Secondary highlight color (kept for contrast) */
-            --neon-orange: #FF5C00; /* Primary highlight color */
-            --dark-bg: #212529;
+            /* Variables based on index(8).html (TikTok style) */
+            --pink-neon: #FE2C55; 
+            --blue-neon: #25F4EE; 
+            --dark: #212529;
+            --light: #f8f9fa;
+
+            /* Variables from quest.html */
+            --neon-orange: #FF5C00; 
+            
+            /* Mapping variables */
+            --dark-bg: var(--dark);
             --card-bg: #1e1e1e;
-            --text-light: #f8f9fa;
+            --text-light: var(--light);
             --text-muted: #888;
         }
 
@@ -25,11 +33,91 @@
             font-family: 'Roboto', sans-serif;
             min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            flex-direction: column; 
+            justify-content: space-between;
+            padding-top: 60px; /* Space for fixed navbar */
+            padding-bottom: 0;
+        }
+        
+        /* Wrapper to contain the game content and ensure it takes up vertical space */
+        .adventure-container-wrapper {
+             flex-grow: 1;
+             display: flex;
+             align-items: center; 
+             justify-content: center;
+             padding: 20px 0;
         }
 
+        /* --- Navbar Styles from index(8).html --- */
+        #navbar {
+            background: var(--dark) !important; 
+            border-bottom: 2px solid var(--pink-neon); 
+        }
+        #navbar .navbar-brand h1 {
+            color: var(--blue-neon) !important; 
+        }
+        #navbar .nav-link {
+            color: var(--blue-neon) !important; 
+            font-weight: 700;
+        }
+        /* Active link uses pink neon */
+        #navbar .nav-item .nav-link.active:not(.dropdown-item) {
+            color: var(--pink-neon) !important; 
+        }
+        /* Hover link uses pink neon */
+        #navbar .nav-item .nav-link:hover:not(.dropdown-item) {
+            color: var(--pink-neon) !important; 
+        }
+        /* Dropdown styling */
+        .dropdown-menu {
+            background-color: var(--dark) !important;
+            border: 1px solid var(--pink-neon) !important;
+        }
+        .dropdown-item {
+            color: var(--blue-neon) !important;
+        }
+        .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
+            background-color: var(--pink-neon) !important;
+            color: var(--dark) !important;
+        }
+        /* Desktop dropdown hover functionality */
+        @media (min-width: 992px) {
+            .nav-item.dropdown:hover .dropdown-menu {
+                display: block;
+            }
+            .nav-item.dropdown .nav-link {
+                cursor: pointer;
+            }
+        }
+
+        /* --- Footer Styles from index(8).html --- */
+        .footer-container {
+            background-color: var(--blue-neon) !important;
+            color: var(--dark) !important;
+        }
+        .footer-container h4, .footer-container p, .footer-container a {
+            color: var(--dark) !important;
+        }
+        .btn-social {
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer-social a {
+            border: 1px solid var(--dark); 
+            color: var(--dark); 
+            background: var(--light); 
+        }
+        .footer-social a:hover {
+            background: var(--dark); 
+            border-color: var(--light); 
+            color: var(--light) !important; 
+        }
+        
+        /* --- Original quest.html Game Styles (Retained) --- */
         .adventure-container {
             max-width: 900px;
             width: 100%;
@@ -41,27 +129,23 @@
             text-align: center;
             margin: auto;
         }
-
         h1 {
             color: var(--neon-orange);
             font-weight: 700;
-            text-shadow: 0 0 8px var(--neon-orange);
+            /*text-shadow: 0 0 8px var(--neon-orange);*/
             margin-bottom: 25px;
         }
-
         .narrative {
             font-size: 1.15rem;
             margin-bottom: 30px;
             padding: 15px;
-            border-left: 3px solid var(--neon-blue);
+            border-left: 3px solid var(--blue-neon);
             text-align: left;
             background-color: rgba(0, 255, 255, 0.05);
         }
-
-        /* --- Choice Button Styling --- */
         .choice-btn {
             background-color: var(--card-bg);
-            border: 1px solid var(--neon-blue);
+            border: 1px solid var(--blue-neon);
             color: var(--text-light);
             padding: 15px 25px;
             margin: 10px;
@@ -73,15 +157,13 @@
             width: 100%;
             text-align: left;
         }
-
         .choice-btn:hover {
-            background-color: var(--neon-blue);
+            background-color: var(--blue-neon);
             color: var(--dark-bg);
-            box-shadow: 0 0 10px var(--neon-blue);
+            box-shadow: 0 0 10px var(--blue-neon);
             transform: translateY(-2px);
             cursor: pointer;
         }
-        
         /* Styling for the Novice option to make it distinct */
         .choice-btn.novice-choice {
             background-color: #333; /* Darker/Muted background */
@@ -112,8 +194,6 @@
         .choice-btn:hover i {
             color: var(--dark-bg);
         }
-
-        /* --- Input Styling --- */
         .name-input {
             width: 100%;
             padding: 12px;
@@ -125,8 +205,6 @@
             text-align: center;
             font-size: 1.1rem;
         }
-        
-        /* --- Verdict Section Styling --- */
         .verdict-box {
             border: 2px dashed var(--neon-orange);
             padding: 25px;
@@ -135,25 +213,19 @@
             background-color: rgba(255, 92, 0, 0.05);
             text-align: left;
         }
-
         .verdict-box h2 {
-            color: var(--neon-blue);
+            color: var(--blue-neon);
             margin-top: 0;
             border-bottom: 1px solid rgba(0, 255, 255, 0.3);
             padding-bottom: 10px;
             margin-bottom: 15px;
         }
-
         .skill-list li {
             margin-bottom: 10px;
         }
-
-        /* This is the key styling to color the bold text in the list items */
         .skill-list strong {
             color: var(--neon-orange);
         }
-
-        /* --- Footer Buttons --- */
         .footer-buttons button,
         .footer-buttons a {
             font-weight: 700;
@@ -165,43 +237,35 @@
             display: inline-block; 
             text-align: center; 
         }
-
         .retake-btn {
             background-color: var(--neon-orange);
             color: var(--dark-bg);
             border: 2px solid var(--neon-orange);
         }
-
         .retake-btn:hover {
             opacity: 0.8;
             box-shadow: 0 0 8px var(--neon-orange);
         }
-        
         .index-btn {
             background-color: transparent;
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
+            color: var(--blue-neon);
+            border: 1px solid var(--blue-neon);
         }
-
         .index-btn:hover {
-            background-color: var(--neon-blue);
+            background-color: var(--blue-neon);
             color: var(--dark-bg);
-            box-shadow: 0 0 8px var(--neon-blue);
+            box-shadow: 0 0 8px var(--blue-neon);
         }
-        
-        /* === Fixes for Intro Page === */
         .intro-box {
             max-width: 500px; 
             margin: 0 auto;
         }
-
         .intro-box p.h4 {
             font-size: 1.15rem; 
             white-space: nowrap; 
             margin-left: auto;
             margin-right: auto;
         }
-        
         .intro-box .retake-btn {
             display: block; 
             text-align: center; 
@@ -209,16 +273,97 @@
             padding-right: 0;
             width: 100%;
         }
-        /* ============================ */
     </style>
 </head>
-<body>
+<body data-spy="scroll" data-target="#navbar" data-offset="51">
 
-<div class="adventure-container">
-    <h1>The Quest of the Data Sensei</h1>
-    <div id="game-area">
+<nav
+  class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5"
+  id="navbar"
+  style="display: block;" 
+>
+  <a href="index.html" class="navbar-brand d-block d-lg-none">
+    <h1 class="m-0" style="color: var(--blue-neon) !important;">Roman's Portfolio</h1>
+  </a>
+  <button
+    type="button"
+    class="navbar-toggler"
+    data-toggle="collapse"
+    data-target="#navbarCollapse"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div
+    class="collapse navbar-collapse justify-content-between"
+    id="navbarCollapse"
+  >
+    <div class="navbar-nav m-auto">
+        
+        <div class="nav-item dropdown">
+            <a href="index.html" class="nav-link" id="homeDropdown" aria-haspopup="true" aria-expanded="false">Home</a>
+            <div class="dropdown-menu border-0 m-0" style="background-color: var(--dark);">
+                <a href="index.html#home" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Top of Page</a>
+                <a href="index.html#about" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">About</a>
+                <a href="index.html#skills" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Skills</a>
+                <a href="index.html#what-i-did" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Project</a>
+                <a href="index.html#teaching" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Educator</a>
+                <a href="index.html#connect" class="dropdown-item nav-link" style="color: var(--blue-neon) !important;">Contact</a>
+            </div>
         </div>
+        
+        <a href="timeline.html" class="nav-item nav-link">Timeline</a>
+        <a href="quiz.html" class="nav-item nav-link">Quiz</a>
+        <a href="quest.html" class="nav-item nav-link active">Quest</a> </div>
+  </div>
+</nav>
+
+<div class="adventure-container-wrapper">
+    <div class="adventure-container">
+        <h1>The Quest of the Data Sensei</h1>
+        <div id="game-area">
+            </div>
+    </div>
 </div>
+
+<div class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5 footer-container">
+    <div class="container text-center py-5">
+        <h4 class="mb-4">Connect & Find My Content</h4>
+        <div class="d-flex justify-content-center mb-4 footer-social">
+            <a class="btn btn-social mx-2" href="https://www.linkedin.com/in/romansyasetyo" target="_blank"
+               ><i class="fab fa-linkedin-in"></i
+            ></a>
+            <a class="btn btn-social mx-2" href="YOUR_INSTAGRAM_URL" target="_blank" title="Published soon"
+               ><i class="fab fa-instagram"></i
+            ></a>
+            <a class="btn btn-social mx-2" href="YOUR_TIKTOK_URL" target="_blank" title="Published soon"
+               ><i class="fab fa-tiktok"></i
+            ></a>
+            <a class="btn btn-social mx-2" href="https://www.youtube.com/@crazyrichdata" target="_blank"
+               ><i class="fab fa-youtube"></i
+            ></a>
+        </div>
+        <p class="m-0">
+            &copy; <a class="font-weight-bold" href="#">Roman's Portfolio</a>. All Rights Reserved.
+        </p>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+      // Script to make the Navbar toggler work on click for mobile
+      $(document).ready(function () {
+        $('#navbarCollapse a').on('click', function () {
+          if ($(this).attr('href').startsWith('index.html#') || $(this).attr('href') === 'timeline.html' || $(this).attr('href') === 'quiz.html' || $(this).attr('href') === 'quest.html') {
+            if ($(this).hasClass('nav-item') || $(this).hasClass('dropdown-item')) {
+                if ($('.navbar-toggler').is(':visible')) {
+                    $('.navbar-toggler').click();
+                }
+            }
+          }
+        });
+      });
+</script>
 
 <script>
     // --- Game State Management ---
@@ -495,16 +640,24 @@
         }
         
         // 2. Handle the Novice Choice and skip to Layer 4 immediately (if not already there)
-        if (choiceId === 'Novice') {
+        // MODIFICATION: Check if currentLayer is LESS THAN 4 before jumping to Layer 4.
+        if (choiceId === 'Novice' && currentLayer < 4) {
             noviceChoiceCount++; // Increment counter
             pathHistory[currentLayer] = choiceId;
             nextLayer = 4; // Skip to Layer 4 (vacation)
+        } else if (choiceId === 'Novice' && currentLayer >= 4) {
+            // If 'Novice' choice is made at or after Layer 4, just record the choice
+            // and let the default flow handle the next layer.
+            noviceChoiceCount++; // Increment counter
+            pathHistory[currentLayer] = choiceId;
+            // nextLayer remains the default (currentLayer + 1)
+            nextLayer = 6;
         } else if (currentLayer === 2) {
-             // For layer 2, store the result ID (e.g., A3.1 or A3.2) for the Layer 3 narrative
+            // For layer 2, store the result ID (e.g., A3.1 or A3.2) for the Layer 3 narrative
             const choiceObject = content[currentLayer][dominantPath].choices.find(c => c.id === choiceId);
-            pathHistory[currentLayer] = choiceObject.result; 
+            pathHistory[currentLayer] = choiceObject.result;
         } else {
-            // 3. Record the choice 
+            // 3. Record the choice
             pathHistory[currentLayer] = choiceId;
         }
         
