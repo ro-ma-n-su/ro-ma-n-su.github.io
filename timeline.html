@@ -105,9 +105,15 @@
         .timeline-item {
             position: relative;
             clear: both; /* Ensures the item stacks after the previous one */
-            margin-bottom: 360px; /* Vertical spacing between items (INCREASED FROM 270PX) */
+            margin-bottom: 360px; /* Vertical spacing between items */
+            overflow: hidden; /* Use clearfix to contain floating children and ensure margin is applied */
         }
         
+        /* New rule: Reduce margin after the very last timeline item */
+        .timeline-item:last-child {
+            margin-bottom: 60px; /* REDUCED SPACE BEFORE THE FOOTER (was 150px, now 60px) */
+        }
+
         /* Container Layout & Dots */
         .timeline-container {
             padding: 10px 40px;
@@ -161,14 +167,13 @@
         .timeline-item.center-aligned {
              display: block;
              clear: both; /* Ensure center items also clear floats */
-             margin-bottom: 360px; /* Spacing handled here too (INCREASED FROM 270PX) */
+             /* margin-bottom is inherited from .timeline-item (360px or 60px if last) */
         }
         .timeline-container.center {
             width: 60%; 
             float: none; /* No float needed */
             margin: 0 auto; /* Center the block element */
             margin-top: 40px; 
-            /* Remove post-fix elements for center cards */
             clear: both; 
         }
         .timeline-container.center::after, .timeline-container.center::before { display: none; }
@@ -179,13 +184,11 @@
             position: absolute;
             width: 50%;
             padding: 0 50px; 
-            top: 15px; /* Aligned to the top of the card content (Fix horizontal misalignment) */
-            /* Removed vertical centering: top: 50%; transform: translateY(-50%); */
+            top: 15px; /* Aligned to the top of the card content */
             z-index: 10; 
             pointer-events: none; 
             display: flex; /* Use flex to center the content within the 50% width */
             align-items: center;
-            /* NEW STYLING FOR IMAGE BOXES */
             height: 250px; /* Fixed height for the container box */
         }
         
@@ -210,7 +213,6 @@
             border: 2px solid var(--timeline-neon);
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); 
             pointer-events: auto; 
-            /* Added margin-left/right auto to center image inside the flex container if needed */
             margin: auto; 
         }
 
@@ -253,7 +255,7 @@
         /* Class for mobile fallback images */
         .mobile-only-image {
             display: none;
-            width: 100%; max-height: 270px; object-fit: cover;
+            width: 100%; max-height: 130px; object-fit: cover;
             border-radius: 4px; margin-top: 10px; border: 1px solid var(--timeline-neon);
         }
 
@@ -436,8 +438,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Important: Clear the float created by the right container inside the timeline-item to prepare for the next item -->
-            <div style="clear: both;"></div> 
 
             <!-- Card 3: 2019 Internship (LEFT) - Image on RIGHT - m3 -->
             <div class="timeline-item">
@@ -471,10 +471,9 @@
                     <img src="pics/dataintern.jpg" alt="Data Internship Work Documentation" />
                 </div>
             </div>
-            <!-- Important: Clear the float created by the left container inside the timeline-item to prepare for the next item -->
-            <div style="clear: both;"></div> 
 
             <!-- Card 4: 2020 - Current (CENTER) - m4 -->
+            <!-- This is the last-child, which will now have a 60px margin-bottom -->
             <div class="timeline-item center-aligned">
                 <div id="m4" class="timeline-container center flip-card-container">
                     <div class="timeline-content flip-card">
