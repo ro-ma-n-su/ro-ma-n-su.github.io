@@ -10,35 +10,35 @@
     
     <style>
         :root {
-            /* --- GLOBAL & INDEX STYLES (From index (8).html, used by Navbar/Footer) --- */
+            /* --- GLOBAL & INDEX STYLES --- */
             --dark: #212529;
-            --white-button: #f8f9fa; /* White for social buttons */
-            
-            /* Neon colors from index (8).html styles */
+            --white-button: #f8f9fa; 
             --blue-neon: #25F4EE; 
             --pink-neon: #FE2C55; 
 
-            /* --- TIMELINE SPECIFIC STYLES (For the cards/line) --- */
+            /* --- TIMELINE SPECIFIC STYLES --- */
             --bg-dark: #121212; 
             --text-color: #f8f9fa; 
-            --timeline-neon: #00ffff; /* Neon Cyan for the Data Flow line/Card Title */
-            --timeline-green: #00ff66; /* Neon Green for dots/GenZ text accent */
+            --timeline-neon: #00ffff; /* The line color (Neon Cyan/Blue) */
+            --timeline-green: #00ff66; 
         }
         
         body {
             background: var(--bg-dark);
             color: var(--text-color);
             font-family: 'Roboto', sans-serif;
-            padding-top: 90px; /* Space for fixed navbar */
+            padding-top: 60px; 
             overflow-x: hidden;
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 700;
-            color: var(--text-color);
-        }    
+        /* --- MOBILE NAVBAR OVERLAP FIX --- */
+        @media (max-width: 991.98px) {
+            body {
+                padding-top: 100px; 
+            }
+        }
 
-        /* --- NAVBAR STYLES (Copied from index (8).html CSS) --- */
+        /* --- NAVBAR STYLES (MATCHING INDEX(8).HTML) --- */
         #navbar {
           background: var(--dark) !important; 
           border-bottom: 2px solid var(--pink-neon); 
@@ -48,7 +48,6 @@
         #navbar .nav-item .nav-link.active:not(.dropdown-item) { color: var(--pink-neon) !important; }
         #navbar .nav-item .nav-link:hover:not(.dropdown-item) { color: var(--pink-neon) !important; }
         
-        /* Navbar Dropdown Styling */
         .dropdown-menu { background-color: var(--dark) !important; border: 1px solid var(--pink-neon) !important; }
         .dropdown-item { color: var(--blue-neon) !important; }
         .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
@@ -59,7 +58,7 @@
           .nav-item.dropdown:hover .dropdown-menu { display: block; }
         }
         
-        /* --- FOOTER STYLES (MATCHING INDEX(8).HTML APPEARANCE) --- */
+        /* --- FOOTER STYLES (MATCHING INDEX(8).HTML) --- */
         .footer-container {
             background-color: var(--blue-neon) !important; 
             color: var(--dark) !important; 
@@ -67,20 +66,11 @@
         .footer-container h4, .footer-container p, .footer-container a { color: var(--dark) !important; }
         .btn-social {
             border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid var(--dark);
-            color: var(--dark); 
-            background: var(--white-button); 
-            transition: background 0.3s, color 0.3s;
+            width: 42px; height: 42px; display: flex; justify-content: center;
+            align-items: center; border: 1px solid var(--dark); color: var(--dark); 
+            background: var(--white-button); transition: background 0.3s, color 0.3s;
         }
-        .btn-social:hover {
-            background: var(--dark); 
-            color: var(--white-button) !important; 
-        }
+        .btn-social:hover { background: var(--dark); color: var(--white-button) !important; }
 
         /* --- TIMELINE CORE STYLES --- */
         .timeline {
@@ -88,6 +78,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px 0;
+            min-height: 800px; 
         }
         
         /* Line & Flow */
@@ -96,19 +87,27 @@
             width: 6px;
             left: 50%;
             margin-left: -3px;
+            border-radius: 3px;
+            z-index: 1; /* Ensure lines are behind dots and cards */
         }
         .timeline-line-base {
             background-color: var(--timeline-neon);
-            opacity: 0.3; 
-            z-index: 0;
+            opacity: 0.6; 
         }
         .timeline-flow-fill {
             background-color: var(--timeline-neon);
             height: 0;
-            transition: height 0.3s ease-out;
-            z-index: 1;
+            transition: height 0.3s ease-out; /* Enable the smooth visual effect */
+            z-index: 2; 
         }
 
+        /* --- ITEM WRAPPER: NOW BLOCK FLOW BASED FOR RELIABLE OFFSETTOP --- */
+        .timeline-item {
+            position: relative;
+            clear: both; /* Ensures the item stacks after the previous one */
+            margin-bottom: 270px; /* Vertical spacing between items */
+        }
+        
         /* Container Layout & Dots */
         .timeline-container {
             padding: 10px 40px;
@@ -117,10 +116,17 @@
             width: 50%;
             box-sizing: border-box; 
             height: auto; 
-            margin-bottom: 20px; 
         }
-        .timeline-container.left { left: 0; }
-        .timeline-container.right { left: 50%; }
+        
+        /* Positioning the card content */
+        .timeline-item:not(.center-aligned) .timeline-container.left { 
+            float: left; /* Use float for left side */
+        }
+        .timeline-item:not(.center-aligned) .timeline-container.right { 
+            float: right; /* Use float for right side */
+        }
+
+        /* Card Dots (Must be above the lines) */
         .timeline-container::after {
             content: '';
             position: absolute;
@@ -130,64 +136,19 @@
             border: 4px solid var(--timeline-green);
             top: 15px;
             border-radius: 50%;
-            z-index: 2;
+            z-index: 3; 
         }
-        .timeline-container.right::after { left: -12.5px; }
+        .timeline-container.right::after { left: -12.5px; right: auto; }
         
-        /* Card & Flip Styles */
-        .flip-card {
-            height: 100%;
-            perspective: 1000px;
-            cursor: pointer;
-            border-radius: 6px;
-        }
-        .flip-card-inner {
-            position: relative;
-            width: 100%; height: 100%; 
-            text-align: left;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-        .flip-card-container.is-flipped .flip-card-inner { transform: rotateY(180deg); }
-        
-        /* Card Faces */
-        .flip-card-front, .flip-card-back {
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); 
-            position: absolute; 
-            width: 100%;
-            min-height: 200px; 
-            padding: 20px;
-            box-sizing: border-box;
-            background: var(--bg-dark);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 6px;
-            padding-bottom: 30px; 
-        }
-        .flip-card-back { transform: rotateY(180deg); }
-        .flip-card-container.is-flipped .flip-card-back { position: relative; }
-
-        /* Front Face (Standard Lingo) Styles */
-        .flip-card-front h4 { color: var(--timeline-neon) !important; }
-        .flip-card-front strong { color: var(--text-color) !important; }
-        
-        /* Back Face (GenZ Lingo) Styles */
-        .flip-card-back { color: var(--timeline-green); }
-        .flip-card-back h4, .flip-card-back strong { color: var(--timeline-green) !important; }
-        
-        /* Other Timeline Structure */
+        /* Card Arrows */
         .timeline-container::before {
             content: " ";
-            height: 0;
-            position: absolute;
-            top: 22px;
-            width: 0;
-            z-index: 1;
+            height: 0; position: absolute; top: 22px; width: 0; z-index: 1;
             border: medium solid var(--bg-dark);
             border-width: 10px 0 10px 10px;
             border-color: transparent transparent transparent var(--bg-dark);
             right: 30px;
+            z-index: 4; 
         }
         .timeline-container.right::before {
             left: 30px;
@@ -195,43 +156,176 @@
             border-color: transparent var(--bg-dark) transparent transparent;
             right: auto;
         }
-        .flip-card-back ul { list-style: none; padding-left: 0; margin-top: 15px; }
-        .flip-card-back li::before { content: "➡️"; margin-right: 5px; color: var(--timeline-neon); }
-        .flip-card-image {
-            width: 100%; max-height: 270px; object-fit: cover;
-            border-radius: 4px; margin-top: 10px; border: 1px solid var(--timeline-neon);
+        
+        /* Centered Cards (2018 & 2020) */
+        .timeline-item.center-aligned {
+             display: block;
+             clear: both; /* Ensure center items also clear floats */
+             margin-bottom: 270px; /* Spacing handled here too */
         }
         .timeline-container.center {
-            width: 60%; left: 50%; transform: translateX(-50%);
-            margin-top: 40px; margin-bottom: 40px;
+            width: 60%; 
+            float: none; /* No float needed */
+            margin: 0 auto; /* Center the block element */
+            margin-top: 40px; 
+            /* Remove post-fix elements for center cards */
+            clear: both; 
         }
         .timeline-container.center::after, .timeline-container.center::before { display: none; }
         
-        /* Action Buttons */
+        
+        /* --- External Media Container (Image) --- */
+        .timeline-media {
+            position: absolute;
+            width: 50%;
+            padding: 0 50px; 
+            top: 50%; 
+            transform: translateY(-50%);
+            z-index: 10; 
+            pointer-events: none; 
+            display: flex; /* Use flex to center the content within the 50% width */
+            align-items: center;
+            /* NEW STYLING FOR IMAGE BOXES */
+            height: 250px; /* Fixed height for the container box */
+        }
+        
+        .timeline-item .timeline-media.media-left {
+            left: 0;
+            justify-content: flex-end; /* Push content to the right edge */
+            padding-right: 70px;
+        }
+        
+        .timeline-item .timeline-media.media-right {
+            right: 0; 
+            justify-content: flex-start; /* Push content to the left edge */
+            padding-left: 70px;
+        }
+        
+        .timeline-media img {
+            max-width: 100%;
+            max-height: 220px; 
+            width: auto; /* Use auto width to respect aspect ratio based on height */
+            object-fit: contain; 
+            border-radius: 6px;
+            border: 2px solid var(--timeline-neon);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); 
+            pointer-events: auto; 
+            /* Added margin-left/right auto to center image inside the flex container if needed */
+            margin: auto; 
+        }
+
+        /* --- Flip Card Styles --- */
+        .flip-card-container { 
+            height: auto; 
+            transition: height 0.5s ease-in-out; 
+            z-index: 3; 
+        }
+        /* Ensure all inner components take the calculated height */
+        .flip-card-container .flip-card, 
+        .flip-card-container .flip-card-inner {
+            height: 100%; 
+        }
+        
+        .flip-card {
+            height: 100%; perspective: 1000px; cursor: pointer; border-radius: 6px;
+        }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%; 
+            text-align: left; transition: transform 0.8s; transform-style: preserve-3d;
+        }
+        .flip-card-container.is-flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; 
+            padding: 20px; box-sizing: border-box; background: var(--bg-dark);
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 6px; padding-bottom: 30px; 
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); 
+            height: auto !important; 
+            min-height: 200px; 
+            z-index: 5; 
+        }
+        .flip-card-back { transform: rotateY(180deg); color: var(--timeline-green); }
+        
+        .flip-card-front h4 { color: var(--timeline-neon) !important; }
+        .flip-card-back h4, .flip-card-back strong { color: var(--timeline-green) !important; }
+
+        /* Class for mobile fallback images */
+        .mobile-only-image {
+            display: none;
+            width: 100%; max-height: 270px; object-fit: cover;
+            border-radius: 4px; margin-top: 10px; border: 1px solid var(--timeline-neon);
+        }
+
+        /* --- ACTION BUTTON STYLES (2020 Card) --- */
         .action-button {
-            display: inline-block; margin-top: 20px; padding: 10px 20px;
-            border-radius: 5px; text-decoration: none; font-weight: 700;
+            display: inline-block;
+            padding: 8px 20px;
+            margin-top: 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            transition: all 0.3s ease;
         }
-        .action-button.standard { background-color: var(--timeline-neon); color: var(--bg-dark); }
-        .action-button.genz { background-color: var(--timeline-green); color: var(--bg-dark); }
-        .action-button.standard:hover, .action-button.genz:hover {
-            background-color: var(--text-color); color: var(--bg-dark);
+        .action-button.standard {
+            color: var(--bg-dark);
+            background-color: var(--timeline-neon);
+            border: 2px solid var(--timeline-neon);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
         }
+        .action-button.standard:hover {
+            background-color: transparent;
+            color: var(--timeline-neon);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+        }
+        .action-button.genz {
+            color: var(--bg-dark);
+            background-color: var(--timeline-green);
+            border: 2px solid var(--timeline-green);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.7);
+        }
+        .action-button.genz:hover {
+            background-color: transparent;
+            color: var(--timeline-green);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 1);
+        }
+
 
         /* Responsive timeline */
         @media screen and (max-width: 600px) {
-            .timeline-line-base, .timeline-flow-fill { left: 31px; }
-            .timeline-container { width: 100%; padding-left: 70px; padding-right: 25px; }
-            .timeline-container.right { left: 0%; }
-            .timeline-container.center {
-                width: 100%; left: 0; transform: translateX(0);
-                padding: 10px 25px;
+            /* Position the line to the left edge dot position on mobile */
+            .timeline-line-base, .timeline-flow-fill { left: 31px; } 
+            
+            .timeline-item { display: block; } 
+            
+            .timeline-container { 
+                width: 100%; 
+                padding-left: 70px; 
+                padding-right: 25px;
+                float: none !important; /* Remove float on mobile */
+                clear: both;
             }
+            .timeline-container.right { left: 0%; margin-left: 0; }
+            .timeline-container.center {
+                width: 100%; 
+                margin: 0 auto;
+                padding-left: 25px;
+            }
+
+            /* Hide external media and show internal media on mobile */
+            .timeline-media { display: none; }
+            .mobile-only-image { display: block; }
+
+            /* Fix the dots position on mobile */
+            .timeline-container::after { left: 19px !important; right: auto !important; }
+            .timeline-container.right::after { left: 19px !important; }
+            .timeline-container.center::after { display: none; }
         }
     </style>
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="51">
 
+    <!-- Navbar Start -->
     <nav
       class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3 py-lg-0 px-lg-5"
       id="navbar"
@@ -273,6 +367,9 @@
         </div>
       </div>
     </nav>
+    <!-- END Navbar -->
+
+
     <div class="container-fluid py-5">
         <div class="row">
             <div class="col-12 text-center mb-5">
@@ -281,100 +378,141 @@
             </div>
         </div>
         <div class="timeline">
+            <!-- The vertical lines are positioned absolutely from the top of this container (top: 0 in CSS) -->
             <div id="timeline-base" class="timeline-line-base"></div>
             <div id="flowFill" class="timeline-flow-fill"></div>
 
-            <div id="m1" class="timeline-container left flip-card-container">
-                <div class="timeline-content flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <h4 class="font-weight-bold">2018: The Academic Shift & Catalyst</h4>
-                            <p><strong>Part 1 (Academic):</strong> Thesis focus on Econophysics was aborted as the supervising professor had not engaged with the topic for over ten years, requiring a definitive shift to a new area for the final degree.</p>
-                            <p><strong>Part 2 (Career Catalyst):</strong> A discussion comparing Econophysics to solving business problems led to the realization that the methodology had <strong>similarity with Data Science</strong>. Immediately initiated self-directed training, tackling <strong>Python</strong> and foundational <strong>SQL</strong>, though SQL proved an initial challenge.</p>
-                        </div>
-                        <div class="flip-card-back">
-                            <h4 class="font-weight-bold">2018: The Vibe Check</h4>
-                            <ul>
-                                <li><strong>Academic L:</strong> Econophysics thesis <strong>ghosted</strong> (prof hadn't touched it in 10 yrs). <strong>Had to switch thesis topic.</strong></li>
-                                <li><strong>Career L:</strong> Friend group called me out: <em>"Isn’t that similar to Data Science?"</em> 🤯 Started Python/SQL grind, but <strong>SQL was confusing AF.</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="m2" class="timeline-container right flip-card-container">
-                <div class="timeline-content flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <h4 class="font-weight-bold">2019: Academic Closure & Recognition</h4>
-                            <p>Successfully completed the degree requirements with the new specialization. Research was recognized with a prestigious <strong>award at an international conference</strong>, marking the formal conclusion of the academic chapter.</p>
-                            <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="flip-card-image">
-                        </div>
-                        <div class="flip-card-back">
-                            <h4 class="font-weight-bold">2019: Academic Flex Complete</h4>
-                            <ul>
-                                <li><strong>New specialization degree completed.</strong></li>
-                                <li>International conference <strong>award secured.</strong> Flexed hard on the academic side. (OK, what's next?)</li>
-                            </ul>
-                            <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="flip-card-image">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="m3" class="timeline-container left flip-card-container">
-                <div class="timeline-content flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <h4 class="font-weight-bold">2019: Internship Era & Portfolio Build</h4>
-                            <p>Secured first Data Science internship by leveraging direct outreach and <strong>LinkedIn networking</strong>, resulting in a direct reply from the startup CEO. Used the internship to aggressively master <strong>SQL</strong> and <strong>Python</strong> application, and quickly acquire proficiency in <strong>Power BI</strong>.</p>
-                            <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="flip-card-image">
-                        </div>
-                        <div class="flip-card-back">
-                            <h4 class="font-weight-bold">2019: The Hustle Slay</h4>
-                            <ul>
-                                <li>Internship secured by <strong>DMing the CEO</strong>. <strong>Hustle rewarded.</strong></li>
-                                <li>Immediately fixed the SQL knowledge gap, mastered <strong>Power BI</strong>. <strong>Unlocking Pro Skills.</strong> 🔓</li>
-                            </ul>
-                            <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="flip-card-image">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="m4" class="timeline-container center flip-card-container">
-                <div class="timeline-content flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <h4 class="font-weight-bold text-center">2020 - Current: Expert & Educator</h4>
-                            <ul class="text-left" style="max-width: fit-content; margin: 0 auto; padding-left: 0; list-style-type: none;">
-                                <li style="margin-bottom: 10px;">Launched <strong>full-time career in Data Science & Analytics</strong> (2020), now with <strong>5 years</strong> of experience.</li>
-                                <li style="margin-bottom: 10px;"><strong>Added part-time teaching/lecturing role</strong> (2021) to share practical methodology, now with <strong>3 years</strong> of experience.</li>
-                                <li><strong>Current Status:</strong> Seasoned Data Expert, Part-Time Educator, and Content Creator.</li>
-                            </ul>
-                             <div class="text-center">
-                                <a href="index.html" class="action-button standard">More details here</a>
+            <!-- Card 1: 2018 (CENTERED) - m1 -->
+            <div class="timeline-item center-aligned">
+                <div id="m1" class="timeline-container center flip-card-container">
+                    <div class="timeline-content flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h4 class="font-weight-bold">2018: The Academic Shift & Catalyst</h4>
+                                <p><strong>Part 1 (Academic):</strong> Thesis focus on Econophysics was aborted as the supervising professor had not engaged with the topic for over ten years, requiring a definitive shift to a new area for the final degree.</p>
+                                <p><strong>Part 2 (Career Catalyst):</strong> A discussion comparing Econophysics to solving business problems led to the realization that the methodology had <strong>similarity with Data Science</strong>. Immediately initiated self-directed training, tackling <strong>Python</strong> and foundational <strong>SQL</strong>, though SQL proved an initial challenge.</p>
                             </div>
-                        </div>
-                        <div class="flip-card-back">
-                            <h4 class="font-weight-bold text-center">2020 - Current: Certified Data Master</h4>
-                            <ul>
-                                <li><strong>2020:</strong> Full-time Data Expert era started.</li>
-                                <li><strong>2021:</strong> <strong>Added</strong> the teaching/lecturing side hustle.</li>
-                                <li><strong>Current Status:</strong> Data expert, content creator, and <strong>still passing the knowledge check.</strong> 🫡</li>
-                            </ul>
-                             <div class="text-center">
-                                <a href="index.html" class="action-button genz">Main Page Go Brrr</a>
+                            <div class="flip-card-back">
+                                <h4 class="font-weight-bold">2018: The Vibe Check</h4>
+                                <ul>
+                                    <li><strong>Academic L:</strong> Econophysics thesis <strong>ghosted</strong> (prof hadn't touched it in 10 yrs). <strong>Had to switch thesis topic.</strong></li>
+                                    <li><strong>Career L:</strong> Friend group called me out: <em>"Isn’t that similar to Data Science?"</em> 🤯 Started Python/SQL grind, but <strong>SQL was confusing AF.</strong></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Card 2: 2019 Closure (RIGHT) - Image on LEFT - m2 -->
+            <div class="timeline-item">
+                <!-- Image on Left - position: absolute relies on the block flow of the card to determine vertical position -->
+                <div class="timeline-media media-left">
+                    <!-- REMOVED PLACEHOLDER - Using the user's local path with no fallback -->
+                    <img src="pics/physicsconference.jpg" alt="International Conference Award Documentation" />
+                </div>
+                <!-- Card Content on Right -->
+                <div class="timeline-container right">
+                    <div id="m2" class="flip-card-container"> 
+                        <div class="timeline-content flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <h4 class="font-weight-bold">2019: Academic Closure & Recognition</h4>
+                                    <p>Successfully completed the degree requirements with the new specialization. Research was recognized with a prestigious <strong>award at an international conference</strong>, marking the formal conclusion of the academic chapter.</p>
+                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="mobile-only-image">
+                                </div>
+                                <div class="flip-card-back">
+                                    <h4 class="font-weight-bold">2019: Academic Flex Complete</h4>
+                                    <ul>
+                                        <li><strong>New specialization degree completed.</strong></li>
+                                        <li>International conference <strong>award secured.</strong> Flexed hard on the academic side. (OK, what's next?)</li>
+                                    </ul>
+                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <img src="pics/physicsconference.jpg" alt="Photo documentation of International Conference Award" class="mobile-only-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Important: Clear the float created by the right container inside the timeline-item to prepare for the next item -->
+            <div style="clear: both;"></div> 
+
+            <!-- Card 3: 2019 Internship (LEFT) - Image on RIGHT - m3 -->
+            <div class="timeline-item">
+                <!-- Card Content on Left -->
+                <div class="timeline-container left">
+                    <div id="m3" class="flip-card-container"> 
+                        <div class="timeline-content flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <h4 class="font-weight-bold">2019: Internship Era & Portfolio Build</h4>
+                                    <p>Secured first Data Science internship by leveraging direct outreach and <strong>LinkedIn networking</strong>, resulting in a direct reply from the startup CEO. Used the internship to aggressively master <strong>SQL</strong> and <strong>Python</strong> application, and quickly acquire proficiency in <strong>Power BI</strong>.</p>
+                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="mobile-only-image">
+                                </div>
+                                <div class="flip-card-back">
+                                    <h4 class="font-weight-bold">2019: The Hustle Slay</h4>
+                                    <ul>
+                                        <li>Internship secured by <strong>DMing the CEO</strong>. <strong>Hustle rewarded.</strong></li>
+                                        <li>Immediately fixed the SQL knowledge gap, mastered <strong>Power BI</strong>. <strong>Unlocking Pro Skills.</strong> 🔓</li>
+                                    </ul>
+                                    <!-- Mobile Fallback Image - REMOVED PLACEHOLDER -->
+                                    <img src="pics/dataintern.jpg" alt="Photo documentation of Data Internship Work" class="mobile-only-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Image on Right -->
+                <div class="timeline-media media-right">
+                    <!-- REMOVED PLACEHOLDER - Using the user's local path with no fallback -->
+                    <img src="pics/dataintern.jpg" alt="Data Internship Work Documentation" />
+                </div>
+            </div>
+            <!-- Important: Clear the float created by the left container inside the timeline-item to prepare for the next item -->
+            <div style="clear: both;"></div> 
+
+            <!-- Card 4: 2020 - Current (CENTER) - m4 -->
+            <div class="timeline-item center-aligned">
+                <div id="m4" class="timeline-container center flip-card-container">
+                    <div class="timeline-content flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <h4 class="font-weight-bold text-center">2020 - Current: Expert & Educator</h4>
+                                <ul class="text-left" style="max-width: fit-content; margin: 0 auto; padding-left: 0; list-style-type: none;">
+                                    <li style="margin-bottom: 10px;">Launched <strong>full-time career in Data Science & Analytics</strong> (2020), now with <strong>5 years</strong> of experience.</li>
+                                    <li style="margin-bottom: 10px;"><strong>Added part-time teaching/lecturing role</strong> (2021) to share practical methodology, now with <strong>3 years</strong> of experience.</li>
+                                    <li><strong>Current Status:</strong> Seasoned Data Expert, Part-Time Educator, and Content Creator.</li>
+                                </ul>
+                                <div class="text-center">
+                                    <a href="index.html" class="action-button standard">More details here</a>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4 class="font-weight-bold text-center">2020 - Current: Certified Data Master</h4>
+                                <ul>
+                                    <li><strong>2020:</strong> Full-time Data Expert era started.</li>
+                                    <li><strong>2021:</strong> <strong>Added</strong> the teaching/lecturing side hustle.</li>
+                                    <li><strong>Current Status:</strong> Data expert, content creator, and <strong>still passing the knowledge check.</strong> 🫡</li>
+                                </ul>
+                                <div class="text-center">
+                                    <a href="index.html" class="action-button genz">Main Page Go Brrr</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final clear to ensure the timeline container wraps all content -->
+            <div style="clear: both;"></div> 
 
         </div>
     </div>
     
+    <!-- Footer Start -->
     <div class="container-fluid footer-container py-5 px-sm-3 px-md-5">
         <div class="container text-center py-5">
             <h4 class="mb-4 font-weight-bold">Connect & Find My Content</h4>
@@ -397,47 +535,162 @@
             </p>
         </div>
     </div>
+    <!-- Footer End -->
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Use a wrapping function to ensure everything runs only once the document is ready
         $(document).ready(function () {
             
-            // Show Navbar with a fade effect
-            $('#navbar').fadeIn(1500);
+            // ==========================================================
+            // Element lookups
+            // ==========================================================
+            const flowFill = document.getElementById('flowFill');
+            const timelineBase = document.getElementById('timeline-base'); 
+            const timeline = document.querySelector('.timeline');
+            // We need m1 (2018 card) for the start point and m4 (2020 card) for the end point
+            const m1 = document.getElementById('m1'); 
+            const m4 = document.getElementById('m4'); 
+            const cardContainers = document.querySelectorAll('.flip-card-container');
+            // ==========================================================
 
-            // Close mobile menu on nav link click
-            $('.navbar-nav a').on('click', function (event) {
-              if ($(this).hasClass('nav-item') || $(this).hasClass('dropdown-item')) {
+            // Initial UI setup
+            $('#navbar').fadeIn(1500);
+            $('.navbar-nav a').on('click', function () {
                 if ($('.navbar-toggler').is(':visible')) {
                     $('.navbar-toggler').click();
                 }
-              }
             });
 
-            /* --- Card Height Fix (Prevents content cutoff) --- */
-            function syncCardHeight(container) {
-                const flipCard = container.querySelector('.flip-card');
-                const front = container.querySelector('.flip-card-front');
-                const back = container.querySelector('.flip-card-back');
-                
-                const frontHeight = front.scrollHeight;
-                const backHeight = back.scrollHeight;
+            /* --- Card Height Fix (Crucial for vertical alignment) --- */
+            
+            /** Measures the true content height of an element, even if absolutely positioned. */
+            function measureElementHeight(element) {
+                const originalStyle = {
+                    position: element.style.position,
+                    visibility: element.style.visibility,
+                    display: element.style.display,
+                    minHeight: element.style.minHeight
+                };
 
-                const maxHeight = Math.max(frontHeight, backHeight);
+                // Temporarily force static position for accurate height calculation
+                element.style.position = 'static'; 
+                element.style.visibility = 'hidden';
+                element.style.display = 'block';
+                element.style.minHeight = '0'; 
+
+                const measuredHeight = element.offsetHeight;
+
+                // Restore original styles immediately
+                element.style.position = originalStyle.position;
+                element.style.visibility = originalStyle.visibility;
+                element.style.display = originalStyle.display;
+                element.style.minHeight = originalStyle.minHeight;
                 
-                container.style.height = `${maxHeight}px`;
-                flipCard.style.height = '100%';
+                return measuredHeight;
             }
 
-            // Sync all cards initially and after a delay for layout shifts
-            const cardContainers = document.querySelectorAll('.flip-card-container');
-            cardContainers.forEach(syncCardHeight);
-            
-            setTimeout(() => {
-                cardContainers.forEach(syncCardHeight);
-            }, 500); 
+            /** Syncs the flip card container height to the max height of its front/back faces. */
+            function syncCardHeight(container) {
+                try {
+                    if (!container) return;
 
-            // Re-sync the card's height right after a flip (using click event on flip-card)
+                    const front = container.querySelector('.flip-card-front');
+                    const back = container.querySelector('.flip-card-back');
+                    
+                    if (!front || !back) return;
+
+                    const frontHeight = measureElementHeight(front);
+                    const backHeight = measureElementHeight(back);
+
+                    let maxHeight = Math.max(frontHeight, backHeight);
+                    maxHeight = Math.max(maxHeight, 200); // Enforce min height
+                    maxHeight += 50; // Safety buffer
+                    
+                    container.style.height = `${maxHeight}px`; 
+
+                } catch (e) {
+                    console.error("Error in syncCardHeight:", e);
+                }
+            }
+
+            // Centralized function to calculate all card heights and update the line position
+            const runAllSyncs = () => {
+                 cardContainers.forEach(syncCardHeight);
+                 updateFlowLine(); // <-- Crucial: Calculate line position immediately after height sync
+            };
+            
+
+            /* --- Timeline Flow Logic (SAFEST Positioning using getBoundingClientRect) --- */
+            function updateFlowLine() {
+                try {
+                    if (!m1 || !m4 || !timeline || !flowFill || !timelineBase) return;
+
+                    // Use getBoundingClientRect for stable coordinates regardless of floats/offsetParents
+                    const timelineRect = timeline.getBoundingClientRect();
+                    const m1Rect = m1.getBoundingClientRect();
+                    const m4Rect = m4.getBoundingClientRect();
+
+                    // Calculate absolute positions (including scroll offset)
+                    const m1CenterYAbsolute = m1Rect.top + window.scrollY + m1Rect.height / 2;
+                    const m4CenterYAbsolute = m4Rect.top + window.scrollY + m4Rect.height / 2;
+                    const timelineTopAbsolute = timelineRect.top + window.scrollY;
+
+                    // Calculate the starting point of the line, RELATIVE to the timeline container's top edge
+                    const lineStartY = m1CenterYAbsolute - timelineTopAbsolute;
+
+                    // Total length the line should cover, measured from center of start card to center of end card.
+                    const MAX_LINE_HEIGHT = Math.max(0, m4CenterYAbsolute - m1CenterYAbsolute);
+
+                    // --- 2. Base Line Setup (Static Background Line) ---
+                    timelineBase.style.top = `${lineStartY}px`;
+                    timelineBase.style.height = `${MAX_LINE_HEIGHT}px`; 
+
+                    // --- 3. Flow Line Setup (Scroll Indicator) ---
+                    const scrollTop = window.scrollY;
+                    const windowHeight = window.innerHeight;
+                    
+                    // Calculate the current scroll point (center of viewport) relative to the timeline's top edge
+                    let currentScrollPointRelativeToTimelineTop = (scrollTop + windowHeight / 2) - timelineTopAbsolute;
+
+                    // Calculate the flow height by subtracting the line's starting point
+                    let currentFlowHeight = currentScrollPointRelativeToTimelineTop - lineStartY;
+
+                    // Clamp the height between 0 (not started) and MAX_LINE_HEIGHT (fully finished)
+                    currentFlowHeight = Math.max(0, Math.min(MAX_LINE_HEIGHT, currentFlowHeight));
+
+                    // Apply the height and set the top position to lineStartY
+                    flowFill.style.top = `${lineStartY}px`;
+                    flowFill.style.height = `${currentFlowHeight}px`;
+
+                } catch (e) {
+                    console.error("Error in updateFlowLine:", e);
+                }
+            }
+            
+            // --- INITIALIZATION - Wait for ALL assets to load and layout to settle ---
+            function initialSetup() {
+                // Initial run
+                runAllSyncs(); 
+                
+                // Staggered checks to catch layout shifts
+                setTimeout(runAllSyncs, 100); 
+                setTimeout(runAllSyncs, 500); 
+                setTimeout(runAllSyncs, 1500); 
+                // Final, most delayed check to ensure layout is 100% stable
+                setTimeout(runAllSyncs, 5000); 
+            }
+            
+            // Attach to the window load event to ensure images are ready
+            $(window).on('load', initialSetup); 
+            
+            // Also run on document ready as a fallback/first attempt
+            runAllSyncs(); 
+            // --------------------------------------------------
+
+
+            // Re-sync the card's height right after a flip 
             document.querySelectorAll('.flip-card').forEach(card => {
                 card.addEventListener('click', (event) => {
                     if (event.target.closest('.action-button')) {
@@ -447,62 +700,15 @@
                     const container = card.closest('.flip-card-container');
                     container.classList.toggle('is-flipped');
                     
-                    setTimeout(() => {
-                        syncCardHeight(container);
-                    }, 50); 
+                    // Re-sync height immediately and update the line
+                    setTimeout(runAllSyncs, 50); 
                 });
             });
-            /* --- END Card Height Fix --- */
 
-
-            /* --- Timeline Flow Logic (Fix for line going through m4) --- */
-            const flowFill = document.getElementById('flowFill');
-            const timelineBase = document.getElementById('timeline-base'); 
-            const timeline = document.querySelector('.timeline');
-            const m4 = document.getElementById('m4');
-            
-            function updateFlowLine() {
-                const timelineRect = timeline.getBoundingClientRect();
-                const timelineTop = timelineRect.top + window.scrollY;
-                const m4Top = m4.offsetTop; 
-                const scrollTop = window.scrollY;
-                const windowHeight = window.innerHeight;
-
-                // FIX: Stop the line 20px before the top of the m4 container (which has 40px margin-top), 
-                // ensuring a clean visual break before the final card's border.
-                const finalStop = m4Top - 20; 
-
-                // --- Base Line ---
-                // Base line stops at the finalStop point
-                if (timelineBase.style.height === "0px" || timelineBase.style.height !== `${finalStop}px`) {
-                     timelineBase.style.height = `${finalStop}px`;
-                }
-                
-                // --- Flow Line ---
-                let currentFlowHeight = scrollTop - timelineTop + (windowHeight / 2);
-
-                // Cap the height at the target stop point
-                if (currentFlowHeight > finalStop) {
-                    currentFlowHeight = finalStop;
-                }
-                
-                if (currentFlowHeight < 0) {
-                    currentFlowHeight = 0;
-                }
-                
-                flowFill.style.height = `${currentFlowHeight}px`;
-
-                // Re-sync heights on scroll in case of any dynamic content changes
-                cardContainers.forEach(syncCardHeight);
-            }
 
             // Attach to scroll/resize events
             window.addEventListener('scroll', updateFlowLine);
-            window.addEventListener('resize', updateFlowLine);
-            updateFlowLine(); // Run immediately on load
-            
-            // Second check for safety
-            setTimeout(updateFlowLine, 1500); 
+            window.addEventListener('resize', runAllSyncs); 
         });
     </script>
 </body>
