@@ -378,161 +378,495 @@
     // Helper function to replace markdown bolding with strong tags
     const formatBold = (text) => text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    // The universal novice choice object
-    const noviceChoice = { 
-        id: 'Novice', 
-        text: "I am not sure. My current focus is still on foundational analytics.", 
-        icon: 'fas fa-graduation-cap', 
-        nextLayer: 4 
+    // The universal novice choice object (Now leads to Layer 16)
+    const noviceChoice = {
+        id: 'Novice',
+        text: "I am not sure. I admit this task is above my current expertise and request foundational guidance.",
+        icon: 'fas fa-graduation-cap',
+        nextLayer: 16 // Jumps to the start of the final Verdict Act
     };
 
-    // --- Content Data Structure ---
+    // --- Content Data Structure (Expanded to 18 Layers) ---
+    // Mapping of choice IDs to specific skill tags for the final analysis.
+    const skillTagMap = {
+        // Tachi Path (A) - Layers 4, 5, 6, 7, 8, 10, 11, 12
+        'A4.1': 'Highly-Engineered Features', 'A4.2': 'Auto-encoders/Raw Data Modeling',
+        'A5.1': 'Complex XGBoost/LightGBM', 'A5.2': 'Interpretable LogReg',
+        'A6.1': 'SHAP/LIME Explainability', 'A6.2': 'A/B Testing Simulation',
+        'A7.1': 'Data Engineering Focus', 'A7.2': 'Simpler Neural Nets',
+        'A8.1': 'PySpark/Dask Clustering', 'A8.2': 'Optuna/Hyperparameter Tuning',
+        'A10.1': 'REST API/Microservice Deployment', 'A10.2': 'Batch Job Deployment',
+        'A11.1': 'Data Drift/Model Degradation Alerts', 'A11.2': 'Manual Accuracy Reporting',
+        'A12.1': 'Technical Readme/Wiki', 'A12.2': 'Business Retrospective',
+
+        // Kagami Path (B) - Layers 4, 5, 6, 7, 8, 10, 11, 12
+        'B4.1': 'Forced Non-Null Constraint', 'B4.2': 'K-NN Imputation (Data Repair)',
+        'B5.1': 'Micro-batching (CDC)', 'B5.2': 'Daily Full Load/Merge',
+        'B6.1': 'Great Expectations (Data Quality)', 'B6.2': 'User Acceptance Testing (UAT)',
+        'B7.1': 'DWH Partitioning/Clustering', 'B7.2': 'Data Retention Policy',
+        'B8.1': 'Materialized Views/DWH Optimization', 'B8.2': 'Cost-Benefit Analysis',
+        'B10.1': 'Role-Based Access Control (RBAC)', 'B10.2': 'Data Masking/Tokenization (PII)',
+        'B11.1': 'Unit/Integration Testing (Code Quality)', 'B11.2': 'Staging Environment Review',
+        'B12.1': 'Technical Readme/Wiki', 'B12.2': 'Business Retrospective',
+
+        // Fude Path (C) - Layers 4, 5, 6, 7, 8, 10, 11, 12
+        'C4.1': 'N-gram Frequency/Word Clouds', 'C4.2': 'LLM/BERT Sentiment Scoring',
+        'C5.1': 'Simple Funnel Chart', 'C5.2': 'Sankey Diagram (Flow Analysis)',
+        'C6.1': 'Jupyter Notebook/Technical Report', 'C6.2': 'Single Executive Summary Slide',
+        'C7.1': 'Simplified North Star KPI', 'C7.2': 'Stakeholder Workshop',
+        'C8.1': 'Go-to-Market (GTM) Strategy', 'C8.2': 'Data Dictionary/Metric Taxonomy',
+        'C10.1': 'Projected Return on Investment (ROI)', 'C10.2': 'Technical Feasibility Focus',
+        'C11.1': 'Interactive Storytelling (D3.js/GSAP)', 'C11.2': 'Mantra/Catchphrase Communication',
+        'C12.1': 'Technical Readme/Wiki', 'C12.2': 'Business Retrospective',
+    };
+    
+    // Define layers that hold technical path choices (used for counting skill tags)
+    const technicalLayers = [4, 5, 6, 7, 8, 10, 11, 12];
+
+
     const content = {
-        0: {
-            // Initial Landing Page for Name Input
-            prompt: "Ocha-Sensei awaits your name to begin the mission.",
-            input: true,
-            buttonText: "Begin The Quest",
-            icon: 'fas fa-arrow-right'
+        0: { 
+            buttonText: "Begin the Quest", 
+            icon: 'fas fa-play'
         },
         1: {
-            // Layer 1: The Call and the Artifact (First Narrative Screen)
-            narrative: (name) => `The mission briefing arrives from **Ocha-Sensei**, a respected senior analyst. The message is urgent: 'The **Yokai of Low Retention** threatens the integrity of our project. You must defeat it, **${name}**. Choose the artifact that defines your analytical spirit, for it sets your course.'`,
-            prompt: "Which artifact do you carry into the Data Dojo?",
+            narrative: (name) => `Welcome, **${name}**. You stand before Ocha-Sensei, who offers you one of three legendary Data Artifacts. This choice dictates the focus of your trials.`,
+            prompt: "Choose your primary discipline:",
             choices: [
-                { id: 'A', text: "The **Tachi (Long Sword)**: Focus on Action & Speed (Predictive Modeling)", icon: 'fas fa-hand-rock', path: 'A', nextLayer: 2 },
-                { id: 'B', text: "The **Kagami (Shield)**: Focus on Integrity & Foundation (Data Engineering)", icon: 'fas fa-shield-alt', path: 'B', nextLayer: 2 },
-                { id: 'C', text: "The **Fude (Brush)**: Focus on Insight & Narrative (Text Analysis)", icon: 'fas fa-feather-alt', path: 'C', nextLayer: 2 }
+                { id: 'A', text: "The **Tachi** (Long Sword): Predictive Modeling, MLOps, and algorithmic complexity.", icon: 'fas fa-hand-rock', nextLayer: 2 },
+                { id: 'B', text: "The **Kagami** (Mirror): Data Architecture, Pipeline Robustness, and Data Governance.", icon: 'fas fa-shield-alt', nextLayer: 2 },
+                { id: 'C', text: "The **Fude** (Brush): Storytelling, Insight Generation, and business translation.", icon: 'fas fa-feather-alt', nextLayer: 2 }
             ]
         },
-        // --- Layer 2: Core Challenge (Branches A, B, C based on L1) ---
         2: {
-            A: {
-                narrative: (name) => `Speed is our only defense, **${name}**. Ocha-Sensei demands a predictive model in 48 hours. **Your mission is to find the fastest path to a predictive output.** But which dataset do we trust right now?`,
-                prompt: "Your Tactical Decision:",
+            A: { 
+                narrative: (name) => `You chose the Tachi. The mission: build a system to predict user churn. **${name}**, which metric is the ultimate measure of your success?`,
+                prompt: "Your Core Metric:",
                 choices: [
-                    { id: 'A2.1', text: "The **Untested Data**: Use the raw, uncleaned data immediately to save time, hoping the noise doesn't matter much.", nextLayer: 3, result: 'A3.1' },
-                    { id: 'A2.2', text: "The **Quick Fix**: Run a single Python cleaning script to fix only the timestamps and nulls, delaying the model by 6 hours.", nextLayer: 3, result: 'A3.2' },
+                    { id: 'A2.1', text: "High **AUC-ROC Score** (Area Under the Curve) to prove model discrimination power.", nextLayer: 3 },
+                    { id: 'A2.2', text: "**Precision** on the top 10% of high-risk users, ensuring business action targets the right people.", nextLayer: 3 }
+                ]
+            },
+            B: { 
+                narrative: (name) => `You chose the Kagami. The mission: build a highly scalable user retention pipeline. **${name}**, what is the single greatest concern for data quality?`,
+                prompt: "Your Core Metric:",
+                choices: [
+                    { id: 'B2.1', text: "**Data Freshness** (low latency) from source to dashboard.", nextLayer: 3 },
+                    { id: 'B2.2', text: "**Schema Stability** (no unexpected nulls or type changes) in the Data Warehouse.", nextLayer: 3 }
+                ]
+            },
+            C: { 
+                narrative: (name) => `You chose the Fude. The mission: deliver a compelling narrative on user retention loss. **${name}**, which business function is your key audience?`,
+                prompt: "Your Core Metric:",
+                choices: [
+                    { id: 'C2.1', text: "The **Product Team**, to influence the development roadmap.", nextLayer: 3 },
+                    { id: 'C2.2', text: "The **Executive Leadership**, to secure resource and budget approval.", nextLayer: 3 }
+                ]
+            }
+        },
+        3: {
+            A: { 
+                narrative: (name) => `A critical data source is on a vendor's S3 bucket, **${name}**. It's unstructured (JSON), heavy, and poorly documented. How do you approach this obstacle?`,
+                prompt: "Your Data Environment Strategy:",
+                choices: [
+                    { id: 'A3.1', text: "Write a **Custom Python Script** to iteratively parse and flatten the JSON into a clean table structure.", nextLayer: 4 },
+                    { id: 'A3.2', text: "Use a **Cloud ETL Tool** (e.g., Fivetran, Stitch) to handle the ingestion, trading control for speed.", nextLayer: 4 }
+                ]
+            },
+            B: { 
+                narrative: (name) => `A critical data source is on a vendor's S3 bucket, **${name}**. It's unstructured (JSON), heavy, and poorly documented. How do you approach this obstacle?`,
+                prompt: "Your Data Environment Strategy:",
+                choices: [
+                    { id: 'B3.1', text: "Write a **Custom Python Script** to iteratively parse and flatten the JSON into a clean table structure.", nextLayer: 4 },
+                    { id: 'B3.2', text: "Use a **Cloud ETL Tool** (e.g., Fivetran, Stitch) to handle the ingestion, trading control for speed.", nextLayer: 4 }
+                ]
+            },
+            C: { 
+                narrative: (name) => `A critical data source is on a vendor's S3 bucket, **${name}**. It's unstructured (JSON), heavy, and poorly documented. How do you approach this obstacle?`,
+                prompt: "Your Data Environment Strategy:",
+                choices: [
+                    { id: 'C3.1', text: "Write a **Custom Python Script** to iteratively parse and flatten the JSON into a clean table structure.", nextLayer: 4 },
+                    { id: 'C3.2', text: "Use a **Cloud ETL Tool** (e.g., Fivetran, Stitch) to handle the ingestion, trading control for speed.", nextLayer: 4 }
+                ]
+            }
+        },
+        4: { 
+            A: { 
+                narrative: (name) => `Speed is vital, **${name}**. For feature generation, time is short. Which path balances effort and data quality for a quick-hit model?`,
+                prompt: "Your Tactical Data Prep Focus:",
+                choices: [
+                    { id: 'A4.1', text: "Create **Highly-Engineered Features** (e.g., custom rolling averages) on a small, clean data sample.", nextLayer: 5 },
+                    { id: 'A4.2', text: "Use **All Raw Features** and auto-encoders on the full dataset, trusting the model to handle noise.", nextLayer: 5 },
                     noviceChoice
                 ]
             },
-            B: {
-                narrative: (name) => `The system is weak, **${name}**. No analysis is sound on poor data. **Your mission is to establish a robust and permanent data pipeline.** Do we patch the leak, or rebuild the reservoir?`,
-                prompt: "Your Foundational Decision:",
+            B: { 
+                narrative: (name) => `The schema is weak, **${name}**. A key field for retention is missing 20% of the time. This must be fixed before any analysis begins.`,
+                prompt: "Your Foundational Integrity Decision:",
                 choices: [
-                    { id: 'B2.1', text: "The **Patch**: Fix the database entries using complex SQL Window Functions and CTEs to deduplicate data.", nextLayer: 3, result: 'B3.1' },
-                    { id: 'B2.2', text: "The **Rebuild**: Halt all operations. Design a new **dbt/Airflow** workflow to govern future data quality.", nextLayer: 3, result: 'B3.2' },
+                    { id: 'B4.1', text: "Implement a **Forced Non-Null Constraint** in the upstream ETL to block bad data.", nextLayer: 5 },
+                    { id: 'B4.2', text: "Perform a **Backfill** using a statistical imputation method (e.g., K-Nearest Neighbors) to repair historical data.", nextLayer: 5 },
                     noviceChoice
                 ]
             },
-            C: {
-                narrative: (name) => `The raw numbers are silent, **${name}**. The answer lies in the unsaid. **Your mission is to find the hidden 'Why' behind the drop-off.** We need context. How do we turn whispers into evidence?`,
-                prompt: "Your Insight Decision:",
+            C: { 
+                narrative: (name) => `The whispers of 10,000 raw app reviews need to be heard, **${name}**. How do you begin to transform this noise into actionable context?`,
+                prompt: "Your Insight Transformation Strategy:",
                 choices: [
-                    { id: 'C2.1', text: "The **Survey**: Propose a large-scale user survey to gather structured, quantitative feedback on content quality.", nextLayer: 3, result: 'C3.1' },
-                    { id: 'C2.2', text: "The **Scrolls**: Mine the *raw text feedback* from app reviews and support tickets for immediate, unstructured context.", nextLayer: 3, result: 'C3.2' },
+                    { id: 'C4.1', text: "Use **Simple N-gram Frequency and Word Clouds** to quickly identify trending keywords and themes.", nextLayer: 5 },
+                    { id: 'C4.2', text: "Apply a **Pre-trained LLM/BERT Model** to derive immediate, granular sentiment and topic scoring.", nextLayer: 5 },
                     noviceChoice
                 ]
             }
         },
-        // --- Layer 3: Mid-Journey Test (Funnels into Layer 4) ---
-        3: {
-            narrative: (name, result) => {
-                const results = {
-                    'A3.1': `You launched the quick model on dirty data. **Model Failure!** It produced garbage results (50% accuracy). Ocha-Sensei gives you a stern look, **${name}**. **Immediate need: Backtrack to better data.**`,
-                    'A3.2': `The quick-fix model gives acceptable (65%) results. Ocha-Sensei approves. **Immediate need: Stabilize and understand the model's features.**`,
-                    'B3.1': `Your complex SQL solution works, but the query takes 15 minutes to run every time. Ocha-Sensei sighs. **Immediate need: Automate the slow query and make it scalable.**`,
-                    'B3.2': `Architectural Victory! The new data warehouse is clean, but the stakeholder is confused by the new system. **Immediate need: Explain the value to the business.**`,
-                    'C3.1': `The survey is launched, but results will take two weeks. Ocha-Sensei is impatient. **Immediate need: Find a faster, alternative source of insight.**`,
-                    'C3.2': `Text Overload! You have 10,000 feedback messages. Reading them all is impossible. **Immediate need: Tool to process the text at scale.**`,
-                    'Novice': `You admit the mission is too complex right now. Ocha-Sensei nods. "**${name}**, you have shown the wisdom to know your limits. Focus is a strength. We will skip ahead, but first, you must decide your reward."`
-                };
-                return results[result];
+        5: { 
+            A: { 
+                narrative: (name) => `Your features are set, **${name}**. We need max accuracy on a short timeline to identify at-risk users.`,
+                prompt: "Your Model Selection:",
+                choices: [
+                    { id: 'A5.1', text: "Choose **Complex Gradient Boosting (XGBoost/LightGBM)** for maximum performance, accepting lower interpretability.", nextLayer: 6 },
+                    { id: 'A5.2', text: "Choose **Interpretable Logistic Regression** to quickly confirm core drivers and get immediate business trust.", nextLayer: 6 },
+                    noviceChoice
+                ]
             },
-            prompt: "The path is long, and your spirit is weary. Ocha-Sensei notices your fatigue.",
-            choices: [
-                { id: 'Next', text: "Continue the Journey and Focus on the Reward.", nextLayer: 4, icon: 'fas fa-arrow-alt-circle-right' }
-            ]
+            B: { 
+                narrative: (name) => `The DWH is slow; the metric needs frequent updates. **${name}**, how do you balance cost and latency?`,
+                prompt: "Your Data Load Strategy:",
+                choices: [
+                    { id: 'B5.1', text: "Implement **Micro-batches** (every 15 mins) using a change data capture (CDC) stream.", nextLayer: 6 },
+                    { id: 'B5.2', text: "Rely on a **Daily Full Load/Merge** process to simplify pipeline logic and save immediate compute cost.", nextLayer: 6 },
+                    noviceChoice
+                ]
+            },
+            C: { 
+                narrative: (name) => `You've processed the text, **${name}**. You must visualize the user drop-off process to show context, not just volume.`,
+                prompt: "Your Visualization Strategy:",
+                choices: [
+                    { id: 'C5.1', text: "Use a simple **Funnel Chart** showing clear volume loss at each step.", nextLayer: 6 },
+                    { id: 'C5.2', text: "Use a **Sankey Diagram** to show how users flow across various retention states before and after the drop-off event.", nextLayer: 6 },
+                    noviceChoice
+                ]
+            }
         },
-        // --- Layer 4: The Push (Vacation) ---
-        4: {
+        6: { 
+            A: { 
+                narrative: (name) => `The model is built, **${name}**. Before deployment, you must validate its business relevance.`,
+                prompt: "Your Validation Method:",
+                choices: [
+                    { id: 'A6.1', text: "Check **Feature Importance Scores (e.g., SHAP/LIME)** to confirm the model aligns with domain knowledge.", nextLayer: 7 },
+                    { id: 'A6.2', text: "Propose an **Extensive A/B Test Simulation** using holdout data to measure projected ROI and impact.", nextLayer: 7 },
+                    noviceChoice
+                ]
+            },
+            B: { 
+                narrative: (name) => `The new pipeline is running, **${name}**. How do you guarantee long-term data quality and trust?`,
+                prompt: "Your Data Quality Assurance:",
+                choices: [
+                    { id: 'B6.1', text: "Implement a **Data-Profiling Tool (Great Expectations/dbt-expectations)** to automatically check schema, volume, and distribution.", nextLayer: 7 },
+                    { id: 'B6.2', text: "Execute **User Acceptance Testing (UAT)** with the business and dashboard users to manually confirm reliability.", nextLayer: 7 },
+                    noviceChoice
+                ]
+            },
+            C: { 
+                narrative: (name) => `You have a profound insight from the text data, **${name}**. How do you make it stick and drive immediate action from leadership?`,
+                prompt: "Your Insight Delivery Focus:",
+                choices: [
+                    { id: 'C6.1', text: "Deliver a deep-dive **Jupyter Notebook/Technical Report** to the engineering team for technical feasibility.", nextLayer: 7 },
+                    { id: 'C6.2', text: "Simplify the core finding into a **Single Executive Summary Slide** focused on the 'So What' and immediate next steps.", nextLayer: 7 },
+                    noviceChoice
+                ]
+            }
+        },
+        7: { 
+            A: { 
+                narrative: (name) => `The complex model is powerful but takes 3 hours to train. It's too slow for daily updates, **${name}**. The mission demands speed.`,
+                prompt: "Your Course Correction:",
+                choices: [
+                    { id: 'A7.1', text: "Focus on **Data Engineering** to pre-calculate all features and speed up the training pipeline.", nextLayer: 8 },
+                    { id: 'A7.2', text: "Switch to a **Simpler Model (e.g., Simple Neural Net)** and invest time in feature selection/hyperparameter tuning.", nextLayer: 8 },
+                    noviceChoice
+                ]
+            },
+            B: { 
+                narrative: (name) => `The new pipeline is robust, but the CFO flags the high DWH cost for the frequent loads, **${name}**. We need cost efficiency.`,
+                prompt: "Your Cost-Saving Strategy:",
+                choices: [
+                    { id: 'B7.1', text: "Optimize **SQL Query Logic and DWH Partitioning/Clustering** to reduce expensive compute time.", nextLayer: 8 },
+                    { id: 'B7.2', text: "Propose a **Change in Data Retention Policy** (Business decision) to minimize the volume of data stored.", nextLayer: 8 },
+                    noviceChoice
+                ]
+            },
+            C: { 
+                narrative: (name) => `The C-suite misinterpreted your complex chart and is now focusing on the wrong feature, **${name}**. We need clarity, not complexity.`,
+                prompt: "Your Communication Recovery:",
+                choices: [
+                    { id: 'C7.1', text: "Design a **Single, Simplified KPI (e.g., North Star Metric)** on the dashboard to align focus.", nextLayer: 8 },
+                    { id: 'C7.2', text: "Hold a **30-minute Workshop** with key stakeholders to explain the full context and complexity of the finding.", nextLayer: 8 },
+                    noviceChoice
+                ]
+            }
+        },
+        8: { 
+            A: { 
+                narrative: (name) => `The mission continues, **${name}**. Execute your chosen strategy to overcome the model's speed limitations.`,
+                prompt: "Your Technical Task:",
+                choices: [
+                    { id: 'A8.1', text: "Write a high-performance **Pyspark/Dask** script to clean and aggregate features on a distributed cluster.", nextLayer: 9 },
+                    { id: 'A8.2', text: "Re-write the model training to utilize **Optuna** or similar tools for rapid, automated hyperparameter optimization.", nextLayer: 9 },
+                    noviceChoice
+                ]
+            },
+            B: { 
+                narrative: (name) => `The mission continues, **${name}**. Execute your chosen strategy to reduce pipeline cost without sacrificing integrity.`,
+                prompt: "Your Technical Task:",
+                choices: [
+                    { id: 'B8.1', text: "Implement **Materialized Views/Clustering** in the DWH to pre-aggregate complex joins, reducing query costs for analysts.", nextLayer: 9 },
+                    { id: 'B8.2', text: "Develop a **Cost-Benefit Analysis Report** on the current data retention and present alternative storage tiers.", nextLayer: 9 },
+                    noviceChoice
+                ]
+            },
+            C: { 
+                narrative: (name) => `The mission continues, **${name}**. Execute your chosen strategy to restore confidence and action among leadership.`,
+                prompt: "Your Technical Task:",
+                choices: [
+                    { id: 'C8.1', text: "Create a detailed **Go-to-Market (GTM) Strategy** document focused solely on the impact of the insight.", nextLayer: 9 },
+                    { id: 'C8.2', text: "Develop a clear, comprehensive **Data Dictionary and Metric Taxonomy** to eliminate future confusion.", nextLayer: 9 },
+                    noviceChoice
+                ]
+            }
+        },
+        9: { 
             narrative: (name) => `The pressure is immense, **${name}**. To find the strength for the final push, look ahead. Ocha-Sensei: 'What grand vision do you hold onto—the destination that awaits your victorious return—to re-ignite your focus?'`,
             prompt: "Your Motivation Choice (Choose your reward):",
             choices: [
-                { id: 'A4.1', text: "The **Bustling City**: A week exploring the hyper-modern architecture and electric energy of Tokyo/Shinjuku.", icon: 'fas fa-city', nextLayer: 5 },
-                { id: 'A4.2', text: "The **Ancient Temples**: A retreat to the serene, historical gardens and temples of Kyoto.", icon: 'fas fa-mountain', nextLayer: 5 }
+                { id: 'A9.1', text: "The **Bustling City**: A week exploring the hyper-modern architecture and electric energy of Tokyo/Shinjuku.", icon: 'fas fa-city', nextLayer: 10 },
+                { id: 'A9.2', text: "The **Ancient Temples**: A retreat to the serene, historical gardens and temples of Kyoto.", icon: 'fas fa-mountain', nextLayer: 10 }
             ]
         },
-        // --- Layer 5: The Final Solution (Funnels into Layer 6) ---
-        5: {
-            A: { // Tachi Path Challenge (MLOps)
-                narrative: (name) => `Your model is now acceptable, **${name}**, but it needs to be production-ready and auto-retrain every night. **How do you automate this and deploy it to the live application?**`,
-                prompt: "Your Final Solution:",
+        10: { 
+            A: { 
+                narrative: (name) => `Your model is optimal, **${name}**. Now, we must make it production-ready and highly available for the application to consume in real-time.`,
+                prompt: "Your Deployment Strategy:",
                 choices: [
-                    { id: 'A5.1', text: "Focus on **Container Orchestration** (Docker, Kubernetes) to manage auto-retraining and scalable deployment.", nextLayer: 6 },
-                    { id: 'A5.2', text: "Use a **Managed ML Endpoint** (SageMaker, Vertex AI) to simplify deployment and auto-scale the model API.", nextLayer: 6 },
+                    { id: 'A10.1', text: "Deploy as a **REST API/Microservice (Kubernetes/Managed Endpoint)** for low-latency, real-time scoring.", nextLayer: 11 },
+                    { id: 'A10.2', text: "Deploy as a scheduled **Batch Job** that updates a simple DWH lookup table daily.", nextLayer: 11 },
                     noviceChoice
                 ]
             },
-            B: { // Kagami Path Challenge (Data Engineering)
-                narrative: (name) => `The clean data you created, **${name}**, needs to be delivered reliably and scalably to multiple dashboards and analysts. **How do you move from manual SQL scripts to an automated data product?**`,
-                prompt: "Your Final Solution:",
+            B: { 
+                narrative: (name) => `The data is clean, **${name}**, but sensitive information is exposed. We need to secure the perimeter before wider release.`,
+                prompt: "Your Data Governance Focus:",
                 choices: [
-                    { id: 'B5.1', text: "Focus on **Data Engineering Tools** (dbt, Airflow, ETL/ELT) to manage workflow and dependencies.", nextLayer: 6 },
-                    { id: 'B5.2', text: "Focus on **Cloud Services** to manage batch jobs (AWS Glue, GCP Dataflow, Azure Data Factory).", nextLayer: 6 },
+                    { id: 'B10.1', text: "Implement **Role-Based Access Control (RBAC)** in the DWH to manage who can access what tables/columns.", nextLayer: 11 },
+                    { id: 'B10.2', text: "Implement **Data Masking/Tokenization** for all Personally Identifiable Information (PII) at the source.", nextLayer: 11 },
                     noviceChoice
                 ]
             },
-            C: { // Fude Path Challenge (Insight/Communication)
-                narrative: (name) => `You've confirmed the 'Curse of Complexity', **${name}**. Now, you must make the technical report clear and impactful enough for the non-technical C-suite. **How do you present the narrative?**`,
-                prompt: "Your Final Solution:",
+            C: { 
+                narrative: (name) => `The insight requires a major budget increase for a new team, **${name}**. You must secure the final buy-in from the C-suite.`,
+                prompt: "Your Final Presentation Focus:",
                 choices: [
-                    { id: 'C5.1', text: "Create a high-fidelity **Interactive Report** (D3.js, Tableau) focused on data storytelling and emotional impact.", nextLayer: 6 },
-                    { id: 'C5.2', text: "Develop a **Stakeholder Communication Plan** and present a 5-slide deck using simple, business-focused metrics and clear next steps.", nextLayer: 6 },
+                    { id: 'C10.1', text: "Focus on the **Projected Return on Investment (ROI)** and the massive business opportunity of the new project.", nextLayer: 11 },
+                    { id: 'C10.2', text: "Focus on the **Technical Feasibility** and the low-risk/high-reward nature of the resource requirements.", nextLayer: 11 },
                     noviceChoice
                 ]
             }
         },
-        // --- Layer 6: The Verdict ---
-        6: {
+        11: { 
+            A: { 
+                narrative: (name) => `The model is live, **${name}**. It's only a matter of time before its performance drifts. How do you monitor its health autonomously?`,
+                prompt: "Your Monitoring Solution:",
+                choices: [
+                    { id: 'A11.1', text: "Set up automated **Data Drift/Model Degradation Alerts** using MLOps platforms (MLflow/SageMaker).", nextLayer: 12 },
+                    { id: 'A11.2', text: "Develop a **Scheduled Report** that manually tracks model accuracy on a daily holdout test set.", nextLayer: 12 },
+                    noviceChoice
+                ]
+            },
+            B: { 
+                narrative: (name) => `The pipeline is secured, **${name}**. The last piece is to embed quality checks into the code itself for maintainability.`,
+                prompt: "Your Data Testing Method:",
+                choices: [
+                    { id: 'B11.1', text: "Implement **Unit Tests and Integration Tests** in your Python/SQL code to check logic pre-deployment.", nextLayer: 12 },
+                    { id: 'B11.2', text: "Create a separate **Staging Environment** to manually review all new data changes before they hit production.", nextLayer: 12 },
+                    noviceChoice
+                ]
+            },
+            C: { 
+                narrative: (name) => `The story must be told, **${name}**. The final presentation needs to be unforgettable and compelling.`,
+                prompt: "Your Narrative Tool Choice:",
+                choices: [
+                    { id: 'C11.1', text: "Create an **Interactive Storytelling Dashboard** (D3.js/GSAP) focused on user journey and emotional impact.", nextLayer: 12 },
+                    { id: 'C11.2', text: "Develop a **Simple, Repeated Mantra/Catchphrase** for the insight and distribute it via internal communication channels.", nextLayer: 12 },
+                    noviceChoice
+                ]
+            }
+        },
+        12: {
+            A: { 
+                narrative: (name) => `The model is performing well. **${name}**, your final task for this project is documentation.`,
+                prompt: "Your Documentation Style:",
+                choices: [
+                    { id: 'A12.1', text: "A highly **Technical Readme/Wiki** for engineers, detailing code, environment, and API specifications.", nextLayer: 13 },
+                    { id: 'A12.2', text: "A **Business-Focused Project Retrospective** for stakeholders, detailing outcomes, impact, and assumptions.", nextLayer: 13 }
+                ]
+            },
+            B: { 
+                narrative: (name) => `The pipeline is robust. **${name}**, your final task for this project is documentation.`,
+                prompt: "Your Documentation Style:",
+                choices: [
+                    { id: 'B12.1', text: "A highly **Technical Readme/Wiki** for engineers, detailing code, environment, and API specifications.", nextLayer: 13 },
+                    { id: 'B12.2', text: "A **Business-Focused Project Retrospective** for stakeholders, detailing outcomes, impact, and assumptions.", nextLayer: 13 }
+                ]
+            },
+            C: { 
+                narrative: (name) => `The insight is clear and accepted. **${name}**, your final task for this project is documentation.`,
+                prompt: "Your Documentation Style:",
+                choices: [
+                    { id: 'C12.1', text: "A highly **Technical Readme/Wiki** for engineers, detailing code, environment, and API specifications.", nextLayer: 13 },
+                    { id: 'C12.2', text: "A **Business-Focused Project Retrospective** for stakeholders, detailing outcomes, impact, and assumptions.", nextLayer: 13 }
+                ]
+            }
+        },
+
+        // 🌟 ACT V: LEADERSHIP & FUTURE-PROOFING (Layers 13-15) 🌟
+        13: {
+            narrative: (name) => `Ocha-Sensei: 'You've defeated the Yokai for now, **${name}**. But a true leader must prepare the next generation. Your team is struggling with tribal knowledge. How do you solidify their future growth?'`,
+            prompt: "Your People & Process Strategy:",
+            choices: [
+                { id: 'A13', text: "Implement a **Mandatory Code Review & Pair Programming** policy to transfer technical knowledge and standardize quality.", nextLayer: 14 },
+                { id: 'B13', text: "Establish a **Dedicated Mentorship Program** across the team and allocate 10% of analyst time solely for training and skill-sharing.", nextLayer: 14 }
+            ]
+        },
+        14: {
+            narrative: (name) => `The market is shifting, and the business needs a competitive edge. Your infrastructure needs a major overhaul to support new, experimental data sources. How do you pitch this necessary, high-risk change?`,
+            prompt: "Your Innovation Strategy:",
+            choices: [
+                { id: 'A14', text: "Propose a **Small, High-Impact POC** (Proof of Concept) on the experimental data to demonstrate immediate potential ROI before full investment.", nextLayer: 15 },
+                { id: 'B14', text: "Present a **Long-Term Technology Roadmap** detailing the technical debt and the guaranteed competitive advantage over the next 3 years.", nextLayer: 15 }
+            ]
+        },
+        15: {
+            narrative: (name) => `You are now a strategic partner. The Product and Engineering VPs disagree on the next quarter's feature priority, and data supports both sides. How do you lead the alignment?`,
+            prompt: "Your Final Strategic Alignment Decision:",
+            choices: [
+                { id: 'A15', text: "Facilitate a **Data-Driven Decision Framework Workshop** to standardize how projects are scored based on mission alignment and effort.", nextLayer: 16 },
+                { id: 'B15', text: "Use **Advanced Scenario Modeling** (e.g., Monte Carlo simulations) to quantify the potential business risk/reward of each VP's proposal.", nextLayer: 16 }
+            ]
+        },
+
+        // ACT VI: The Verdict and Skill Map (Layers 16-18)
+        16: {
+            narrative: (name) => `You have secured the victory, **${name}**. The project is stable, the team is growing, and the strategic direction is clear. Ocha-Sensei: 'Your technical command is solid. Now, let us assess the true measure of a leader.'`,
+            prompt: "The path is clear for the final promotion.",
+            choices: [
+                { id: 'Next', text: "Advance to The Final Test of Self-Mastery.", nextLayer: 17, icon: 'fas fa-arrow-alt-circle-right' }
+            ]
+        },
+        17: {
+            narrative: (name) => `Ocha-Sensei: 'A true master, **${name}**, does not simply wield tools. They command the organization. Which discipline is your next focus for personal growth?'`,
+            prompt: "Your Final Soft Skill Focus:",
+            choices: [
+                { id: 'A17', text: "Focus on **Executive Communication & Storytelling**: Mastering the boardroom presentation and political landscape.", nextLayer: 18 },
+                { id: 'B17', text: "Focus on **Engineering Leadership & Mentorship**: Growing from coder to architect of talent and systems.", nextLayer: 18 },
+                { id: 'C17', text: "Focus on **Product Management & Business Strategy**: Understanding the market and driving the roadmap with data.", nextLayer: 18 }
+            ]
+        },
+        18: {
+            // Layer 18: The Final Verdict - Skill Mastery Map
             narrative: (name, path) => {
-                const skillMaps = {
-                    'A': { title: "Tachi (Action & Speed)", icon: 'fas fa-hand-rock', skills: ["MLOps / Model Deployment & Automation", "Python Production Coding"], bonus: "Cloud Infrastructure (AWS/GCP/Azure)" },
-                    'B': { title: "Kagami (Integrity & Foundation)", icon: 'fas fa-shield-alt', skills: ["Data Engineering / Pipeline Orchestration (dbt/Airflow)", "Cloud Data Warehousing (Snowflake/BigQuery)"], bonus: "Advanced SQL Window Functions & CTEs" },
-                    'C': { title: "Fude (Insight & Narrative)", icon: 'fas fa-feather-alt', skills: ["Natural Language Processing (NLP) & LLM Prompting", "Interactive Storytelling with D3.js/GSAP"], bonus: "A/B Testing and Experimental Design" }
-                };
                 
-                let result = skillMaps[path];
+                const skillMaps = {
+                    'A': { title: "Chief MLOps Architect (The Tachi Master)", icon: 'fas fa-hand-rock', defaultPrimarySkills: ["MLOps & Cloud Deployment", "Feature Engineering & Selection", "Model Monitoring & Drift Alerting"], advancedTool: "SHAP/LIME (Model Explainability)", softSkill: "Executive Communication & Storytelling", bonus: "A/B Testing and Experimental Design" },
+                    'B': { title: "Principal Data Architect (The Kagami Master)", icon: 'fas fa-shield-alt', defaultPrimarySkills: ["Scalable Data Engineering (dbt/Airflow)", "DWH Optimization", "Data Governance & RBAC"], advancedTool: "Great Expectations (Data Quality)", softSkill: "Engineering Leadership & Mentorship", bonus: "Cost-Benefit Analysis & Financial Modeling" },
+                    'C': { title: "Chief Insight Officer (The Fude Master)", icon: 'fas fa-feather-alt', defaultPrimarySkills: ["Advanced Text Analytics (LLMs/BERT)", "Data Storytelling & Interactive Visualization", "Metric Taxonomy & Data Dictionary Creation"], advancedTool: "D3.js/GSAP (Interactive Narrative)", softSkill: "Product Management & Business Strategy", bonus: "Go-to-Market Strategy & Business Planning" },
+                    // Consolidated Novice Result
+                    'Novice': { title: "Foundational Analyst (The Focused Student)", icon: 'fas fa-book', primarySkills: ["Mastering Foundational SQL", "Data Visualization and Communication", "Excel/Spreadsheet Modeling"], advancedTool: "Version Control (Git)", softSkill: "Self-Awareness & Scoping", bonus: "Data Ethics and Privacy Fundamentals" }
+                };
 
-                // Override skills for Novice Path
-                if (noviceChoiceCount > 0) {
-                    result.skills = [
-                        "Mastering Foundational SQL (Joins, Aggregation, CTEs)", 
-                        "Data Visualization and Communication (Tableau/Power BI)"
-                    ];
-                    // Keep the bonus skill from the dominant path but frame it as "Future Mastery"
-                    result.bonus = `Future Mastery: ${result.bonus}`;
-                    result.title = "Foundational Analyst"; // Change title for Novice path
+                let result = skillMaps[path]; 
+                
+                // --- Priority 1: NOVICE OVERRIDE LOGIC ---
+                if (noviceChoiceCount >= 2) {
+                    result = skillMaps['Novice'];
+                    result.title = "Foundational Analyst (The Focused Student)";
+                    result.softSkill = "Self-Awareness & Scoping (Rewarded for consistent professional humility)";
+                    // Use predefined Foundational Skills
+                    result.primarySkills = result.primarySkills; 
+                } else {
+                    // --- Priority 2: PATH HISTORY ANALYSIS (Technical Skills) ---
+                    const skillCounts = {};
+                    technicalLayers.forEach(layer => {
+                        const choiceId = pathHistory[layer];
+                        if (choiceId && choiceId !== 'Novice') {
+                            const tag = skillTagMap[choiceId];
+                            if (tag) {
+                                skillCounts[tag] = (skillCounts[tag] || 0) + 1;
+                            }
+                        }
+                    });
+
+                    // Convert skill counts to an array of [skill, count] pairs, sort by count descending
+                    const sortedSkills = Object.entries(skillCounts)
+                        .sort(([, countA], [, countB]) => countB - countA)
+                        .map(([skill]) => skill); // Get just the skill name
+
+                    // Use the top 3 chosen technical skills, falling back to default if not enough choices were technical
+                    result.primarySkills = sortedSkills.slice(0, 3);
+                    
+                    // Fill in any remaining slots with the path's default skills
+                    for (let i = result.primarySkills.length; i < 3; i++) {
+                        // Find a default skill that hasn't been chosen/added yet
+                        const defaultSkill = result.defaultPrimarySkills.find(d => !result.primarySkills.includes(d));
+                        if (defaultSkill) {
+                            result.primarySkills.push(defaultSkill);
+                        }
+                    }
+                    
+                    // --- Priority 3: SOFT SKILL ADJUSTMENT (Layer 17 & 1 Novice) ---
+                    // Retrieve the soft skill from the final choice (Layer 17)
+                    if (pathHistory[17]) {
+                         const softSkillMap = {
+                            'A17': 'Executive Communication & Storytelling',
+                            'B17': 'Engineering Leadership & Mentorship',
+                            'C17': 'Product Management & Business Strategy'
+                        };
+                        let layer17Choice = softSkillMap[pathHistory[17]];
+
+                        // Adjust soft skill if 1 Novice was chosen
+                        if (noviceChoiceCount === 1) {
+                            result.softSkill = `Strategic Self-Awareness & Prudent Scoping, focused on ${layer17Choice}`;
+                        } else {
+                            result.softSkill = layer17Choice;
+                        }
+                    }
                 }
+                // --- END LOGIC ---
 
-
+                // --- HTML Generation ---
                 let html = `
-                <i class="${result.icon}" style="font-size: 3rem; color: var(--neon-orange); text-shadow: 0 0 5px var(--neon-orange);"></i>
-                <div class="verdict-box">
-                    <h2>The Treasure: Your Skill Mastery Map</h2>
-                    <p>Your journey is over, **${name}**. Ocha-Sensei meets you in the dojo and says: "You have shown remarkable intuition for **${result.title}** during this quest. This success is only the beginning. Based on the decisions you made when facing true chaos, I present your map for future mastery."</p>
-                    
-                    <h4>Ocha-Sensei’s Top 2 Recommendations:</h4>
-                    <ul class="skill-list">
-                        <li><strong>1. ${result.skills[0]}:</strong> <em>"You are a specialist. Now, master the art of the forge to ensure your blade/shield/brush can strike/hold/write tirelessly."</em></li>
-                        <li><strong>2. ${result.skills[1]}:</strong> <em>"You have demonstrated a core strength. Solidify this expertise to become indispensable."</em></li>
-                    </ul>
-                    
-                    <h4>Ocha-Sensei's Additional Secret:</h4>
-                    <ul class="skill-list" style="margin-top: -10px;">
-                        <li><strong>3. ${result.bonus}:</strong> <em>"To be a true Sensei, you must also command the supporting arts. This is your next secret discipline."</em></li>
-                    </ul>
-                </div>`;
+                    <i class="${result.icon}" style="font-size: 3rem; color: var(--neon-orange); text-shadow: 0 0 5px var(--neon-orange);"></i>
+                    <div class="verdict-box">
+                        <h2>The Treasure: Your Skill Mastery Map</h2>
+                        <p>Your journey is over, **${name}**. Ocha-Sensei meets you in the dojo and says: "You have shown the soul of a **${result.title}**. This map is forged from the thousands of micro-decisions you made when facing true chaos. It shows your path to mastery."</p>
+                        
+                        <h4>Ocha-Sensei’s Top 3 Technical Recommendations:</h4>
+                        <ul class="skill-list">
+                            <li><strong>1. ${result.primarySkills[0] || result.defaultPrimarySkills[0]}:</strong> <em>Your most frequent technical decision led here.</em></li>
+                            <li><strong>2. ${result.primarySkills[1] || result.defaultPrimarySkills[1]}:</strong> <em>Solidify this expertise to become indispensable.</em></li>
+                            <li><strong>3. ${result.primarySkills[2] || result.defaultPrimarySkills[2]}:</strong> <em>A core strength you demonstrated mastery in.</em></li>
+                        </ul>
+                        
+                        <h4>Mastery Tool & Soft Skill Focus:</h4>
+                        <ul class="skill-list" style="margin-top: -10px;">
+                            <li><strong>Advanced Tool/Tech:</strong> <em>Master the art of **${result.advancedTool}** to forge your weapon.</em></li>
+                            <li><strong>Crucial Soft Skill:</strong> <em>Your organizational strength lies in **${result.softSkill}**.</em></li>
+                        </ul>
+
+                        <h4>Future Discipline (Bonus):</h4>
+                        <ul class="skill-list" style="margin-top: -10px;">
+                            <li><strong>Next Secret Discipline:</strong> <em>**${result.bonus}** is the key to true Sensei status.</em></li>
+                        </ul>
+                    </div>`;
                 return html;
             }
         }
@@ -553,13 +887,15 @@
         let layerData = content[layerNum];
         let html = '';
         const name = userName || 'Analyst';
-
-        // Logic to select the correct branch for layers 1, 2, and 5
-        if (layerNum === 1 || layerNum === 2 || layerNum === 5) {
-            const pathKey = dominantPath;
-            layerData = content[layerNum][pathKey] || layerData;
+        
+        // Logic to select the correct branch based on dominantPath
+        if (dominantPath) {
+            // Checks if the current layer has branches (A, B, C)
+            if (layerData[dominantPath] && typeof layerData[dominantPath] === 'object') {
+                layerData = layerData[dominantPath];
+            }
         }
-
+        
         // --- Layer 0: Name Input Screen ---
         if (layerNum === 0) {
             html += `
@@ -572,19 +908,15 @@
             gameArea.innerHTML = html;
             document.getElementById('name-input').focus();
             currentLayer = layerNum;
-            return; 
+            return;
         }
 
-        // --- Narrative Section (Layers 1-6) ---
+        // --- Narrative Section (Layers 1-18) ---
         if (layerNum > 0) {
             let narrativeText = layerData.narrative;
-            // The path history check for Layer 3's narrative needs the L2 result
-            const historyResult = pathHistory[2] ? pathHistory[2] : null; // Changed to use the ID directly
             
-            if (layerNum === 3 && historyResult) {
-                narrativeText = narrativeText(name, historyResult);
-            } else if (typeof narrativeText === 'function') {
-                narrativeText = narrativeText(name);
+            if (typeof narrativeText === 'function') {
+                narrativeText = narrativeText(name, dominantPath);
             }
             
             // Render the narrative, replacing **text** with <strong>text</strong>
@@ -639,30 +971,23 @@
             dominantPath = choiceId; // Set the main path (A, B, or C)
         }
         
-        // 2. Handle the Novice Choice and skip to Layer 4 immediately (if not already there)
-        // MODIFICATION: Check if currentLayer is LESS THAN 4 before jumping to Layer 4.
-        if (choiceId === 'Novice' && currentLayer < 4) {
+        // 2. Handle the Novice Choice Logic
+        if (choiceId === 'Novice') {
             noviceChoiceCount++; // Increment counter
             pathHistory[currentLayer] = choiceId;
-            nextLayer = 4; // Skip to Layer 4 (vacation)
-        } else if (choiceId === 'Novice' && currentLayer >= 4) {
-            // If 'Novice' choice is made at or after Layer 4, just record the choice
-            // and let the default flow handle the next layer.
-            noviceChoiceCount++; // Increment counter
-            pathHistory[currentLayer] = choiceId;
-            // nextLayer remains the default (currentLayer + 1)
-            nextLayer = 6;
-        } else if (currentLayer === 2) {
-            // For layer 2, store the result ID (e.g., A3.1 or A3.2) for the Layer 3 narrative
-            const choiceObject = content[currentLayer][dominantPath].choices.find(c => c.id === choiceId);
-            pathHistory[currentLayer] = choiceObject.result;
+            // The Novice button now consistently skips to Layer 16 (Consolidation/Pre-Verdict)
+            if (currentLayer < 16) {
+                nextLayer = 16;
+            } else {
+                nextLayer = 18; // If at L16 or L17 and choose Novice, go straight to verdict.
+            }
         } else {
-            // 3. Record the choice
+            // 3. Record the choice for non-Novice options
             pathHistory[currentLayer] = choiceId;
         }
         
         // 4. Move to next layer or final verdict
-        if (nextLayer === 6) {
+        if (nextLayer === 18) {
             renderVerdict();
         } else {
             renderLayer(nextLayer);
@@ -672,7 +997,9 @@
     function renderVerdict() {
         const name = userName;
         const finalPath = dominantPath;
-        let html = content[6].narrative(name, finalPath);
+        
+        // Layer 18 is the verdict layer
+        let html = content[18].narrative(name, finalPath);
 
         // Render the verdict, replacing **text** with <strong>text</strong>
         html = formatBold(html);
