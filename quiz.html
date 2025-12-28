@@ -582,6 +582,15 @@
 
 
         function startQuiz() {
+            // --- START FIX: RESET DATA ---
+            // This loop cleans up "ghost" answers from previous attempts
+            ALL_QUESTIONS.forEach(q => {
+                q.answered = false;
+                q.selectedAnswer = null;
+                q.isCorrect = undefined;
+            });
+            // --- END FIX ---
+
             // 1. Randomly select questions
             const shuffled = ALL_QUESTIONS.sort(() => 0.5 - Math.random());
             currentQuestions = shuffled.slice(0, NUM_QUESTIONS);
