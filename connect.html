@@ -291,7 +291,7 @@
                         <div class="stat-lbl">Data Projects</div>
                     </div>
                     <div class="stat-block">
-                        <div class="industry-list">E-commerce, HR Services,<br>Finance, IoT</div>
+                        <div class="industry-list">E-commerce, HR,<br>Finance, IoT</div>
                         <div class="stat-lbl">Industries</div>
                     </div>
                 </div>
@@ -401,11 +401,15 @@
                 document.getElementById('stats-edu').style.display = 'flex';
                 // Update Badge
                 document.getElementById('since-badge').textContent = 'Since 2021';
+                // Update Icon: Graduation Cap
+                document.getElementById('stats-icon').className = 'fa-solid fa-graduation-cap';
             } else {
                 document.getElementById('tab-prac').classList.add('active');
                 document.getElementById('stats-prac').style.display = 'flex';
                 // Update Badge
                 document.getElementById('since-badge').textContent = 'Since 2020';
+                // Update Icon: Briefcase
+                document.getElementById('stats-icon').className = 'fa-solid fa-briefcase';
             }
         }
 
@@ -431,6 +435,7 @@
                 swapImageSource('img-c2', imageConfig.c2.green);
                 swapImageSource('img-c4', imageConfig.c4.green);
                 swapImageSource('img-c5', imageConfig.c5.green);
+                swapImageSource('img-c6', imageConfig.c6.green);
                 swapImageSource('img-c7', imageConfig.c7.green);
 
             } else {
@@ -441,6 +446,7 @@
                 swapImageSource('img-c2', imageConfig.c2.orange);
                 swapImageSource('img-c4', imageConfig.c4.orange);
                 swapImageSource('img-c5', imageConfig.c5.orange);
+                swapImageSource('img-c6', imageConfig.c6.orange);
                 swapImageSource('img-c7', imageConfig.c7.orange);
             }
             isOrangeTheme = !isOrangeTheme;
