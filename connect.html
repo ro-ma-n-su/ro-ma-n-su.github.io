@@ -17,6 +17,8 @@
             --theme-light: #FFF4E6;
             --text-dark: #222;
             --overlay-color: rgba(20, 20, 20, 0.75);
+            /* SQL App Theme */
+            --sql-color: #F05032; --sql-bg: #FAFAFA; --chat-roman: #E5E5E5;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -89,10 +91,9 @@
             padding: 24px; 
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Spread header, stats, and toggle */
+            justify-content: space-between; 
         }
 
-        /* 1. Header with Badge */
         .c1-header {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 10px;
@@ -102,48 +103,44 @@
             border-radius: 20px; font-size: 0.75rem; font-weight: 600; 
         }
 
-        /* 2. Content Area */
         .stats-content {
             display: flex; flex-direction: column; gap: 10px;
-            flex-grow: 1; /* Takes available middle space */
+            flex-grow: 1; 
             animation: fadeIn 0.4s ease;
         }
-        #stats-prac { display: none; } /* Hidden by default */
+        #stats-prac { display: none; } 
 
-        /* 3. New Side-by-Side Grid for Metrics */
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Left Col / Right Col */
+            grid-template-columns: 1fr 1fr; 
             gap: 10px;
             align-items: start;
         }
-        .stat-block { margin: 0; } /* Reset margin for grid */
+        .stat-block { margin: 0; } 
         
         .stat-big { font-size: 2.2rem; font-weight: 800; line-height: 1; letter-spacing: -1px; }
         .stat-med { font-size: 1.6rem; font-weight: 700; line-height: 1.1; margin-top: 5px; }
         .stat-lbl { font-size: 0.75rem; opacity: 0.9; font-weight: 400; line-height: 1.2; margin-top: 4px; }
         .industry-list { font-size: 0.8rem; font-weight: 600; line-height: 1.3; opacity: 0.95; }
 
-        /* Min/Max Bar */
         .minmax-container { margin-top: auto; padding-bottom: 10px; }
         .minmax-bar { height: 4px; width: 100%; background: rgba(255,255,255,0.3); border-radius: 2px; position: relative; margin: 6px 0; }
         .minmax-fill { position: absolute; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, #fff 100%); border-radius: 2px; }
         .minmax-labels { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 600; }
         .lbl-detail { font-size: 0.6rem; opacity: 0.8; font-weight: 400; }
 
-        /* 4. Toggle at Bottom (Reduced Size) */
         .stats-toggle-container {
             display: flex;
             background: rgba(0,0,0,0.2);
             border-radius: 10px;
             padding: 3px;
-            align-self: center; /* Center horizontally */
-            margin-top: auto; /* Push to very bottom */
-            transform: scale(0.85); /* 15% smaller visually */
+            align-self: center; 
+            margin-top: auto; 
+            transform: scale(0.85); 
         }
         .stat-tab {
-            padding: 4px 10px; /* Reduced padding */
-            font-size: 0.65rem; /* Reduced font */
+            padding: 4px 10px; 
+            font-size: 0.65rem; 
             font-weight: 600;
             border-radius: 7px;
             cursor: pointer;
@@ -153,7 +150,6 @@
         .stat-tab.active { background: white; color: var(--theme-color); opacity: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
 
         /* Card 2: Toolkit */
         .c2 { grid-area: c2; background-color: #222; }
@@ -226,7 +222,7 @@
         .modal-overlay.active .modal-content { transform: scale(1); }
         .modal-title { margin-bottom: 20px; font-size: 1.2rem; color: #222; font-weight: 700; }
         .icon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .app-icon { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #333; transition: transform 0.1s; }
+        .app-icon { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #333; transition: transform 0.1s; cursor: pointer; }
         .app-icon:hover { transform: scale(1.05); }
         .app-box { width: 60px; height: 60px; border-radius: 16px; display: flex; justify-content: center; align-items: center; font-size: 26px; color: white; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .app-name { font-size: 0.8rem; font-weight: 500; }
@@ -239,21 +235,107 @@
         .close-modal { margin-top: 25px; background: #f0f0f0; border: none; padding: 10px 24px; border-radius: 20px; cursor: pointer; font-weight: 600; color: #555; }
         .close-modal:hover { background: #e0e0e0; }
 
-        @media (max-width: 768px) {
-            body { padding: 10px; height: auto; overflow-y: auto; }
-            .bento-container {
-                display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto; height: auto;
-                grid-template-areas: "c6 c6" "c4 c4" "c1 c1" "c5 c2" "c7 c7" "c3 c3" "bottom bottom";
-            }
-            .bottom-row-split { display: contents; } 
-            .c8-wrapper, .c9-wrapper { width: 100%; height: 200px; grid-column: span 1; }
-            .c8-wrapper { grid-column: 1 / span 1; grid-row: auto; }
-            .c9-wrapper { grid-column: 2 / span 1; grid-row: auto; }
-            .card { min-height: 180px; }
-            .right-col-wrapper { display: contents; } 
-            .c4, .c7 { width: 100%; height: auto; min-height: 220px; }
-            .c3 { border-left: none; border-top: 4px solid var(--theme-color); }
+        /* --- NEW: SQL APP 90% WINDOW --- */
+        .modal-content-app { background: var(--sql-bg); width: 90%; height: 90%; border-radius: 24px; display: flex; flex-direction: column; padding: 0; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3); transform: scale(0.8); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .modal-overlay.active .modal-content-app { transform: scale(1); }
+        .sql-header { background: white; padding: 15px 0; display: flex; justify-content: center; align-items: center; gap: 20px; border-bottom: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; z-index: 10;}
+        .btn-sql-back { border: none; background: none; font-size: 1.2rem; cursor: pointer; color: #333; padding: 5px 10px; border-radius: 8px; } .btn-sql-back:hover { background: #f5f5f5; }
+        .sql-title { font-weight: 800; font-size: 1.1rem; color: var(--sql-color); display: flex; align-items: center; gap: 8px; }
+
+        /* Toggle */
+        .toggle-switch { width: 60px; height: 30px; background-color: #eee; border-radius: 30px; position: relative; cursor: pointer; transition: background-color 0.3s; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; box-sizing: border-box; } .toggle-knob { width: 24px; height: 24px; background-color: white; border-radius: 50%; position: absolute; left: 3px; top: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); display: flex; justify-content: center; align-items: center; font-size: 0.7rem; font-weight: 800; color: var(--sql-color); } .toggle-switch.active { background-color: var(--sql-color); } .toggle-switch.active .toggle-knob { transform: translateX(30px); color: var(--sql-color); } .toggle-label { font-size: 0.7rem; font-weight: 700; color: #999; z-index: 0; } .toggle-switch.active .toggle-label-left { color: white; opacity: 0.8; } .toggle-switch:not(.active) .toggle-label-right { color: #555; }
+
+        /* --- MENUS --- */
+        .sql-main-menu { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%; background: var(--sql-bg); padding: 20px; text-align: center; }
+        .sql-main-icon { font-size: 4rem; color: var(--sql-color); margin-bottom: 20px; }
+        .sql-main-title { font-family: 'Space Mono', monospace; font-size: 2.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 50px; opacity: 0; transform: translateY(20px); animation: gameTitleLoad 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: 0.2s; }
+        @keyframes gameTitleLoad { to { opacity: 1; transform: translateY(0); } }
+        .sql-menu-btns { display: flex; flex-direction: column; gap: 18px; width: 100%; max-width: 300px; }
+        .sql-menu-btn { background: white; border: 2px solid var(--sql-color); color: var(--sql-color); padding: 16px; border-radius: 50px; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px; opacity: 0; animation: fadeInBtn 0.5s forwards; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .sql-menu-btn:nth-child(1) { animation-delay: 0.4s; } .sql-menu-btn:nth-child(2) { animation-delay: 0.5s; } .sql-menu-btn:nth-child(3) { animation-delay: 0.6s; } .sql-menu-btn:nth-child(4) { animation-delay: 0.7s; } .sql-menu-btn:nth-child(5) { animation-delay: 0.8s; }
+        .sql-menu-btn:hover { background: var(--sql-color); color: white; transform: translateY(-3px); box-shadow: 0 8px 15px rgba(240, 80, 50, 0.2); }
+        @keyframes fadeInBtn { to { opacity: 1; } }
+
+        /* QUIZ & GUIDE */
+        .sql-body, .sql-body-guide, .sql-body-flash { flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; width: 100%; background: var(--sql-bg);}
+        .quiz-score-board { width: 100%; max-width: 600px; display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: 600; color: #666; font-size: 0.9rem; }
+        .quiz-card { background: white; width: 100%; max-width: 600px; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; display: flex; flex-direction: column; }
+        .q-topic { font-size: 0.7rem; font-weight: 700; color: var(--sql-color); text-transform: uppercase; margin-bottom: 5px; } .q-text { font-size: 1.1rem; font-weight: 600; color: #222; margin-bottom: 20px; line-height: 1.4; text-align: left; }
+        .q-options { display: grid; gap: 10px; width: 100%; } .q-btn { background: white; border: 2px solid #eee; padding: 15px; border-radius: 12px; text-align: left; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; color: #444; font-weight: 500; } .q-btn:hover { border-color: var(--sql-color); background: #FFF5F2; } .q-btn.correct { background-color: #4CAF50 !important; color: white !important; border-color: #4CAF50 !important; } .q-btn.wrong { background-color: #F44336 !important; color: white !important; border-color: #F44336 !important; } .q-btn.disabled { pointer-events: none; opacity: 0.7; }
+        .explanation-box { background: #FFF5F2; border-left: 4px solid var(--sql-color); padding: 15px; margin-top: 20px; border-radius: 8px; display: none; animation: fadeIn 0.3s; width: 100%; max-width: 600px; text-align: left; } .exp-title { font-weight: 700; color: var(--sql-color); font-size: 0.8rem; margin-bottom: 5px; } .exp-text { font-size: 0.9rem; color: #444; line-height: 1.4; }
+        .btn-next { background: var(--text-dark); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 20px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .results-screen { text-align: center; display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; } .res-score { font-size: 5rem; font-weight: 800; color: var(--sql-color); line-height: 1; } .res-title { font-size: 1.5rem; font-weight: 700; color: #333; margin-top: 10px; } .res-text { font-size: 1rem; margin-bottom: 30px; color: #666; max-width: 300px; margin-top: 10px; }
+        
+        /* Guide */
+        .guide-title { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px; text-align: center; } .guide-subtitle { font-size: 1rem; color: #666; margin-bottom: 40px; text-align: center; }
+        .fc-wrapper { display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; max-width: 900px; } .fc-col { display: flex; flex-direction: column; gap: 20px; justify-content: center; } .fc-box { background: white; border: 2px solid var(--sql-color); padding: 20px; border-radius: 16px; font-weight: 600; font-size: 0.9rem; color: #444; text-align: center; width: 220px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; min-height: 100px; } .fc-box-title { font-size: 0.75rem; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; } .fc-arrow { color: var(--sql-color); font-size: 2rem; } .fc-branch-arrows { display: flex; flex-direction: column; justify-content: space-around; height: 340px; } .arrow-up-right { transform: rotate(-35deg); } .arrow-down-right { transform: rotate(35deg); }
+
+        /* Flashcards */
+        .sql-body-flash { justify-content: center; }
+        .flashcard-wrapper { perspective: 1000px; width: 100%; max-width: 450px; height: 300px; margin-bottom: 40px; cursor: pointer; } .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-radius: 24px; } .flashcard-wrapper.is-flipped .flashcard-inner { transform: rotateY(180deg); } .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 30px; border-radius: 24px; } .flashcard-front { background: white; border: 3px solid var(--sql-color); color: var(--sql-color); font-size: 2.5rem; font-weight: 800; font-family: 'Space Mono', monospace; } .flashcard-back { background: var(--sql-color); color: white; transform: rotateY(180deg); font-size: 1.4rem; font-weight: 600; line-height: 1.5; } .dice-btn { background: white; border: 2px solid #eee; width: 70px; height: 70px; border-radius: 50%; font-size: 2rem; color: #555; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: center; align-items: center; } .dice-btn:hover { border-color: var(--sql-color); color: var(--sql-color); transform: rotate(180deg) scale(1.1); box-shadow: 0 8px 20px rgba(240, 80, 50, 0.2); } .tap-hint { font-size: 0.8rem; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 20px; letter-spacing: 1px; }
+
+        /* --- CHAT LOG UI --- */
+        .chat-container {
+            display: flex; flex-direction: column; gap: 15px; padding: 20px;
+            overflow-y: auto; flex: 1; width: 100%; max-width: 600px; margin: 0 auto;
+            scroll-behavior: smooth;
         }
+        .chat-bubble {
+            max-width: 80%; padding: 14px 18px; font-size: 1rem; line-height: 1.4;
+            position: relative; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .chat-roman { background: var(--chat-roman); color: #333; border-radius: 18px 18px 18px 4px; align-self: flex-start; }
+        .chat-user { background: var(--sql-color); color: white; border-radius: 18px 18px 4px 18px; align-self: flex-end; }
+        
+        .chat-choices { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; width: 100%; align-items: flex-end; animation: fadeIn 0.5s; }
+        .chat-choice-btn {
+            background: white; border: 2px solid var(--sql-color); color: var(--sql-color);
+            padding: 12px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
+            font-weight: 600; text-align: right; max-width: 90%; font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); align-self: flex-end;
+        }
+        .chat-choice-btn:hover { background: var(--sql-color); color: white; transform: translateY(-2px); }
+        .chat-choice-btn.center-btn { align-self: center !important; text-align: center; }
+
+        .typing-indicator { display: none; gap: 5px; padding: 14px 18px; background: var(--chat-roman); border-radius: 18px 18px 18px 4px; width: fit-content; align-self: flex-start; animation: popIn 0.3s ease; }
+        .typing-dot { width: 8px; height: 8px; background: #999; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; } .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            body { padding: 10px; height: auto; overflow-y: auto; } 
+            .bento-container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto; height: auto; grid-template-areas: "c6 c6" "c4 c4" "c1 c1" "c5 c2" "c7 c7" "c3 c3" "bottom bottom"; } 
+            .bottom-row-split { display: contents; } 
+            .c8-wrapper, .c9-wrapper { width: 100%; height: 200px; grid-column: span 1; } 
+            .c8-wrapper { grid-column: 1 / span 1; grid-row: auto; } 
+            .c9-wrapper { grid-column: 2 / span 1; grid-row: auto; } 
+            .card { min-height: 180px; } 
+            .right-col-wrapper { display: contents; } 
+            .c4, .c7 { width: 100%; height: auto; min-height: 220px; } 
+            .c3 { border-left: none; border-top: 4px solid var(--theme-color); }
+            
+            /* App Mobile */
+            .sql-body, .sql-body-guide, .sql-body-flash, .chat-container { padding: 15px; } 
+            .q-text { font-size: 1rem; } 
+            .q-btn { padding: 12px; font-size: 0.9rem; } 
+            .modal-content-app { width: 95%; height: 95%; } 
+            .sql-main-title { font-size: 1.6rem; margin-bottom: 30px; } 
+            .fc-wrapper { flex-direction: column; gap: 10px; } 
+            .fc-box { width: 100%; max-width: 300px; } 
+            .desktop-only { display: none !important; } 
+            .mobile-only { display: block !important; } 
+            .fc-arrow.mobile-only { transform: rotate(90deg); margin: 5px 0; font-size: 1.5rem; color: #ccc; } 
+            .flashcard-front { font-size: 2rem; } 
+            .flashcard-back { font-size: 1.1rem; } 
+            .flashcard-wrapper { height: 250px; }
+            .chat-bubble { font-size: 0.9rem; } 
+            .chat-choice-btn { font-size: 0.85rem; }
+        }
+        @media (min-width: 769px) { .mobile-only { display: none !important; } }
     </style>
 </head>
 <body>
@@ -287,7 +369,7 @@
             <div id="stats-prac" class="stats-content">
                 <div class="stats-grid">
                     <div class="stat-block">
-                        <div class="stat-big">200+</div>
+                        <div class="stat-big">300+</div>
                         <div class="stat-lbl">Data Projects</div>
                     </div>
                     <div class="stat-block">
@@ -316,7 +398,7 @@
         <div class="card c3">
             <div class="code-comment">// CURRENTLY LEARNING</div>
             <div class="code-var">topic =</div>
-            <div class="code-str">"Embedding Model for RAG"<span class="blink">_</span></div>
+            <div class="code-str">"Agentic AI"<span class="blink">_</span></div>
         </div>
 
         <div class="card c5 clickable" onclick="toggleTheme()">
@@ -350,9 +432,9 @@
             </div>
             <div class="c9-wrapper">
                 <div class="card c9 mood-happy">
-                    <div class="mood-emoji">😆</div>
-                    <div class="mood-label">Brimmingly Happy</div>
-                    <div class="mood-note">"Starting 2026!"</div>
+                    <div class="mood-emoji">⁶🤷‍♂️⁷</div>
+                    <div class="mood-label">Learning Season</div>
+                    <div class="mood-note">"Brain is braining!"</div>
                 </div>
             </div>
         </div>
@@ -371,11 +453,12 @@
             <button class="close-modal" onclick="closeModalDirect('modal-socials')">Close</button>
         </div>
     </div>
+    
     <div id="modal-toolkit" class="modal-overlay" onclick="closeModal(event, 'modal-toolkit')">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-title">My Data Toolkit</div>
             <div class="icon-grid">
-                <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-database"></i></div><span class="app-name">SQL</span></div>
+                <div class="app-icon" onclick="startSQLApp()"><div class="app-box bg-toolkit" style="background: #F05032;"><i class="fa-solid fa-database"></i></div><span class="app-name">SQL</span></div>
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-brands fa-python"></i></div><span class="app-name">Python</span></div>
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-gears"></i></div><span class="app-name">KNIME</span></div>
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-chart-simple"></i></div><span class="app-name">Tableau</span></div>
@@ -386,83 +469,471 @@
         </div>
     </div>
 
-    <script>
-        // === 1. STATS TAB SWITCHER (UPDATED) ===
-        function switchStats(type) {
-            // Reset Tabs
-            document.getElementById('tab-edu').classList.remove('active');
-            document.getElementById('tab-prac').classList.remove('active');
-            // Hide Content
-            document.getElementById('stats-edu').style.display = 'none';
-            document.getElementById('stats-prac').style.display = 'none';
+    <div id="app-overlay-sql" class="modal-overlay">
+        <div class="modal-content-app" onclick="event.stopPropagation()">
+            
+            <div id="sql-screen-menu" class="sql-main-menu">
+                <i class="fa-solid fa-database sql-main-icon"></i>
+                <h1 class="sql-main-title">SQL : Structured Query Language</h1>
+                <div class="sql-menu-btns">
+                    <button class="sql-menu-btn" onclick="openSQLQuiz()">Play Quiz</button>
+                    <button class="sql-menu-btn" onclick="openSQLGuide()">Project Guide</button>
+                    <button class="sql-menu-btn" onclick="openSQLFlashcards()">Flip Cards</button>
+                    <button class="sql-menu-btn" onclick="openSQLChat()">Chat Log</button>
+                    <button class="sql-menu-btn" onclick="closeSQLApp()">Exit</button>
+                </div>
+            </div>
 
+            <div id="sql-screen-quiz" style="display: none; height: 100%; flex-direction: column;">
+                <div class="sql-header">
+                    <button class="btn-sql-back" onclick="backToSQLMenu()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="sql-title">SQLingo - How confident are you?</div>
+                    <div class="toggle-switch" id="lang-toggle-quiz" onclick="toggleSQLLang()">
+                        <div class="toggle-label toggle-label-left">EN</div><div class="toggle-knob toggle-knob-text">EN</div><div class="toggle-label toggle-label-right">ID</div>
+                    </div>
+                </div>
+                <div class="sql-body">
+                    <div id="sql-game-ui" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="quiz-score-board"><span id="q-progress">Question 1/10</span><span id="q-score">Score: 0</span></div>
+                        <div class="quiz-card"><div class="q-topic">SQL Basics</div><div id="q-text" class="q-text">Loading question...</div><div id="q-options" class="q-options"></div></div>
+                        <div id="q-explanation" class="explanation-box"><div class="exp-title">EXPLANATION</div><div id="exp-text" class="exp-text">...</div></div>
+                        <button id="btn-next-q" class="btn-next" onclick="nextQuestion()">Next Question <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <div id="sql-results-ui" class="results-screen">
+                        <div class="res-score" id="final-score">80</div><div class="res-title" id="tier-title">SQL Master</div><div class="res-text" id="tier-text">You are a wizard!</div>
+                        <button class="btn-next" style="display:inline-block;" onclick="openSQLQuiz()">Play Again</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sql-screen-guide" style="display: none; height: 100%; flex-direction: column;">
+                <div class="sql-header">
+                    <button class="btn-sql-back" onclick="backToSQLMenu()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="sql-title">SQL Project Guide</div>
+                </div>
+                <div class="sql-body-guide">
+                    <div class="guide-title">PROJECT GUIDE</div><div class="guide-subtitle">(Most common use)</div>
+                    <div class="fc-wrapper">
+                        <div class="fc-box"><div class="fc-box-title">DATA SOURCE</div>(Database, dummy training data, etc.)</div>
+                        <i class="fa-solid fa-arrow-right fc-arrow desktop-only"></i><i class="fa-solid fa-arrow-down fc-arrow mobile-only"></i>
+                        <div class="fc-box">Data processing (joining, filtering, etc.)</div>
+                        <div class="fc-branch-arrows desktop-only"><i class="fa-solid fa-arrow-right fc-arrow arrow-up-right"></i><i class="fa-solid fa-arrow-right fc-arrow"></i><i class="fa-solid fa-arrow-right fc-arrow arrow-down-right"></i></div>
+                        <div class="fc-col">
+                            <i class="fa-solid fa-arrow-down fc-arrow mobile-only"></i><div class="fc-box">Refine the query to be more dynamic, export, then schedule &rarr; <b>automated report</b></div>
+                            <i class="fa-solid fa-arrow-down fc-arrow mobile-only"></i><div class="fc-box">Connect the query result to Data Visualization tools &rarr; <b>input for dashboard</b></div>
+                            <i class="fa-solid fa-arrow-down fc-arrow mobile-only"></i><div class="fc-box">Call out specific metrics and communicate to stakeholders &rarr; <b>data-driven discussion</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sql-screen-flash" style="display: none; height: 100%; flex-direction: column;">
+                <div class="sql-header">
+                    <button class="btn-sql-back" onclick="backToSQLMenu()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="sql-title">SQL Flip Cards</div>
+                </div>
+                <div class="sql-body-flash">
+                    <div class="tap-hint">Tap card to reveal definition</div>
+                    <div class="flashcard-wrapper" id="flashcard-container" onclick="flipCard()">
+                        <div class="flashcard-inner"><div class="flashcard-front" id="flash-term">SELECT</div><div class="flashcard-back" id="flash-def">Picks which columns you want to see</div></div>
+                    </div>
+                    <button class="dice-btn" onclick="randomizeCard()"><i class="fa-solid fa-dice"></i></button>
+                </div>
+            </div>
+
+            <div id="sql-screen-chat" style="display: none; height: 100%; flex-direction: column; background: var(--sql-bg);">
+                <div class="sql-header">
+                    <button class="btn-sql-back" onclick="backToSQLMenu()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="sql-title">Messages</div>
+                    <div class="toggle-switch" id="lang-toggle-chat" onclick="toggleSQLLang()">
+                        <div class="toggle-label toggle-label-left">EN</div><div class="toggle-knob toggle-knob-text">EN</div><div class="toggle-label toggle-label-right">ID</div>
+                    </div>
+                </div>
+                <div class="chat-container" id="chat-container">
+                    <div id="chat-history-area" style="display: flex; flex-direction: column; gap: 10px; width: 100%;"></div>
+                    <div class="typing-indicator" id="typing-indicator">
+                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                    </div>
+                    <div class="chat-choices" id="chat-choices-area"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. GLOBAL STATE & UNIFIED VARIABLES
+        // ==========================================
+        let currentLang = 'en';
+        let isOrangeTheme = true;
+        
+        // Quiz State
+        let currentScore = 0;
+        let qIndex = 0;
+        let sessionQuestions = [];
+        let canAnswer = false;
+
+        // Flashcard State
+        let currentCardIndex = -1;
+
+        // Chat State
+        let chatHistoryData = []; 
+        let currentChatNode = null;
+        let waitingForUserChoice = false;
+
+        // ==========================================
+        // 2. HELPER FUNCTIONS (Formatting & Array Math)
+        // ==========================================
+        
+        // Formats Markdown bold (**text** or *text*) into highlighted HTML bold
+        function formatText(str) {
+            if (!str) return '';
+            str = str.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--sql-color); font-weight: 800;">$1</strong>');
+            str = str.replace(/\*(.*?)\*/g, '<strong style="color: var(--sql-color); font-weight: 800;">$1</strong>');
+            return str;
+        }
+
+        // Fisher-Yates Shuffle
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+
+        // ==========================================
+        // 3. STATS & BENTO THEME LOGIC
+        // ==========================================
+        function switchStats(type) {
+            document.getElementById('tab-edu').classList.remove('active'); document.getElementById('tab-prac').classList.remove('active');
+            document.getElementById('stats-edu').style.display = 'none'; document.getElementById('stats-prac').style.display = 'none';
             if(type === 'edu') {
-                document.getElementById('tab-edu').classList.add('active');
-                document.getElementById('stats-edu').style.display = 'flex';
-                // Update Badge
-                document.getElementById('since-badge').textContent = 'Since 2021';
-                // Update Icon: Graduation Cap
-                document.getElementById('stats-icon').className = 'fa-solid fa-graduation-cap';
+                document.getElementById('tab-edu').classList.add('active'); document.getElementById('stats-edu').style.display = 'flex';
+                document.getElementById('since-badge').textContent = 'Since 2021'; document.getElementById('stats-icon').className = 'fa-solid fa-graduation-cap';
             } else {
-                document.getElementById('tab-prac').classList.add('active');
-                document.getElementById('stats-prac').style.display = 'flex';
-                // Update Badge
-                document.getElementById('since-badge').textContent = 'Since 2020';
-                // Update Icon: Briefcase
-                document.getElementById('stats-icon').className = 'fa-solid fa-briefcase';
+                document.getElementById('tab-prac').classList.add('active'); document.getElementById('stats-prac').style.display = 'flex';
+                document.getElementById('since-badge').textContent = 'Since 2020'; document.getElementById('stats-icon').className = 'fa-solid fa-briefcase';
             }
         }
 
-        // === 2. THEME & IMAGE SWAP CONFIGURATION ===
-        const imageConfig = {
-            c2: { orange: 'pics/bento-Toolkit.png', green: 'pics/bento-Toolkit-alt.png' },
-            c4: { orange: 'pics/bento-Social Media.png', green: 'pics/bento-Social Media-alt.png' },
-            c5: { orange: 'pics/bento-Photo.png', green: 'pics/bento-Photo-alt.png' },
-            c6: { orange: 'pics/bento-Logo.png', green: 'pics/bento-Logo-alt.png' },
-            c7: { orange: 'pics/bento-Consultation.png', green: 'pics/bento-Consultation-alt.png' }
+        const imageConfig = { 
+            c2: { orange: 'pics/bento-Toolkit.png', green: 'pics/bento-Toolkit-alt.png' }, 
+            c4: { orange: 'pics/bento-Social Media.png', green: 'pics/bento-Social Media-alt.png' }, 
+            c5: { orange: 'pics/bento-Photo.png', green: 'pics/bento-Photo-alt.png' }, 
+            c6: { orange: 'pics/bento-Logo.png', green: 'pics/bento-Logo-alt.png' }, 
+            c7: { orange: 'pics/bento-Consultation.png', green: 'pics/bento-Consultation-alt.png' } 
         };
-
-        let isOrangeTheme = true;
-
+        
         function toggleTheme() {
             const root = document.documentElement;
-            
-            if (isOrangeTheme) {
-                // SWITCH TO GREEN
-                root.style.setProperty('--theme-color', '#228B22'); 
-                root.style.setProperty('--theme-light', '#E8F5E9'); 
-                
-                swapImageSource('img-c2', imageConfig.c2.green);
-                swapImageSource('img-c4', imageConfig.c4.green);
-                swapImageSource('img-c5', imageConfig.c5.green);
-                swapImageSource('img-c6', imageConfig.c6.green);
-                swapImageSource('img-c7', imageConfig.c7.green);
-
-            } else {
-                // SWITCH TO ORANGE
-                root.style.setProperty('--theme-color', '#FF8C00');
-                root.style.setProperty('--theme-light', '#FFF4E6');
-
-                swapImageSource('img-c2', imageConfig.c2.orange);
-                swapImageSource('img-c4', imageConfig.c4.orange);
-                swapImageSource('img-c5', imageConfig.c5.orange);
-                swapImageSource('img-c6', imageConfig.c6.orange);
-                swapImageSource('img-c7', imageConfig.c7.orange);
-            }
+            if (isOrangeTheme) { root.style.setProperty('--theme-color', '#228B22'); root.style.setProperty('--theme-light', '#E8F5E9'); swapImageSource('img-c2', imageConfig.c2.green); swapImageSource('img-c4', imageConfig.c4.green); swapImageSource('img-c5', imageConfig.c5.green); swapImageSource('img-c6', imageConfig.c6.green); swapImageSource('img-c7', imageConfig.c7.green); } 
+            else { root.style.setProperty('--theme-color', '#FF8C00'); root.style.setProperty('--theme-light', '#FFF4E6'); swapImageSource('img-c2', imageConfig.c2.orange); swapImageSource('img-c4', imageConfig.c4.orange); swapImageSource('img-c5', imageConfig.c5.orange); swapImageSource('img-c6', imageConfig.c6.orange); swapImageSource('img-c7', imageConfig.c7.orange); }
             isOrangeTheme = !isOrangeTheme;
         }
+        function swapImageSource(id, newSrc) { const img = document.getElementById(id); if(img) { img.style.opacity = 0; setTimeout(() => { img.src = newSrc; img.style.opacity = 1; }, 300); } }
 
-        function swapImageSource(id, newSrc) {
-            const img = document.getElementById(id);
-            if(img) {
-                img.style.opacity = 0; 
-                setTimeout(() => {
-                    img.src = newSrc; 
-                    img.style.opacity = 1; 
-                }, 300);
+
+        // ==========================================
+        // 4. SQL NAVIGATION & LANGUAGE TOGGLE LOGIC
+        // ==========================================
+        function toggleSQLLang() {
+            currentLang = currentLang === 'en' ? 'id' : 'en';
+            
+            // Sync all language toggles
+            document.querySelectorAll('.toggle-switch').forEach(el => {
+                if (currentLang === 'id') el.classList.add('active');
+                else el.classList.remove('active');
+            });
+            document.querySelectorAll('.toggle-knob-text').forEach(el => {
+                el.innerText = currentLang.toUpperCase();
+            });
+
+            // Update currently visible screen text
+            if (document.getElementById('sql-screen-quiz').style.display === 'flex') {
+                loadQuestion(false); // false = just update text, don't reset state
+            }
+            if (document.getElementById('sql-screen-chat').style.display === 'flex') {
+                renderChatHistory();
+                renderChatChoices(); // Translate the pending choices too!
             }
         }
 
+        function startSQLApp() {
+            closeModalDirect('modal-toolkit');
+            const app = document.getElementById('app-overlay-sql'); app.style.display = 'flex'; setTimeout(() => app.classList.add('active'), 10);
+            document.getElementById('sql-screen-menu').style.display = 'flex'; document.getElementById('sql-screen-quiz').style.display = 'none';
+            document.getElementById('sql-screen-guide').style.display = 'none'; document.getElementById('sql-screen-flash').style.display = 'none';
+            document.getElementById('sql-screen-chat').style.display = 'none';
+        }
+        function closeSQLApp() { const app = document.getElementById('app-overlay-sql'); app.classList.remove('active'); setTimeout(() => { app.style.display = 'none'; openModal('modal-toolkit'); }, 300); }
+        function backToSQLMenu() { document.getElementById('sql-screen-quiz').style.display = 'none'; document.getElementById('sql-screen-guide').style.display = 'none'; document.getElementById('sql-screen-flash').style.display = 'none'; document.getElementById('sql-screen-chat').style.display = 'none'; document.getElementById('sql-screen-menu').style.display = 'flex'; }
+        
+        function openSQLGuide() { document.getElementById('sql-screen-menu').style.display = 'none'; document.getElementById('sql-screen-guide').style.display = 'flex'; }
+
+
+        // ==========================================
+        // 5. FLASHCARDS LOGIC
+        // ==========================================
+        const FLASHCARD_DATA = [
+            { term: "SELECT", def: "Picks which columns you want to see" }, { term: "FROM", def: "Specifies the table where the data lives" }, { term: "AS", def: "Renames a column or table (Aliasing)" }, { term: "DISTINCT", def: "Returns only unique values" }, { term: "WHERE", def: "Filters rows based on a condition" }, { term: "AND / OR", def: "Combines multiple filters" }, { term: "IN", def: "Matches values against a list" }, { term: "BETWEEN", def: "Filters within a range (inclusive)" }, { term: "LIKE", def: "Searches for a pattern" }, { term: "IS NULL", def: "Finds empty/missing data" }, { term: "GROUP BY", def: "Collapses rows into summary rows" }, { term: "COUNT()", def: "Returns the number of rows" }, { term: "SUM() / AVG()", def: "Calculates total or average" }, { term: "MIN() / MAX()", def: "Finds lowest or highest value" }, { term: "HAVING", def: "Filters after you've grouped data" }, { term: "INNER JOIN", def: "Returns matching records in both tables" }, { term: "LEFT JOIN", def: "Returns all left records, plus right matches" }, { term: "COALESCE()", def: "Returns first non-null value" }, { term: "ORDER BY", def: "Sorts results" }, { term: "CASE WHEN", def: "The IF-THEN of SQL" }
+        ];
+        function openSQLFlashcards() { document.getElementById('sql-screen-menu').style.display = 'none'; document.getElementById('sql-screen-flash').style.display = 'flex'; randomizeCard(); }
+        function flipCard() { document.getElementById('flashcard-container').classList.toggle('is-flipped'); }
+        function randomizeCard() { const c = document.getElementById('flashcard-container'); if (c.classList.contains('is-flipped')) { c.classList.remove('is-flipped'); setTimeout(setNewCardData, 300); } else { setNewCardData(); } }
+        function setNewCardData() { let newIndex; do { newIndex = Math.floor(Math.random() * FLASHCARD_DATA.length); } while (newIndex === currentCardIndex); currentCardIndex = newIndex; document.getElementById('flash-term').innerText = FLASHCARD_DATA[currentCardIndex].term; document.getElementById('flash-def').innerText = FLASHCARD_DATA[currentCardIndex].def; }
+
+
+        // ==========================================
+        // 6. CHAT LOGIC (VISUAL NOVEL)
+        // ==========================================
+        const SCENARIO = {
+            node1: {
+                messages: [
+                    {en: "Back in 2019, I actually struggled **a lot** with SQL.", id: "Dulu jaman 2019 gw pernah struggle **banget** sama SQL."},
+                    {en: "I had just finished learning Python and thought I was good to go... then I found out SQL existed. I had absolutely zero clue how it worked. 😅", id: "Waktu itu gw baru kelar belajar Python, terus baru tau ada yang namanya SQL. Ga paham sama sekali 😅"}
+                ],
+                choices: [
+                    { text: {en: "Python to SQL is a weird jump. I get it!", id: "Wajar sih, pindah logic dari Python ke SQL emang agak aneh rasanya!"}, next: "node2A" },
+                    { text: {en: "Wait, isn't SQL supposed to be easier than Python?", id: "Eh masa? Bukannya SQL lebih gampang dari Python?"}, next: "node2B" }
+                ]
+            },
+            node2A: { messages: [{en: "Right?! The logic is just so different! Going from loops to relational tables broke my brain a bit.", id: "Nah bener! Tiba-tiba disuruh mikir pake logic 'tables' sama 'joins' malah bikin otak nge-blank."}], next: "node2Merge" },
+            node2B: { messages: [{en: "You'd think so! But my brain was wired for Python logic at that point, so thinking in 'tables' and 'joins' totally confused me.", id: "Harusnya sih gitu ya! Tapi otak gw waktu itu udah ke-setting logic Python, jadi pas liat bentuk SQL malah bingung sendiri."}], next: "node2Merge" },
+            node2Merge: {
+                messages: [
+                    {en: "Luckily, DataCamp had a 'Free Week Access' promo right around that time. So, I went into absolute overdrive to cram as much as possible before the timer ran out. 🏃‍♂️💨", id: "Pas banget waktu itu lagi ada free week access dari DataCamp, jadilah gw ngebut kejar belajar dari situ sebelum free access period-nya abis. 🏃‍♂️💨"},
+                    {en: "I wasn't alone, though. I was doing an internship at the time, and a fellow intern was learning it with me. We were basically surviving together.", id: "Dan gw belajarnya ga sendirian juga. Waktu itu gw lagi periode magang, dan ada temen sesama intern juga yang mulai bareng belajar SQL."}
+                ],
+                choices: [
+                    { text: {en: "Sounds like a fun bonding experience!", id: "Seru tuh, ada temen seperjuangan buat survive bareng!"}, next: "node3A" },
+                    { text: {en: "An internship AND cramming SQL? Sounds stressful.", id: "Magang sambil ngebut belajar SQL? Ga pusing tuh?"}, next: "node3B" }
+                ]
+            },
+            node3A: { messages: [{en: "It was definitely a bonding experience, but honestly, 'stressful' is probably a better word. 😂", id: "Seru sih dapet temen senasib, tapi jujur tetep aja pusing sebenernya 😂"}], next: "node3Merge" },
+            node3B: { messages: [{en: "Oh, it was intense. You have no idea.", id: "Oh pusing banget. Parah."}], next: "node3Merge" },
+            node3Merge: {
+                messages: [
+                    {en: "I was heavily multitasking: learning SQL, figuring out PowerBI, **AND** handling **real** data science cases for our clients all at once.", id: "Jujur waktu itu rada multitasking sih antara belajar SQL, belajar PowerBI, **also** belajar ngerjain **real** data science case dari client."},
+                    {en: "Right in the middle of that chaos, I landed an interview for a full-time role at another company.", id: "Di waktu multitasking itu juga, gw dapet opportunity interview buat full-time di company lain."},
+                    {en: "The technical stage? A live SQL querying test. The interviewer opened up Redash, gave me a case study, and literally watched me type out the query.", id: "Di situ ketemu test nya adalah live test SQL querying. User-nya ngasih lihat platform Redash, ngasih case study, dan gw diminta masukin query SQL yang sesuai langsung di depan dia."},
+                    {en: "**...and I failed miserably.** 💀", id: "**And there I failed miserably.** 💀"}
+                ],
+                choices: [
+                    { text: {en: "Oh no... live coding tests are the worst!", id: "Waduh... live coding test emang paling bikin deg-degan parah!"}, next: "node4A" },
+                    { text: {en: "Ouch. Did you at least learn from the failure?", id: "Ouch. Tapi seenggaknya dapet pelajaran berharga kan dari situ?"}, next: "node4B" }
+                ]
+            },
+            node4A: { messages: [{en: "It truly is a nightmare when your mind goes blank. But honestly, it was exactly the **wake-up call** I needed.", id: "Banget! Otak langsung kosong seketika pas diliatin. Tapi jujur itu malah jadi **wake-up call** buat gw."}], next: "node4Merge" },
+            node4B: { messages: [{en: "Absolutely. Failing that hard leaves a mark, but it forces you to actually understand what you're doing.", id: "Pastinya. Gagal parah emang bikin nyesek, tapi justru dari situ gw dipaksa buat bener-bener paham."}], next: "node4Merge" },
+            node4Merge: {
+                messages: [
+                    {en: "After that disaster, I pushed harder and things just started to click. My **understanding** got smoother and smoother.", id: "Abis kejadian itu jadilah gw lebih lancar dan lebih lancar lagi **understanding** SQL."},
+                    {en: "When I finally landed my first full-time job, my main tool was Metabase. I was writing SQL queries daily to build automated reports and dashboards.", id: "Pas masuk di full-time job pertama setelah magang, salah satu tools utama yang gw pegang adalah Metabase, yang mana juga pake query SQL buat bikin report atau build dashboard."},
+                    {en: "Ever since then, SQL has been my daily driver, whether it's on Google BigQuery, Metabase, or DBeaver. 🚀", id: "Dan dari situ selalu pake SQL terus sih sampe sekarang, entah platform-nya pake Google BigQuery, Metabase lagi, DBeaver, etc. 🚀"}
+                ],
+                choices: [ { text: {en: "Restart Chat", id: "Ulangi Chat"}, next: "start", center: true } ] // Center logic added
+            }
+        };
+
+        function openSQLChat() {
+            document.getElementById('sql-screen-menu').style.display = 'none';
+            document.getElementById('sql-screen-chat').style.display = 'flex';
+            if(chatHistoryData.length === 0) { startChatNode('node1'); } 
+        }
+
+        async function startChatNode(nodeKey) {
+            if(nodeKey === 'start') { chatHistoryData = []; renderChatHistory(); nodeKey = 'node1'; }
+            currentChatNode = nodeKey;
+            waitingForUserChoice = false;
+            document.getElementById('chat-choices-area').innerHTML = ''; 
+
+            const node = SCENARIO[nodeKey];
+            if (node.messages) {
+                for (let msg of node.messages) {
+                    document.getElementById('typing-indicator').style.display = 'flex';
+                    chatScrollToBottom();
+                    await sleep(1200); 
+                    document.getElementById('typing-indicator').style.display = 'none';
+                    
+                    chatHistoryData.push({ sender: 'roman', textEN: msg.en, textID: msg.id });
+                    renderChatHistory();
+                    await sleep(300); 
+                }
+            }
+
+            if (node.choices) {
+                waitingForUserChoice = true;
+                renderChatChoices();
+                chatScrollToBottom();
+            } else if (node.next) {
+                startChatNode(node.next);
+            }
+        }
+
+        // Translates choices dynamically if toggle is hit while waiting
+        function renderChatChoices() {
+            const choiceArea = document.getElementById('chat-choices-area');
+            choiceArea.innerHTML = '';
+            if (!waitingForUserChoice || !currentChatNode) return;
+            
+            const node = SCENARIO[currentChatNode];
+            if (node && node.choices) {
+                node.choices.forEach(choice => {
+                    const btn = document.createElement('div');
+                    // Add centering class if specified
+                    btn.className = choice.center ? 'chat-choice-btn center-btn' : 'chat-choice-btn';
+                    btn.innerHTML = formatText(choice.text[currentLang]);
+                    
+                    btn.onclick = async () => {
+                        waitingForUserChoice = false;
+                        choiceArea.innerHTML = ''; // Clear immediately
+                        
+                        // Don't render the "Restart" button as a user chat bubble
+                        if (!choice.center) {
+                            chatHistoryData.push({ sender: 'user', textEN: choice.text.en, textID: choice.text.id });
+                            renderChatHistory();
+                        }
+                        
+                        await sleep(500);
+                        startChatNode(choice.next);
+                    };
+                    choiceArea.appendChild(btn);
+                });
+            }
+        }
+
+        function renderChatHistory() {
+            const area = document.getElementById('chat-history-area');
+            area.innerHTML = '';
+            chatHistoryData.forEach(item => {
+                const bubble = document.createElement('div');
+                bubble.className = `chat-bubble ${item.sender === 'roman' ? 'chat-roman' : 'chat-user'}`;
+                bubble.innerHTML = formatText(item[currentLang === 'en' ? 'textEN' : 'textID']);
+                area.appendChild(bubble);
+            });
+            chatScrollToBottom();
+        }
+
+        function chatScrollToBottom() {
+            const container = document.getElementById('chat-container');
+            container.scrollTop = container.scrollHeight;
+        }
+
+
+        // ==========================================
+        // 7. SQL QUIZ LOGIC (ALL 45 QUESTIONS)
+        // ==========================================
+        const ALL_QUESTIONS = [
+          {id: 1001, topic: "SQL", question: {en: "Which clause filters rows before aggregation?", id: "Klausa mana yang memfilter baris sebelum proses agregasi?"}, options: {a: { en: "FILTER", id: "FILTER" }, b: { en: "WHERE", id: "WHERE" }, c: { en: "HAVING", id: "HAVING" }, d: { en: "GROUP BY", id: "GROUP BY" }}, correctAnswer: "b", explanation: {en: "WHERE filters rows before GROUP BY; HAVING filters after aggregation.", id: "WHERE memfilter baris sebelum GROUP BY; HAVING dipakai setelah agregasi."}},
+          {id: 1002, topic: "SQL", question: {en: "What keyword is used to return only distinct values?", id: "Kata kunci apa yang digunakan untuk mengembalikan hanya nilai yang berbeda?"}, options: {a: { en: "UNIQUE", id: "UNIK" }, b: { en: "SELECT DISTINCT", id: "SELECT DISTINCT" }, c: { en: "DIFFERENT", id: "BERBEDA" }, d: { en: "GROUP", id: "GRUP" }}, correctAnswer: "b", explanation: {en: "The DISTINCT keyword is used in conjunction with SELECT to retrieve only unique values.", id: "Kata kunci DISTINCT digunakan bersama dengan SELECT untuk mengambil hanya nilai unik."}},
+          {id: 1003, topic: "SQL", question: {en: "Which SQL command is used to retrieve data from a database?", id: "Perintah SQL mana yang digunakan untuk mengambil data dari database?"}, options: {a: { en: "GET", id: "AMBIL" }, b: { en: "SELECT", id: "SELECT" }, c: { en: "EXTRACT", id: "EKSTRAK" }, d: { en: "OPEN", id: "BUKA" }}, correctAnswer: "b", explanation: {en: "The SELECT statement is used to query and retrieve data from a database.", id: "Pernyataan SELECT digunakan untuk membuat kueri dan mengambil data dari database."}},
+          {id: 1004, topic: "SQL", question: {en: "What's the main benefit of using a **Common Table Expression (CTE)** defined with `WITH`?", id: "Apa manfaat utama menggunakan **Common Table Expression (CTE)** yang didefinisikan dengan `WITH`?"}, options: {a: { en: "Caching the result set", id: "Melakukan caching pada set hasil" }, b: { en: "Enforcing uniqueness", id: "Memberlakukan keunikan" }, c: { en: "Improving code readability for complex logic", id: "Meningkatkan keterbacaan kode untuk logika kompleks" }, d: { en: "Defining the primary key", id: "Mendefinisikan primary key" }}, correctAnswer: "c", explanation: {en: "CTEs make complex queries much cleaner and more readable, especially for multi-step logic. They don't necessarily improve raw performance but make life easier.", id: "CTE membuat kueri kompleks jauh lebih bersih dan mudah dibaca, terutama untuk logika multi-langkah. Ini bukan tentang kecepatan, tapi **keterbacaan** kodenya."}},
+          {id: 1005, topic: "SQL", question: {en: "Which operator is used to search for a specified pattern in a column?", id: "Operator mana yang digunakan untuk mencari pola tertentu di kolom?"}, options: {a: { en: "EXISTS", id: "EXISTS" }, b: { en: "LIKE", id: "LIKE" }, c: { en: "MATCH", id: "COCOK" }, d: { en: "IN", id: "IN" }}, correctAnswer: "b", explanation: {en: "The LIKE operator is used in a WHERE clause to search for a specified pattern.", id: "Operator LIKE digunakan dalam klausa WHERE untuk mencari pola tertentu."}},
+          {id: 1006, topic: "SQL", question: {en: "You need the rank of users based on their scores, where ties get the same rank, and the next rank is skipped. Which **Window Function** is the MVP here?", id: "Anda butuh peringkat pengguna berdasarkan skor mereka, di mana skor yang sama mendapat peringkat yang sama, dan peringkat berikutnya dilewati. **Fungsi Window** mana yang paling tepat di sini?"}, options: {a: { en: "DENSE_RANK()", id: "DENSE_RANK()" }, b: { en: "RANK()", id: "RANK()" }, c: { en: "ROW_NUMBER()", id: "ROW_NUMBER()" }, d: { en: "NTILE()", id: "NTILE()" }}, correctAnswer: "b", explanation: {en: "The `RANK()` function is perfect for this! It skips ranks after a tie (e.g., 1, 1, 3). `DENSE_RANK()` would not skip ranks (1, 1, 2).", id: "Fungsi `RANK()` sempurna untuk ini! Ini melewati peringkat setelah terjadi seri (misalnya, 1, 1, 3). `DENSE_RANK()` tidak akan melewati peringkat (1, 1, 2)."}},
+          {id: 1007, topic: "SQL", question: {en: "Which aggregate function calculates the number of rows?", id: "Fungsi agregat mana yang menghitung jumlah baris?"}, options: {a: { en: "SUM()", id: "SUM()" }, b: { en: "COUNT()", id: "COUNT()" }, c: { en: "NUM()", id: "NUM()" }, d: { en: "AVG()", id: "AVG()" }}, correctAnswer: "b", explanation: {en: "COUNT() is used to count the number of rows that match a specified criterion.", id: "COUNT() digunakan untuk menghitung jumlah baris yang sesuai dengan kriteria tertentu."}},
+          {id: 1008, topic: "SQL", question: {en: "What does SQL stand for?", id: "Apa kepanjangan dari SQL?"}, options: {a: { en: "Standard Query Language", id: "Standard Query Language" }, b: { en: "Structured Query Language", id: "Structured Query Language" }, c: { en: "Simple Query Logic", id: "Simple Query Logic" }, d: { en: "Sequential Language", id: "Sequential Language" }}, correctAnswer: "b", explanation: {en: "SQL stands for Structured Query Language.", id: "SQL adalah singkatan dari Structured Query Language."}},
+          {id: 1009, topic: "SQL", question: {en: "Which JOIN returns all rows from the left table, and the matched rows from the right table?", id: "JOIN mana yang mengembalikan semua baris dari tabel kiri, dan baris yang cocok dari tabel kanan?"}, options: {a: { en: "INNER JOIN", id: "INNER JOIN" }, b: { en: "RIGHT JOIN", id: "RIGHT JOIN" }, c: { en: "LEFT JOIN", id: "LEFT JOIN" }, d: { en: "FULL JOIN", id: "FULL JOIN" }}, correctAnswer: "c", explanation: {en: "A LEFT JOIN (or LEFT OUTER JOIN) returns all rows from the left table, and the matched rows from the right table. If there is no match, NULL is used for columns from the right table.", id: "LEFT JOIN (atau LEFT OUTER JOIN) mengembalikan semua baris dari tabel kiri, dan baris yang cocok dari tabel kanan. Jika tidak ada yang cocok, NULL digunakan untuk kolom dari tabel kanan."}},
+          {id: 1010, topic: "SQL", question: {en: "Which clause is used to sort the result-set of a query?", id: "Klausa mana yang digunakan untuk mengurutkan hasil kueri?"}, options: {a: { en: "SORT BY", id: "SORT BY" }, b: { en: "ARRANGE BY", id: "ARRANGE BY" }, c: { en: "ORDER BY", id: "ORDER BY" }, d: { en: "GROUP BY", id: "GROUP BY" }}, correctAnswer: "c", explanation: {en: "The ORDER BY clause is used to sort the result-set in ascending or descending order.", id: "Klausa ORDER BY digunakan untuk mengurutkan hasil dalam urutan menaik atau menurun."}},
+          {id: 1011, topic: "SQL", question: {en: "The standard way to check for a NULL value in SQL is:", id: "Cara standar untuk memeriksa nilai NULL di SQL adalah:"}, options: {a: { en: "= NULL", id: "= NULL" }, b: { en: "IS NULL", id: "IS NULL" }, c: { en: "NULL_CHECK", id: "NULL_CHECK" }, d: { en: "== NULL", id: "== NULL" }}, correctAnswer: "b", explanation: {en: "In SQL, you cannot use arithmetic comparison operators (=, <, >) with NULL; you must use IS NULL or IS NOT NULL.", id: "Dalam SQL, Anda tidak dapat menggunakan operator perbandingan aritmatika (=, <, >) dengan NULL; Anda harus menggunakan IS NULL atau IS NOT NULL."}},
+          {id: 1012, topic: "SQL", question: {en: "What is the primary purpose of the **`PARTITION BY`** clause within a Window Function?", id: "Apa tujuan utama klausa **`PARTITION BY`** dalam Fungsi Window?"}, options: {a: { en: "To create groups where the function operates independently", id: "Untuk membuat kelompok di mana fungsi beroperasi secara independen" }, b: { en: "To filter rows before the function is applied", id: "Untuk memfilter baris sebelum fungsi diterapkan" }, c: { en: "To change the table's schema", id: "Untuk mengubah skema tabel" }, d: { en: "To rename the result column", id: "Untuk mengganti nama kolom hasil" }}, correctAnswer: "a", explanation: {en: "The `PARTITION BY` clause divides the result set into separate groups (or 'partitions') to which the Window Function is applied independently. It's like a `GROUP BY` but doesn't collapse the rows.", id: "PARTITION BY membagi set hasil menjadi kelompok ('partisi') terpisah di mana Fungsi Window diterapkan secara independen. Ibarat `GROUP BY` tapi tanpa mengurangi jumlah baris."}},
+          {id: 1013, topic: "SQL", question: {en: "What is the primary key constraint used for?", id: "Untuk apa batasan primary key digunakan?"}, options: {a: { en: "To link two tables", id: "Untuk menautkan dua tabel" }, b: { en: "To ensure a column is never NULL", id: "Untuk memastikan kolom tidak pernah NULL" }, c: { en: "To uniquely identify each record", id: "Untuk mengidentifikasi setiap catatan secara unik" }, d: { en: "To enforce data types", id: "Untuk memberlakukan tipe data" }}, correctAnswer: "c", explanation: {en: "A primary key uniquely identifies each record/row in a table and must contain UNIQUE values, and cannot contain NULL values.", id: "Primary key secara unik mengidentifikasi setiap catatan/baris dalam tabel dan harus berisi nilai UNIK, dan tidak boleh berisi nilai NULL."}},
+          {id: 1014, topic: "SQL", question: {en: "Which statement is used to return a limited number of rows in a result set (in MySQL)?", id: "Pernyataan mana yang digunakan untuk mengembalikan jumlah baris terbatas dalam hasil (di MySQL)?"}, options: {a: { en: "TOP", id: "TOP" }, b: { en: "LIMIT", id: "LIMIT" }, c: { en: "MAX_ROWS", id: "MAX_ROWS" }, d: { en: "ROWNUM", id: "ROWNUM" }}, correctAnswer: "b", explanation: {en: "The LIMIT clause is used in MySQL and PostgreSQL to restrict the number of rows returned by the SELECT statement.", id: "Klausa LIMIT digunakan di MySQL dan PostgreSQL untuk membatasi jumlah baris yang dikembalikan oleh pernyataan SELECT."}},
+          {id: 1015, topic: "SQL", question: {en: "Which is not a standard aggregate function in SQL?", id: "Mana yang bukan merupakan fungsi agregat standar di SQL?"}, options: {a: { en: "MAX()", id: "MAX()" }, b: { en: "LAST()", id: "LAST()" }, c: { en: "SUM()", id: "SUM()" }, d: { en: "AVG()", id: "AVG()" }}, correctAnswer: "b", explanation: {en: "MAX, SUM, and AVG are standard. LAST() is often a window function or vendor-specific, but not a standard aggregate.", id: "MAX, SUM, dan AVG adalah standar. LAST() seringkali merupakan window function atau spesifik vendor, tetapi bukan agregat standar."}},
+          {id: 1016, topic: "SQL", question: {en: "Which clause is used to filter results **AFTER** an aggregate function (like `COUNT()` or `SUM()`) has been applied?", id: "Klausa mana yang digunakan untuk memfilter hasil **SETELAH** fungsi agregat (seperti `COUNT()` atau `SUM()`) diterapkan?"}, options: {a: { en: "WHERE", id: "WHERE" }, b: { en: "HAVING", id: "HAVING" }, c: { en: "FILTER", id: "FILTER" }, d: { en: "SELECT", id: "SELECT" }}, correctAnswer: "b", explanation: {en: "HAVING is the clause that filters groups created by GROUP BY, acting *after* aggregation. WHERE filters rows *before* aggregation.", id: "HAVING adalah klausa yang memfilter grup yang dibuat oleh GROUP BY, bekerja *setelah* agregasi. WHERE memfilter baris *sebelum* agregasi."}},
+          {id: 1017, topic: "SQL", question: {en: "What is the purpose of the GROUP BY clause?", id: "Apa tujuan klausa GROUP BY?"}, options: {a: { en: "To select unique values", id: "Untuk memilih nilai unik" }, b: { en: "To join two tables", id: "Untuk menggabungkan dua tabel" }, c: { en: "To summarize data based on common column values", id: "Untuk meringkas data berdasarkan nilai kolom umum" }, d: { en: "To sort the results", id: "Untuk mengurutkan hasilnya" }}, correctAnswer: "c", explanation: {en: "GROUP BY groups rows that have the same values in specified columns into summary rows, typically with an aggregate function.", id: "GROUP BY mengelompokkan baris yang memiliki nilai yang sama di kolom tertentu ke dalam baris ringkasan, biasanya dengan fungsi agregat."}},
+          {id: 1018, topic: "SQL", question: {en: "What keyword is used to assign a temporary name to a table or a column?", id: "Kata kunci apa yang digunakan untuk menetapkan nama sementara ke tabel atau kolom?"}, options: {a: { en: "NAME", id: "NAME" }, b: { en: "ALIAS", id: "ALIAS" }, c: { en: "AS", id: "AS" }, d: { en: "TEMP", id: "TEMP" }}, correctAnswer: "c", explanation: {en: "The AS keyword is used to create an alias for a column or a table.", id: "Kata kunci AS digunakan untuk membuat alias untuk kolom atau tabel."}},
+          {id: 1019, topic: "SQL", question: {en: "Which type of JOIN is typically used to ensure **every row** from the **primary** (fact) table is returned, even if there's no match in the secondary (dimension) table?", id: "Jenis JOIN mana yang biasanya digunakan untuk memastikan **setiap baris** dari tabel **utama** (fakta) dikembalikan, bahkan jika tidak ada kecocokan di tabel sekunder (dimensi)?"}, options: {a: { en: "INNER JOIN", id: "INNER JOIN" }, b: { en: "FULL JOIN", id: "FULL JOIN" }, c: { en: "RIGHT JOIN", id: "RIGHT JOIN" }, d: { en: "LEFT JOIN", id: "LEFT JOIN" }}, correctAnswer: "d", explanation: {en: "A **`LEFT JOIN`** (or LEFT OUTER JOIN) returns all rows from the 'left' (primary) table and matches from the right, ensuring all records from the fact table are included for analysis.", id: "LEFT JOIN (atau LEFT OUTER JOIN) mengembalikan semua baris dari tabel 'kiri' (utama) dan kecocokan dari kanan, memastikan semua catatan dari tabel fakta disertakan untuk analisis."}},
+          {id: 1020, topic: "SQL", question: {en: "Which type of subquery returns a single value to be used in the outer query?", id: "Jenis subkueri mana yang mengembalikan satu nilai untuk digunakan dalam kueri luar?"}, options: {a: { en: "Correlated Subquery", id: "Subkueri Berkorelasi" }, b: { en: "Scalar Subquery", id: "Subkueri Skalar" }, c: { en: "Row Subquery", id: "Subkueri Baris" }, d: { en: "Table Subquery", id: "Subkueri Tabel" }}, correctAnswer: "b", explanation: {en: "A scalar subquery returns a single row and a single column (a single value), and can be used in most places where a single value is expected.", id: "Subkueri skalar mengembalikan satu baris dan satu kolom (satu nilai), dan dapat digunakan di sebagian besar tempat di mana satu nilai diharapkan."}},
+          {id: 1021, topic: "SQL", question: {en: "Which constraint ensures that all values in a column are different?", id: "Batasan mana yang memastikan bahwa semua nilai dalam kolom berbeda?"}, options: {a: { en: "PRIMARY KEY", id: "PRIMARY KEY" }, b: { en: "FOREIGN KEY", id: "FOREIGN KEY" }, c: { en: "UNIQUE", id: "UNIQUE" }, d: { en: "NOT NULL", id: "NOT NULL" }}, correctAnswer: "c", explanation: {en: "The UNIQUE constraint ensures that all values in a column are unique. Unlike PRIMARY KEY, a table can have multiple UNIQUE constraints and can contain NULL values (depending on the RDBMS).", id: "Batasan UNIQUE memastikan bahwa semua nilai dalam kolom unik. Tidak seperti PRIMARY KEY, sebuah tabel dapat memiliki beberapa batasan UNIQUE dan dapat berisi nilai NULL (tergantung pada RDBMS)."}},
+          {id: 1022, topic: "SQL", question: {en: "To find the highest individual score in a table, without grouping, which built-in function should you use?", id: "Untuk menemukan skor individu tertinggi dalam sebuah tabel, tanpa pengelompokan, fungsi bawaan mana yang harus Anda gunakan?"}, options: {a: { en: "MAX()", id: "MAX()" }, b: { en: "TOP()", id: "TOP()" }, c: { en: "FIRST()", id: "FIRST()" }, d: { en: "HIGH()", id: "HIGH()" }}, correctAnswer: "a", explanation: {en: "The `MAX()` aggregate function is used to find the highest value of a specified column across the entire data set (or within a group).", id: "Fungsi agregat `MAX()` digunakan untuk menemukan nilai tertinggi dari kolom tertentu di seluruh set data (atau di dalam suatu kelompok)."}},
+          {id: 1023, topic: "SQL", question: {en: "Which set operator returns the common rows between two result sets?", id: "Operator set mana yang mengembalikan baris umum antara dua set hasil?"}, options: {a: { en: "UNION", id: "UNION" }, b: { en: "EXCEPT (or MINUS)", id: "EXCEPT (atau MINUS)" }, c: { en: "INTERSECT", id: "INTERSECT" }, d: { en: "JOIN", id: "JOIN" }}, correctAnswer: "c", explanation: {en: "INTERSECT returns only the rows that are present in both the first and second result sets.", id: "INTERSECT hanya mengembalikan baris yang ada di set hasil pertama dan kedua."}},
+          {id: 1024, topic: "SQL", question: {en: "If you need to number the rows consecutively within a query result, which Window Function should you use?", id: "Jika Anda perlu memberi nomor baris secara berurutan dalam hasil kueri, Fungsi Window mana yang harus Anda gunakan?"}, options: {a: { en: "DENSE_RANK()", id: "DENSE_RANK()" }, b: { en: "ROW_NUMBER()", id: "ROW_NUMBER()" }, c: { en: "LAG()", id: "LAG()" }, d: { en: "PARTITION()", id: "PARTITION()" }}, correctAnswer: "b", explanation: {en: "ROW_NUMBER() assigns a unique, sequential integer to each row within a partition (or the entire result set), starting from 1.", id: "ROW_NUMBER() menetapkan bilangan bulat berurutan yang unik untuk setiap baris di dalam partisi (atau seluruh set hasil), dimulai dari 1."}},
+          {id: 1025, topic: "SQL", question: {en: "What is a Foreign Key used for?", id: "Untuk apa Foreign Key digunakan?"}, options: {a: { en: "To uniquely identify a row", id: "Untuk mengidentifikasi baris secara unik" }, b: { en: "To prevent NULL values", id: "Untuk mencegah nilai NULL" }, c: { en: "To link data between two tables", id: "Untuk menautkan data antar dua tabel" }, d: { en: "To define the data type of a column", id: "Untuk menentukan tipe data kolom" }}, correctAnswer: "c", explanation: {en: "A Foreign Key is a field (or collection of fields) in one table that refers to the Primary Key in another table, establishing a link.", id: "Foreign Key adalah bidang (atau kumpulan bidang) di satu tabel yang merujuk ke Primary Key di tabel lain, membangun tautan."}},
+          {id: 1026, topic: "SQL", question: {en: "When using an aggregate function like `AVG()`, what happens to `NULL` values by default?", id: "Saat menggunakan fungsi agregat seperti `AVG()`, apa yang terjadi pada nilai `NULL` secara default?"}, options: {a: { en: "They are treated as zero (0)", id: "Mereka diperlakukan sebagai nol (0)" }, b: { en: "The aggregate function returns NULL", id: "Fungsi agregat mengembalikan NULL" }, c: { en: "They are automatically ignored", id: "Mereka secara otomatis diabaikan" }, d: { en: "The query fails with an error", id: "Kueri gagal dengan sebuah error" }}, correctAnswer: "c", explanation: {en: "All standard aggregate functions (SUM, AVG, COUNT, MAX, MIN) automatically ignore NULL values. COUNT(\*) is the exception, as it counts all rows.", id: "Semua fungsi agregat standar (SUM, AVG, COUNT, MAX, MIN) secara otomatis mengabaikan nilai NULL. COUNT(\*) adalah pengecualian, karena ia menghitung semua baris."}},
+          {id: 1027, topic: "SQL", question: {en: "What is the purpose of the INDEX in a database table?", id: "Apa tujuan INDEX dalam tabel database?"}, options: {a: { en: "To enforce uniqueness", id: "Untuk memberlakukan keunikan" }, b: { en: "To link tables together", id: "Untuk menautkan tabel bersama" }, c: { en: "To speed up data retrieval", id: "Untuk mempercepat pengambilan data" }, d: { en: "To store large binary files", id: "Untuk menyimpan file biner besar" }}, correctAnswer: "c", explanation: {en: "An index is a pointer to data in a table. It is used to quickly locate data without having to search every row (improving performance).", id: "Indeks adalah penunjuk ke data dalam tabel. Indeks digunakan untuk menemukan data dengan cepat tanpa harus mencari setiap baris (meningkatkan kinerja)."}},
+          {id: 1028, topic: "SQL", question: {en: "What is the default sort order for the ORDER BY clause?", id: "Apa urutan pengurutan default untuk klausa ORDER BY?"}, options: {a: { en: "DESC", id: "DESC" }, b: { en: "RANDOM", id: "RANDOM" }, c: { en: "ASC", id: "ASC" }, d: { en: "By Index", id: "Berdasarkan Indeks" }}, correctAnswer: "c", explanation: {en: "The default sort order is ASC (Ascending). You must explicitly use DESC for Descending order.", id: "Urutan pengurutan default adalah ASC (Ascending). Anda harus secara eksplisit menggunakan DESC untuk urutan Descending."}},
+          {id: 1029, topic: "SQL", question: {en: "Which SQL clause is executed first in a typical SELECT statement?", id: "Klausa SQL mana yang dieksekusi pertama dalam pernyataan SELECT biasa?"}, options: {a: { en: "SELECT", id: "SELECT" }, b: { en: "FROM", id: "FROM" }, c: { en: "WHERE", id: "WHERE" }, d: { en: "ORDER BY", id: "ORDER BY" }}, correctAnswer: "b", explanation: {en: "The logical order of execution starts with FROM (which determines the tables), followed by WHERE (filtering), GROUP BY, HAVING, SELECT, and finally ORDER BY.", id: "Urutan logis eksekusi dimulai dengan FROM (yang menentukan tabel), diikuti oleh WHERE (pemfilteran), GROUP BY, HAVING, SELECT, dan terakhir ORDER BY."}},
+          {id: 1030, topic: "SQL", question: {en: "Which operator is equivalent to using >= AND < (e.g., in checking ranges)?", id: "Operator mana yang setara dengan menggunakan >= DAN < (misalnya, dalam memeriksa rentang)?"}, options: {a: { en: "IN", id: "IN" }, b: { en: "LIKE", id: "LIKE" }, c: { en: "BETWEEN", id: "BETWEEN" }, d: { en: "RANGE", id: "RANGE" }}, correctAnswer: "c", explanation: {en: "The BETWEEN operator selects values within a given range (inclusive), meaning BETWEEN A AND B is equivalent to >= A AND <= B.", id: "Operator BETWEEN memilih nilai dalam rentang tertentu (inklusif), artinya BETWEEN A AND B setara dengan >= A DAN <= B."}},
+          {id: 1031, topic: "SQL", question: {en: "In the context of the relational model, what is a 'tuple'?", id: "Dalam konteks model relasional, apa itu 'tuple'?"}, options: {a: { en: "A column", id: "Kolom" }, b: { en: "A table", id: "Tabel" }, c: { en: "A row/record", id: "Baris/catatan" }, d: { en: "A database", id: "Database" }}, correctAnswer: "c", explanation: {en: "In relational algebra, a tuple refers to a row or a record in a table.", id: "Dalam aljabar relasional, tuple mengacu pada baris atau catatan dalam tabel."}},
+          {id: 1032, topic: "SQL", question: {en: "Which command is used to add, delete, or modify columns in an existing table?", id: "Perintah mana yang digunakan untuk menambah, menghapus, atau memodifikasi kolom di tabel yang sudah ada?"}, options: {a: { en: "CREATE TABLE", id: "CREATE TABLE" }, b: { en: "UPDATE TABLE", id: "UPDATE TABLE" }, c: { en: "ALTER TABLE", id: "ALTER TABLE" }, d: { en: "MODIFY TABLE", id: "MODIFY TABLE" }}, correctAnswer: "c", explanation: {en: "ALTER TABLE is a DDL command used to change the structure of an existing table.", id: "ALTER TABLE adalah perintah DDL yang digunakan untuk mengubah struktur tabel yang sudah ada."}},
+          {id: 1033, topic: "SQL", question: {en: "Which constraint is automatically created when a PRIMARY KEY is defined?", id: "Batasan mana yang dibuat secara otomatis ketika PRIMARY KEY didefinisikan?"}, options: {a: { en: "FOREIGN KEY", id: "FOREIGN KEY" }, b: { en: "UNIQUE", id: "UNIQUE" }, c: { en: "CHECK", id: "CHECK" }, d: { en: "DEFAULT", id: "DEFAULT" }}, correctAnswer: "b", explanation: {en: "A Primary Key must inherently contain unique values, so a UNIQUE constraint is automatically enforced, along with NOT NULL.", id: "Primary Key secara inheren harus berisi nilai unik, sehingga batasan UNIQUE secara otomatis diberlakukan, bersama dengan NOT NULL."}},
+          {id: 1034, topic: "SQL", question: {en: "When using the UNION operator, how many columns must the result sets have?", id: "Saat menggunakan operator UNION, berapa banyak kolom yang harus dimiliki oleh set hasil?"}, options: {a: { en: "The same number of columns", id: "Jumlah kolom yang sama" }, b: { en: "Different numbers of columns", id: "Jumlah kolom yang berbeda" }, c: { en: "At least two columns", id: "Minimal dua kolom" }, d: { en: "Only one column", id: "Hanya satu kolom" }}, correctAnswer: "a", explanation: {en: "For UNION, UNION ALL, INTERSECT, and EXCEPT/MINUS, the SELECT statements must have the same number of columns and compatible data types.", id: "Untuk UNION, UNION ALL, INTERSECT, and EXCEPT/MINUS, pernyataan SELECT harus memiliki jumlah kolom yang sama dan tipe data yang kompatibel."}},
+          {id: 1035, topic: "SQL", question: {en: "What is the main difference between UNION and UNION ALL?", id: "Apa perbedaan utama antara UNION dan UNION ALL?"}, options: {a: { en: "UNION ALL sorts the result", id: "UNION ALL mengurutkan hasil" }, b: { en: "UNION removes duplicate rows", id: "UNION menghapus baris duplikat" }, c: { en: "UNION ALL requires the same column names", id: "UNION ALL membutuhkan nama kolom yang sama" }, d: { en: "UNION works only with two tables", id: "UNION hanya bekerja dengan dua tabel" }}, correctAnswer: "b", explanation: {en: "UNION combines result sets and removes duplicate rows; UNION ALL combines them but keeps all duplicate rows.", id: "UNION menggabungkan set hasil dan menghapus baris duplikat; UNION ALL menggabungkannya tetapi menyimpan semua baris duplikat."}},
+          {id: 1036, topic: "SQL", question: {en: "Which clause is necessary when using an aggregate function without GROUP BY?", id: "Klausa mana yang diperlukan saat menggunakan fungsi agregat tanpa GROUP BY?"}, options: {a: { en: "WHERE", id: "WHERE" }, b: { en: "HAVING", id: "HAVING" }, c: { en: "ORDER BY", id: "ORDER BY" }, d: { en: "None, it's optional", id: "Tidak ada, itu opsional" }}, correctAnswer: "d", explanation: {en: "If no GROUP BY is present, the aggregate function is applied to the entire result set, and no additional clause is required.", id: "Jika tidak ada GROUP BY, fungsi agregat diterapkan ke seluruh set hasil, dan tidak ada klausa tambahan yang diperlukan."}},
+          {id: 1037, topic: "SQL", question: {en: "The EXISTS operator is typically used in conjunction with a:", id: "Operator EXISTS biasanya digunakan bersamaan dengan:"}, options: {a: { en: "JOIN clause", id: "Klausa JOIN" }, b: { en: "Subquery", id: "Subkueri" }, c: { en: "Aggregate function", id: "Fungsi agregat" }, d: { en: "ORDER BY clause", id: "Klausa ORDER BY" }}, correctAnswer: "b", explanation: {en: "EXISTS is used to test for the existence of any records in a subquery, returning TRUE if the subquery returns one or more rows.", id: "EXISTS digunakan untuk menguji keberadaan catatan apa pun dalam subkueri, mengembalikan TRUE jika subkueri mengembalikan satu atau lebih baris."}},
+          {id: 1038, topic: "SQL", question: {en: "What is the technical term for a self-referencing relationship in a table (e.g., an 'Employee' table having a 'ManagerID' column that links back to an 'EmployeeID')?", id: "Apa istilah teknis untuk hubungan yang mereferensi diri sendiri dalam sebuah tabel (misalnya, tabel 'Employee' memiliki kolom 'ManagerID' yang merujuk kembali ke 'EmployeeID')?"}, options: {a: { en: "Recursive Join", id: "Recursive Join" }, b: { en: "Correlated Subquery", id: "Subkueri Berkorelasi" }, c: { en: "Cross Join", id: "Cross Join" }, d: { en: "Self-Join", id: "Self-Join" }}, correctAnswer: "d", explanation: {en: "This is called a **Self-Join**. You join the table to itself, typically by giving the table two different aliases (e.g., `FROM Employee E1 JOIN Employee E2`).", id: "Ini disebut **Self-Join**. Anda menggabungkan tabel itu sendiri, biasanya dengan memberikan dua alias yang berbeda pada tabel (misalnya, `FROM Employee E1 JOIN Employee E2`)."}},
+          {id: 1039, topic: "SQL", question: {en: "What is the term for a stored query that can be executed as a program or function?", id: "Apa istilah untuk kueri tersimpan yang dapat dieksekusi sebagai program atau fungsi?"}, options: {a: { en: "Macro", id: "Makro" }, b: { en: "Trigger", id: "Pemicu" }, c: { en: "Stored Procedure", id: "Stored Procedure" }, d: { en: "View", id: "View" }}, correctAnswer: "c", explanation: {en: "A Stored Procedure is a set of SQL statements with a name that are pre-compiled and stored in the database, offering improved performance and security.", id: "Stored Procedure adalah sekumpulan pernyataan SQL dengan nama yang telah dikompilasi sebelumnya dan disimpan dalam database, menawarkan peningkatan kinerja dan keamanan."}},
+          {id: 1040, topic: "SQL", question: {en: "To find the **difference** between a current row's value and the previous row's value in a time series, which analytic function is best?", id: "Untuk mencari **perbedaan** antara nilai baris saat ini dan nilai baris sebelumnya dalam deret waktu, fungsi analitik mana yang terbaik?"}, options: {a: { en: "LAG()", id: "LAG()" }, b: { en: "LEAD()", id: "LEAD()" }, c: { en: "DIFF()", id: "DIFF()" }, d: { en: "FIRST_VALUE()", id: "FIRST_VALUE()" }}, correctAnswer: "a", explanation: {en: "LAG() lets you access data from a preceding row in the same result set, often used with ORDER BY to calculate change or difference over time.", id: "LAG() memungkinkan Anda mengakses data dari baris sebelumnya dalam set hasil yang sama, sering digunakan dengan ORDER BY untuk menghitung perubahan atau perbedaan dari waktu ke waktu."}},
+          {id: 1041, topic: "SQL", question: {en: "What is a 'View' in SQL?", id: "Apa itu 'View' di SQL?"}, options: {a: { en: "A physical copy of a table", id: "Salinan fisik dari sebuah tabel" }, b: { en: "A virtual table based on the result-set of an SQL statement", id: "Tabel virtual berdasarkan hasil dari pernyataan SQL" }, c: { en: "A graphical representation of the database schema", id: "Representasi grafis dari skema database" }, d: { en: "A temporary table created during query execution", id: "Tabel sementara yang dibuat selama eksekusi kueri" }}, correctAnswer: "b", explanation: {en: "A View is a virtual table whose content is defined by a query. It does not store data but shows the result of the query whenever it is accessed.", id: "View adalah tabel virtual yang kontennya ditentukan oleh kueri. View tidak menyimpan data tetapi menunjukkan hasil kueri setiap kali diakses."}},
+          {id: 1042, topic: "SQL", question: {en: "Which term describes the process of ensuring data accuracy and consistency over its entire life cycle?", id: "Istilah mana yang menggambarkan proses memastikan keakuratan dan konsistensi data selama seluruh siklus hidupnya?"}, options: {a: { en: "Data Normalization", id: "Normalisasi Data" }, b: { en: "Data Integrity", id: "Integritas Data" }, c: { en: "Data Encryption", id: "Enkripsi Data" }, d: { en: "Data Redundancy", id: "Redundansi Data" }}, correctAnswer: "b", explanation: {en: "Data Integrity refers to maintaining and ensuring the accuracy and consistency of data (often enforced via constraints like PRIMARY KEY, FOREIGN KEY, etc.).", id: "Integritas Data mengacu pada pemeliharaan dan penjaminan keakuratan dan konsistensi data (seringkali diberlakukan melalui batasan seperti PRIMARY KEY, FOREIGN KEY, dll.)."}},
+          {id: 1043, topic: "SQL", question: {en: "Which term is used for the column that points to the primary key of another table?", id: "Istilah mana yang digunakan untuk kolom yang menunjuk ke primary key tabel lain?"}, options: {a: { en: "Candidate Key", id: "Candidate Key" }, b: { en: "Super Key", id: "Super Key" }, c: { en: "Foreign Key", id: "Foreign Key" }, d: { en: "Alternate Key", id: "Alternate Key" }}, correctAnswer: "c", explanation: {en: "The Foreign Key is the column that links two tables by referencing the Primary Key of the parent table.", id: "Foreign Key adalah kolom yang menautkan dua tabel dengan mereferensikan Primary Key dari tabel induk."}},
+          {id: 1044, topic: "SQL", question: {en: "Which normalization form requires that there are no partial dependencies of non-key attributes on a composite primary key?", id: "Bentuk normalisasi mana yang mensyaratkan tidak ada ketergantungan parsial atribut non-key pada primary key komposit?"}, options: {a: { en: "1NF", id: "1NF" }, b: { en: "2NF", id: "2NF" }, c: { en: "3NF", id: "3NF" }, d: { en: "BCNF", id: "BCNF" }}, correctAnswer: "b", explanation: {en: "Second Normal Form (2NF) addresses partial dependency: every non-key attribute must be fully dependent on the entire composite primary key.", id: "Bentuk Normal Kedua (2NF) menangani ketergantungan parsial: setiap atribut non-kunci harus sepenuhnya bergantung pada seluruh primary key komposit."}},
+          {id: 1045, topic: "SQL", question: {en: "Which is the most appropriate constraint to put on the `email` column of a `users` table?", id: "Constraint mana yang paling sesuai untuk diletakkan di kolom `email` pada tabel `users`?"}, options: {a: { en: "PRIMARY KEY", id: "PRIMARY KEY" }, b: { en: "NOT NULL", id: "NOT NULL" }, c: { en: "CHECK", id: "CHECK" }, d: { en: "UNIQUE", id: "UNIQUE" }}, correctAnswer: "d", explanation: {en: "Emails must be unique for each user but are not typically used as the primary key. NOT NULL is also often applied, but UNIQUE is the key distinguishing constraint.", id: "Email harus unik untuk setiap pengguna tetapi biasanya tidak digunakan sebagai primary key. NOT NULL juga sering diterapkan, tetapi UNIQUE adalah batasan pembeda yang utama."}}
+        ];
+
+        function openSQLQuiz() {
+            document.getElementById('sql-screen-menu').style.display = 'none'; document.getElementById('sql-screen-quiz').style.display = 'flex';
+            document.getElementById('sql-game-ui').style.display = 'flex'; document.getElementById('sql-results-ui').style.display = 'none';
+            
+            const shuffled = shuffleArray([...ALL_QUESTIONS]); 
+            sessionQuestions = shuffled.slice(0, 10);
+            currentScore = 0; 
+            qIndex = 0; 
+            loadQuestion();
+        }
+
+        function loadQuestion(resetState = true) {
+            if (qIndex >= sessionQuestions.length) { showResults(); return; }
+            const q = sessionQuestions[qIndex]; if (!q) { showResults(); return; }
+            
+            document.getElementById('q-progress').innerText = `Question ${qIndex + 1}/10`; 
+            document.getElementById('q-score').innerText = `Score: ${currentScore}`; 
+            
+            // Format Bold Text 
+            document.getElementById('q-text').innerHTML = formatText(q.question[currentLang]);
+            
+            const optDiv = document.getElementById('q-options');
+            if (resetState) {
+                optDiv.innerHTML = ''; canAnswer = true; document.getElementById('q-explanation').style.display = 'none'; document.getElementById('btn-next-q').style.display = 'none';
+                ['a', 'b', 'c', 'd'].forEach(key => { 
+                    const btn = document.createElement('div'); btn.className = 'q-btn'; btn.id = `opt-${key}`; 
+                    btn.innerHTML = formatText(q.options[key][currentLang]); 
+                    btn.onclick = () => checkAnswer(key); 
+                    optDiv.appendChild(btn); 
+                });
+            } else {
+                ['a', 'b', 'c', 'd'].forEach(key => { 
+                    const btn = document.getElementById(`opt-${key}`); 
+                    if(btn) btn.innerHTML = formatText(q.options[key][currentLang]); 
+                });
+                document.getElementById('exp-text').innerHTML = formatText(q.explanation[currentLang]);
+            }
+        }
+
+        function checkAnswer(selectedKey) {
+            if (!canAnswer) return; canAnswer = false; const q = sessionQuestions[qIndex];
+            if (selectedKey === q.correctAnswer) { document.getElementById(`opt-${selectedKey}`).classList.add('correct'); currentScore += 10; document.getElementById('q-score').innerText = `Score: ${currentScore}`; } 
+            else { document.getElementById(`opt-${selectedKey}`).classList.add('wrong'); document.getElementById(`opt-${q.correctAnswer}`).classList.add('correct'); }
+            document.querySelectorAll('.q-btn').forEach(b => b.classList.add('disabled'));
+            document.getElementById('exp-text').innerHTML = formatText(q.explanation[currentLang]); 
+            document.getElementById('q-explanation').style.display = 'block'; 
+            document.getElementById('btn-next-q').style.display = 'inline-block';
+        }
+
+        function nextQuestion() { qIndex++; loadQuestion(true); }
+
+        function showResults() {
+            document.getElementById('sql-game-ui').style.display = 'none'; document.getElementById('sql-results-ui').style.display = 'flex'; document.getElementById('final-score').innerText = currentScore;
+            const title = document.getElementById('tier-title'); const text = document.getElementById('tier-text');
+            if (currentScore <= 30) { title.innerText = "Novice Explorer"; text.innerText = "Everyone starts somewhere! Keep practicing."; } else if (currentScore <= 70) { title.innerText = "Solid Apprentice"; text.innerText = "You have a good foundation. A bit more practice and you'll be a pro!"; } else { title.innerText = "SQL Master"; text.innerText = "Outstanding! You speak data fluently."; }
+        }
+
+        // Base Modal Logic
         function openModal(modalId) { const m = document.getElementById(modalId); m.style.display = 'flex'; setTimeout(() => m.classList.add('active'), 10); }
         function closeModal(e, id) { if (e.target.id === id) closeModalDirect(id); }
         function closeModalDirect(id) { const m = document.getElementById(id); m.classList.remove('active'); setTimeout(() => m.style.display = 'none', 300); }
