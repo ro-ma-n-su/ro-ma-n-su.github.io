@@ -21,8 +21,9 @@
             --theme-light: #FFF4E6;
             --text-dark: #222;
             --overlay-color: rgba(20, 20, 20, 0.75);
-            /* SQL App Theme */
+            /* App Themes */
             --sql-color: #F05032; --sql-bg: #FAFAFA; --chat-roman: #E5E5E5;
+            --tableau-color: #1f447e; 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,8 +60,6 @@
         .bottom-row-split { grid-area: bottom; display: flex; gap: var(--gap); width: 100%; height: 100%; }
         .c8-wrapper { flex: 1.5; height: 100%; }
         .c9-wrapper { flex: 0.8; height: 100%; }
-        
-        /* C3 Wrapper */
         .c3-wrapper { grid-area: c3; display: flex; flex-direction: column; gap: var(--gap); height: 100%; }
 
         /* --- CARD STYLING --- */
@@ -89,81 +88,48 @@
         .card:hover .hover-overlay { opacity: 1; }
 
         /* --- SPECIFIC CARDS --- */
-        
-        /* === CARD 1: STATS === */
-        .c1 { 
-            grid-area: c1; 
-            background-color: var(--theme-color);
-            color: white; 
-            padding: 24px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; 
-        }
-
+        .c1 { grid-area: c1; background-color: var(--theme-color); color: white; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
         .c1-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .since-pill { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
         .stats-content { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; animation: fadeIn 0.4s ease; }
         #stats-prac { display: none; } 
-
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: start; }
         .stat-block { margin: 0; } 
         .stat-big { font-size: 2.2rem; font-weight: 800; line-height: 1; letter-spacing: -1px; }
         .stat-med { font-size: 1.6rem; font-weight: 700; line-height: 1.1; margin-top: 5px; }
         .stat-lbl { font-size: 0.75rem; opacity: 0.9; font-weight: 400; line-height: 1.2; margin-top: 4px; }
         .industry-list { font-size: 0.8rem; font-weight: 600; line-height: 1.3; opacity: 0.95; }
-
         .minmax-container { margin-top: auto; padding-bottom: 10px; }
         .minmax-bar { height: 4px; width: 100%; background: rgba(255,255,255,0.3); border-radius: 2px; position: relative; margin: 6px 0; }
         .minmax-fill { position: absolute; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, #fff 100%); border-radius: 2px; }
         .minmax-labels { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 600; }
         .lbl-detail { font-size: 0.6rem; opacity: 0.8; font-weight: 400; }
-
         .stats-toggle-container { display: flex; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 3px; align-self: center; margin-top: auto; transform: scale(0.85); }
         .stat-tab { padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 7px; cursor: pointer; opacity: 0.6; transition: all 0.2s; }
         .stat-tab.active { background: white; color: var(--theme-color); opacity: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Card 2: Toolkit */
         .c2 { grid-area: c2; background-color: #222; }
 
-        /* Card 3: Split Learning & Traffic */
-        .c3-top, .c3-bottom { 
-            background-color: #111; padding: 15px; border-radius: var(--card-radius);
-            font-family: 'Space Mono', monospace; display: flex; flex-direction: column; justify-content: center;
-            flex: 1; 
-            border-left: 4px solid var(--theme-color);
-            transition: border-color 0.5s ease;
-        }
+        .c3-top, .c3-bottom { background-color: #111; padding: 15px; border-radius: var(--card-radius); font-family: 'Space Mono', monospace; display: flex; flex-direction: column; justify-content: center; flex: 1; border-left: 4px solid var(--theme-color); transition: border-color 0.5s ease; }
         .code-comment { color: #666; font-size: 0.75rem; margin-bottom: 5px; font-style: italic; }
         .code-var { color: #fff; font-size: 0.85rem; }
         .code-str { color: var(--theme-color); font-weight: bold; font-size: 1.0rem; line-height: 1.2; }
         .blink { animation: blinker 1s step-end infinite; }
         @keyframes blinker { 50% { opacity: 0; } }
-        
-        /* Traffic styling */
         .traffic-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: #ccc; margin-top: 6px; }
         .traffic-icon { color: var(--theme-color); margin-right: 8px; width: 15px; }
 
-        /* Card 4 & 7 */
         .c4 { height: 44%; background-color: #ddd; }
         .c7 { height: 54%; background-color: #f8f8f8; position: relative; }
         .coming-soon-badge { position: absolute; bottom: 15px; left: 15px; background: #222; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; }
 
-        /* Card 5: Photo */
         .c5 { grid-area: c5; background-color: #ccc; }
-
-        /* Card 6: Logo */
         .c6 { grid-area: c6; background-color: #fff; display: flex; justify-content: center; align-items: center; flex-direction: column; }
         .logo-text { font-family: 'Permanent Marker', cursive; font-size: 1.8rem; color: #222; margin-top: 10px; }
         .logo-svg-fill { fill: var(--theme-color); transition: fill 0.5s ease; }
 
-        /* CARD 8: Motto (GACHA TRIGGER) */
-        .c8 { 
-            background-color: #fff; display: flex; justify-content: center; align-items: center;
-            padding: 20px; text-align: center; position: relative;
-        }
+        .c8 { background-color: #fff; display: flex; justify-content: center; align-items: center; padding: 20px; text-align: center; position: relative; }
         .motto-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; font-weight: 600; color: var(--text-dark); line-height: 1.4; position: relative; z-index: 2; }
         .motto-accent { color: var(--theme-color); transition: color 0.5s ease; }
         .deco-icon { position: absolute; color: var(--theme-color); opacity: 0.15; z-index: 1; transition: color 0.5s ease; }
@@ -171,7 +137,6 @@
         .deco-quote-right { bottom: 15px; right: 15px; font-size: 1.8rem; }
         .deco-sparkle { top: 20%; right: 25%; font-size: 1rem; opacity: 0.1; }
 
-        /* CARD 9: Mood */
         .c9 { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 2px solid; transition: all 0.5s ease; }
         .mood-emoji { font-size: 3rem; margin-bottom: 5px; }
         .mood-label { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
@@ -196,11 +161,11 @@
         .close-modal { margin-top: 25px; background: #f0f0f0; border: none; padding: 10px 24px; border-radius: 20px; cursor: pointer; font-weight: 600; color: #555; }
         .close-modal:hover { background: #e0e0e0; }
 
-        /* --- NEW: SQL APP 90% WINDOW --- */
+        /* --- SQL APP 90% WINDOW --- */
         .modal-content-app { background: var(--sql-bg); width: 90%; height: 90%; border-radius: 24px; display: flex; flex-direction: column; padding: 0; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3); transform: scale(0.8); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
         .modal-overlay.active .modal-content-app { transform: scale(1); }
         .sql-header { background: white; padding: 15px 0; display: flex; justify-content: center; align-items: center; gap: 20px; border-bottom: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; z-index: 10;}
-        .btn-sql-back { border: none; background: none; font-size: 1.2rem; cursor: pointer; color: #333; padding: 5px 10px; border-radius: 8px; } .btn-sql-back:hover { background: #f5f5f5; }
+        .btn-sql-back { border: none; background: none; font-size: 1.2rem; cursor: pointer; color: #333; padding: 5px 10px; border-radius: 8px; transition: 0.2s;} .btn-sql-back:hover { background: #eee; }
         .sql-title { font-weight: 800; font-size: 1.1rem; color: var(--sql-color); display: flex; align-items: center; gap: 8px; }
 
         .toggle-switch { width: 60px; height: 30px; background-color: #eee; border-radius: 30px; position: relative; cursor: pointer; transition: background-color 0.3s; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; box-sizing: border-box; } .toggle-knob { width: 24px; height: 24px; background-color: white; border-radius: 50%; position: absolute; left: 3px; top: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); display: flex; justify-content: center; align-items: center; font-size: 0.7rem; font-weight: 800; color: var(--sql-color); } .toggle-switch.active { background-color: var(--sql-color); } .toggle-switch.active .toggle-knob { transform: translateX(30px); color: var(--sql-color); } .toggle-label { font-size: 0.7rem; font-weight: 700; color: #999; z-index: 0; } .toggle-switch.active .toggle-label-left { color: white; opacity: 0.8; } .toggle-switch:not(.active) .toggle-label-right { color: #555; }
@@ -235,193 +200,158 @@
         .flashcard-wrapper { perspective: 1000px; width: 100%; max-width: 450px; height: 300px; margin-bottom: 40px; cursor: pointer; } .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-radius: 24px; } .flashcard-wrapper.is-flipped .flashcard-inner { transform: rotateY(180deg); } .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 30px; border-radius: 24px; } .flashcard-front { background: white; border: 3px solid var(--sql-color); color: var(--sql-color); font-size: 2.5rem; font-weight: 800; font-family: 'Space Mono', monospace; } .flashcard-back { background: var(--sql-color); color: white; transform: rotateY(180deg); font-size: 1.4rem; font-weight: 600; line-height: 1.5; } .dice-btn { background: white; border: 2px solid #eee; width: 70px; height: 70px; border-radius: 50%; font-size: 2rem; color: #555; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: center; align-items: center; } .dice-btn:hover { border-color: var(--sql-color); color: var(--sql-color); transform: rotate(180deg) scale(1.1); box-shadow: 0 8px 20px rgba(240, 80, 50, 0.2); } .tap-hint { font-size: 0.8rem; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 20px; letter-spacing: 1px; }
 
         /* --- CHAT LOG UI --- */
-        .chat-container {
-            display: flex; flex-direction: column; gap: 15px; padding: 20px;
-            overflow-y: auto; flex: 1; width: 100%; max-width: 600px; margin: 0 auto;
-            scroll-behavior: smooth;
-        }
-        .chat-bubble {
-            max-width: 80%; padding: 14px 18px; font-size: 1rem; line-height: 1.4;
-            position: relative; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+        .chat-container { display: flex; flex-direction: column; gap: 15px; padding: 20px; overflow-y: auto; flex: 1; width: 100%; max-width: 600px; margin: 0 auto; scroll-behavior: smooth; }
+        .chat-bubble { max-width: 80%; padding: 14px 18px; font-size: 1rem; line-height: 1.4; position: relative; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .chat-roman { background: var(--chat-roman); color: #333; border-radius: 18px 18px 18px 4px; align-self: flex-start; }
         .chat-user { background: var(--sql-color); color: white; border-radius: 18px 18px 4px 18px; align-self: flex-end; }
-        
         .chat-choices { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; width: 100%; align-items: flex-end; animation: fadeIn 0.5s; }
-        .chat-choice-btn {
-            background: white; border: 2px solid var(--sql-color); color: var(--sql-color);
-            padding: 12px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s;
-            font-weight: 600; text-align: right; max-width: 90%; font-size: 0.95rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); align-self: flex-end;
-        }
+        .chat-choice-btn { background: white; border: 2px solid var(--sql-color); color: var(--sql-color); padding: 12px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-weight: 600; text-align: right; max-width: 90%; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); align-self: flex-end; }
         .chat-choice-btn:hover { background: var(--sql-color); color: white; transform: translateY(-2px); }
         .chat-choice-btn.center-btn { align-self: center !important; text-align: center; }
-
         .typing-indicator { display: none; gap: 5px; padding: 14px 18px; background: var(--chat-roman); border-radius: 18px 18px 18px 4px; width: fit-content; align-self: flex-start; animation: popIn 0.3s ease; }
         .typing-dot { width: 8px; height: 8px; background: #999; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; } .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        
         @keyframes popIn { from { opacity: 0; transform: scale(0.9) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
 
         /* ==========================================
            --- NEW GACHA MODAL STYLES --- 
            ========================================== */
-        .gacha-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px); transition: background 0.3s ease;
-        }
+        .gacha-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); transition: background 0.3s ease; }
         .gacha-modal-overlay.dim-legendary { background: rgba(0, 0, 0, 0.95); }
-
-        .gacha-modal-content {
-            background: #fff; width: 90%; max-width: 450px;
-            border-radius: 16px; overflow: hidden; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .gacha-close-btn {
-            position: absolute; top: 10px; right: 15px; background: none; border: none;
-            font-size: 24px; cursor: pointer; color: #555; z-index: 10;
-        }
-
-        /* Replaced Deprecated Marquee with pure CSS Animation */
-        .gacha-marquee {
-            background: #222; color: #fff; padding: 8px 0; font-family: monospace;
-            font-size: 14px; letter-spacing: 1px; font-weight: bold;
-            overflow: hidden; white-space: nowrap; position: relative;
-            width: 100%; display: flex;
-        }
-        .gacha-marquee-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee-scroll 12s linear infinite;
-            white-space: nowrap;
-        }
-        @keyframes marquee-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .gacha-card-container {
-            perspective: 1000px; padding: 30px; display: flex; justify-content: center;
-        }
-        .gacha-card {
-            width: 100%; max-width: 300px; min-height: 350px;
-            position: relative; transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
-            transform-style: preserve-3d;
-        }
+        .gacha-modal-content { background: #fff; width: 90%; max-width: 450px; border-radius: 16px; overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: 'Outfit', sans-serif; }
+        .gacha-close-btn { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #555; z-index: 10; }
+        .gacha-marquee { background: #222; color: #fff; padding: 8px 0; font-family: monospace; font-size: 14px; letter-spacing: 1px; font-weight: bold; overflow: hidden; white-space: nowrap; position: relative; width: 100%; display: flex; }
+        .gacha-marquee-text { display: inline-block; padding-left: 100%; animation: marquee-scroll 12s linear infinite; white-space: nowrap; }
+        @keyframes marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .gacha-card-container { perspective: 1000px; padding: 30px; display: flex; justify-content: center; }
+        .gacha-card { width: 100%; max-width: 300px; min-height: 350px; position: relative; transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .gacha-card.is-flipped { transform: rotateY(180deg); }
-
         .gacha-card-inner { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; }
-        .gacha-card-front, .gacha-card-back {
-            width: 100%; height: 100%; position: absolute; backface-visibility: hidden;
-            border-radius: 12px; padding: 20px; box-sizing: border-box;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-        }
-
+        .gacha-card-front, .gacha-card-back { width: 100%; height: 100%; position: absolute; backface-visibility: hidden; border-radius: 12px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .gacha-card-front { background: #eee; border: 3px dashed #ccc; }
         .gacha-card.rolling .gacha-card-front { animation: rainbowBorder 0.2s infinite; }
-        @keyframes rainbowBorder {
-            0% { border-color: #87CEFA; }
-            33% { border-color: #9B59B6; }
-            66% { border-color: #F1C40F; }
-            100% { border-color: #87CEFA; }
-        }
+        @keyframes rainbowBorder { 0% { border-color: #87CEFA; } 33% { border-color: #9B59B6; } 66% { border-color: #F1C40F; } 100% { border-color: #87CEFA; } }
         .rolling-text { font-family: monospace; font-size: 18px; color: #555; font-weight: bold; }
-
-        .gacha-card-back { 
-            transform: rotateY(180deg); color: #222; 
-            justify-content: flex-start; 
-        }
+        .gacha-card-back { transform: rotateY(180deg); color: #222; justify-content: flex-start; }
         .gacha-card-back.common { background: #F0F8FF; border: 2px solid #87CEFA; }
         .gacha-card-back.rare { background: #F5EEF8; border: 2px solid #9B59B6; }
-        .gacha-card-back.legendary { 
-            background: linear-gradient(135deg, #FEF9E7, #FDF2E9); 
-            border: 3px solid #F1C40F; 
-            box-shadow: 0 0 25px rgba(241, 196, 15, 0.6); 
-        }
-
+        .gacha-card-back.legendary { background: linear-gradient(135deg, #FEF9E7, #FDF2E9); border: 3px solid #F1C40F; box-shadow: 0 0 25px rgba(241, 196, 15, 0.6); }
         .gacha-card.shake-legendary { animation: hypeShake 0.1s infinite; }
-        @keyframes hypeShake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
-
-        .gacha-badge {
-            align-self: center; /* Adjusted to Top Center */
-            background: #333; color: #fff; font-size: 10px;
-            padding: 3px 8px; border-radius: 12px; text-transform: uppercase; font-weight: bold;
-            margin-bottom: 15px;
-        }
-        
-        .gacha-text { 
-            font-family: 'Outfit', sans-serif; /* Matches SQL Chat Log */
-            font-size: 1rem; 
-            line-height: 1.4; 
-            margin-bottom: 15px; 
-            color: #222;
-        }
-        
-        /* Fixed logic to prevent flexbox from mangling the text */
-        .gacha-text.text-large {
-            font-size: 1.15rem; /* Larger font for empty space, but safe from overflow */
-            line-height: 1.5;
-            margin-top: auto; 
-            margin-bottom: auto;
-            display: block; /* Removes the flex bug causing overlaps */
-        }
-        
-        .gacha-image {
-            width: 100%; max-height: 180px; object-fit: contain; 
-            border-radius: 6px; margin-bottom: 15px;
-        }
-
-        .gacha-link-btn {
-            display: inline-block; padding: 10px 15px; background: var(--theme-color, #222);
-            color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px;
-            margin-top: auto; transition: opacity 0.2s;
-        }
+        @keyframes hypeShake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+        .gacha-badge { align-self: center; background: #333; color: #fff; font-size: 10px; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
+        .gacha-text { font-family: 'Outfit', sans-serif; font-size: 1rem; line-height: 1.4; margin-bottom: 15px; color: #222; }
+        .gacha-text.text-large { font-size: 1.15rem; line-height: 1.5; margin-top: auto; margin-bottom: auto; display: block; }
+        .gacha-image { width: 100%; max-height: 180px; object-fit: contain; border-radius: 6px; margin-bottom: 15px; }
+        .gacha-link-btn { display: inline-block; padding: 10px 15px; background: var(--theme-color, #222); color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; margin-top: auto; transition: opacity 0.2s; }
         .gacha-link-btn:hover { opacity: 0.8; }
         .gacha-credit { font-size: 11px; color: #666; font-style: italic; margin-top: 10px; text-align: right; width: 100%;}
-
         .gacha-controls { text-align: center; padding: 0 20px 20px; }
-        .gacha-pull-btn {
-            background: #222; color: #fff; border: none; padding: 12px 24px;
-            border-radius: 24px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%;
-            font-family: 'Outfit', sans-serif;
-        }
+        .gacha-pull-btn { background: #222; color: #fff; border: none; padding: 12px 24px; border-radius: 24px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; font-family: 'Outfit', sans-serif; }
         .gacha-pull-btn:disabled { background: #ccc; cursor: not-allowed; }
         .gacha-limit-text { font-size: 12px; color: #666; margin-top: 8px; }
-
-        .gacha-history {
-            background: #f9f9f9; padding: 15px 20px; border-top: 1px solid #eee;
-        }
+        .gacha-history { background: #f9f9f9; padding: 15px 20px; border-top: 1px solid #eee; }
         .gacha-history h4 { margin: 0 0 10px; font-size: 14px; color: #333; }
         .gacha-history ul { list-style: none; padding: 0; margin: 0; font-size: 12px; color: #555; }
         .gacha-history li { margin-bottom: 5px; padding-bottom: 5px; border-bottom: 1px dashed #ddd; }
         .gacha-history li strong { color: #222; }
+        .confetti { position: absolute; width: 8px; height: 8px; background-color: #f00; z-index: 1000; animation: confetti-fall 2.5s ease-in forwards; }
+        @keyframes confetti-fall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(300px) rotate(360deg); opacity: 0; } }
 
-        .confetti {
-            position: absolute; width: 8px; height: 8px; background-color: #f00; z-index: 1000;
-            animation: confetti-fall 2.5s ease-in forwards;
+        /* ==========================================
+           --- TABLEAU APP GALLERY (UPDATED) --- 
+           ========================================== */
+        .modal-content-tableau {
+            background: var(--tableau-color);
+            width: 90%; height: 90%;
+            border-radius: 24px;
+            display: flex; flex-direction: row;
+            padding: 30px; /* Surrounding padding to detach internal cards */
+            gap: 30px; /* Space between sidebar and main stage */
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            transform: scale(0.8);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes confetti-fall {
-            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
+        .modal-overlay.active .modal-content-tableau { transform: scale(1); }
+        
+        .tableau-sidebar {
+            width: 28%; /* Reduced from 32% to give main stage more room */
+            background: white;
+            border-radius: 16px; /* Styled as a floating card */
+            padding: 30px; /* Internal padding */
+            display: flex; flex-direction: column; justify-content: space-between;
+            height: 100%;
         }
+        .tableau-intro { display: flex; flex-direction: column; align-items: flex-start; gap: 25px;}
+        .desktop-back { background: #f4f4f4; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 1rem; color: var(--text-dark); transition: 0.2s; display: flex; gap: 8px; align-items: center;}
+        .desktop-back:hover { background: #e0e0e0; }
+        .tableau-desc { font-size: 1.05rem; line-height: 1.6; color: #333; margin-top: 10px;}
+        .tableau-logo-sidebar { width: 120px; object-fit: contain; align-self: flex-start;}
+
+        .tableau-main {
+            flex: 1; /* Takes the remaining 72% */
+            display: flex; flex-direction: column; gap: 20px;
+            height: 100%;
+            /* Removed background and padding, handled by parent now */
+        }
+        
+        .tableau-header-mobile { display: none; }
+        
+        .tableau-stage {
+            flex: 1;
+            background: #f0f4f8; 
+            border-radius: 16px;
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+        .tableau-stage img { width: 100%; height: 100%; object-fit: contain; transition: opacity 0.3s ease; }
+        
+        .tableau-coming-text { font-size: 1.8rem; font-weight: 800; color: #999; position: absolute; }
+        
+        .tableau-launch-btn {
+            position: absolute;
+            bottom: 40px;
+            padding: 16px 36px;
+            background: var(--tableau-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex; gap: 10px; align-items: center;
+        }
+        /* Reveal button on hover for desktop */
+        .tableau-stage:hover .tableau-launch-btn { opacity: 1; transform: translateY(0); }
+        .tableau-launch-btn:hover { background: #132f5c; box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+
+        .tableau-carousel {
+            height: 130px;
+            display: flex;
+            gap: 20px; /* Even spacing between cards */
+            width: 100%; /* Forces the container to match the stage above */
+        }
+        
+        .tableau-mini-card {
+            flex: 1; /* Magic property: forces all cards to stretch evenly and perfectly align with stage edges */
+            height: 100%;
+            background: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+            opacity: 0.5;
+            border: 4px solid transparent;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .tableau-mini-card img { width: 100%; height: 100%; object-fit: cover; }
+        .tableau-mini-card.active { opacity: 1; border-color: white; transform: scale(1.03); box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        .tableau-mini-card:hover { opacity: 0.9; }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
@@ -436,7 +366,7 @@
             .c4, .c7 { width: 100%; height: auto; min-height: 220px; } 
             .c3-top, .c3-bottom { border-left: none; border-top: 4px solid var(--theme-color); }
             
-            /* App Mobile */
+            /* Apps Mobile */
             .sql-body, .sql-body-guide, .sql-body-flash, .chat-container { padding: 15px; } 
             .q-text { font-size: 1rem; } 
             .q-btn { padding: 12px; font-size: 0.9rem; } 
@@ -452,6 +382,18 @@
             .flashcard-wrapper { height: 250px; }
             .chat-bubble { font-size: 0.9rem; } 
             .chat-choice-btn { font-size: 0.85rem; }
+
+            /* Tableau Mobile (Option B) */
+            .modal-content-tableau { flex-direction: column; background: var(--tableau-color); width: 95%; height: 95%; padding: 15px; gap: 15px;} 
+            .tableau-sidebar { display: none; } /* Hide intro text completely on mobile */
+            .tableau-header-mobile { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: white; border-radius: 12px; }
+            .tableau-logo-mobile { height: 35px; object-fit: contain; }
+            .tableau-main { width: 100%; height: auto; flex: 1; padding: 0; }
+            .tableau-stage { border-radius: 12px; }
+            /* Always show the button on mobile since there is no hover */
+            .tableau-launch-btn { opacity: 1; transform: translateY(0); bottom: 15px; font-size: 0.85rem; padding: 12px 20px; }
+            .tableau-mini-card { flex: 1; height: 100%; } /* Keep flex stretch on mobile */
+            .tableau-carousel { height: 90px; gap: 10px; }
         }
         @media (min-width: 769px) { .mobile-only { display: none !important; } }
     </style>
@@ -598,7 +540,14 @@
                 <div class="app-icon" onclick="startSQLApp()"><div class="app-box bg-toolkit" style="background: #F05032;"><i class="fa-solid fa-database"></i></div><span class="app-name">SQL</span></div>
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-brands fa-python"></i></div><span class="app-name">Python</span></div>
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-gears"></i></div><span class="app-name">KNIME</span></div>
-                <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-chart-simple"></i></div><span class="app-name">Tableau</span></div>
+                
+                <div class="app-icon" onclick="openTableauApp()">
+                    <div class="app-box bg-toolkit" style="background: var(--tableau-color);">
+                        <i class="fa-solid fa-chart-simple"></i>
+                    </div>
+                    <span class="app-name">Tableau</span>
+                </div>
+                
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-chart-column"></i></div><span class="app-name">PowerBI</span></div>
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-magnifying-glass-chart"></i></div><span class="app-name">Looker</span></div>
             </div>
@@ -697,6 +646,55 @@
 
         </div>
     </div>
+
+    <div id="app-overlay-tableau" class="modal-overlay" onclick="closeModal(event, 'app-overlay-tableau')">
+        <div class="modal-content-tableau" onclick="event.stopPropagation()">
+            
+            <div class="tableau-header-mobile">
+                <button class="btn-sql-back" onclick="closeTableauApp()"><i class="fa-solid fa-arrow-left"></i></button>
+                <img src="pics/toolkit-f-element-0.png" alt="Tableau Logo" class="tableau-logo-mobile">
+                <div style="width: 30px;"></div> </div>
+
+            <div class="tableau-sidebar">
+                <div class="tableau-intro">
+                    <button class="desktop-back" onclick="closeTableauApp()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                    <p class="tableau-desc">
+                        Tableau is a data visualization platform that focuses on creating high-quality, interactive visualizations through a flexible drag-and-drop workspace. It allows for deep exploration of complex data, turning raw numbers into artistic and insightful dashboards that can handle massive datasets.
+                    </p>
+                </div>
+                <img src="pics/toolkit-f-element-0.png" alt="Tableau Logo" class="tableau-logo-sidebar">
+            </div>
+
+            <div class="tableau-main">
+                
+                <div class="tableau-stage" id="tableau-stage">
+                    <img id="tableau-main-img" src="pics/toolkit-f-element-a-1.png" alt="Tableau Project">
+                    
+                    <div id="tableau-coming-soon-text" class="tableau-coming-text" style="display: none;">(Coming Soon)</div>
+                    
+                    <a id="tableau-launch-btn" href="#" target="_blank" class="tableau-launch-btn">
+                        Launch Interactive Dashboard <i class="fa-solid fa-chart-bar" style="margin-left: 5px;"></i>
+                    </a>
+                </div>
+
+                <div class="tableau-carousel">
+                    <div class="tableau-mini-card active" id="tab-thumb-0" onclick="loadTableauProject(0)">
+                        <img src="pics/toolkit-f-element-b-1.png" alt="Aviation Project">
+                    </div>
+                    
+                    <div class="tableau-mini-card" id="tab-thumb-1" onclick="loadTableauProject(1)">
+                        <img src="pics/toolkit-f-element-b-2.png" alt="Supply Chain Project">
+                    </div>
+                    
+                    <div class="tableau-mini-card" id="tab-thumb-2" onclick="loadTableauProject(2)">
+                        <img src="pics/toolkit-f-element-b-0.png" alt="Coming Soon">
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
 
     <div id="gachaModal" class="gacha-modal-overlay" style="display: none;" onclick="closeGachaOutside(event)">
         <div class="gacha-modal-content" onclick="event.stopPropagation()">
@@ -1113,6 +1111,87 @@
         function openModal(modalId) { const m = document.getElementById(modalId); m.style.display = 'flex'; setTimeout(() => m.classList.add('active'), 10); }
         function closeModal(e, id) { if (e.target.id === id) closeModalDirect(id); }
         function closeModalDirect(id) { const m = document.getElementById(id); m.classList.remove('active'); setTimeout(() => m.style.display = 'none', 300); }
+
+        // ==========================================
+        // NEW: TABLEAU GALLERY LOGIC
+        // ==========================================
+        const TABLEAU_PROJECTS = [
+            {
+                id: 'aviation',
+                mainImg: 'pics/toolkit-f-element-a-1.png',
+                link: 'https://public.tableau.com/app/profile/.31198649/viz/IndonesianAviationNetworkAnalysis/Dashboard',
+                isComingSoon: false
+            },
+            {
+                id: 'supply-chain',
+                mainImg: 'pics/toolkit-f-element-a-2.png',
+                link: 'https://public.tableau.com/app/profile/.31198649/viz/DataCoSupplyChainRiskControl/Dashboard',
+                isComingSoon: false
+            },
+            {
+                id: 'coming-soon',
+                mainImg: '', // Blank
+                link: '#',
+                isComingSoon: true
+            }
+        ];
+
+        function openTableauApp() {
+            closeModalDirect('modal-toolkit');
+            const app = document.getElementById('app-overlay-tableau');
+            app.style.display = 'flex'; 
+            setTimeout(() => app.classList.add('active'), 10);
+            
+            // Auto-load the Aviation project (Index 0)
+            loadTableauProject(0);
+        }
+
+        function closeTableauApp() {
+            const app = document.getElementById('app-overlay-tableau');
+            app.classList.remove('active');
+            setTimeout(() => { 
+                app.style.display = 'none'; 
+                openModal('modal-toolkit'); 
+            }, 300);
+        }
+
+        function loadTableauProject(index) {
+            const proj = TABLEAU_PROJECTS[index];
+            
+            const mainImg = document.getElementById('tableau-main-img');
+            const launchBtn = document.getElementById('tableau-launch-btn');
+            const comingText = document.getElementById('tableau-coming-soon-text');
+
+            // Quick fade out effect
+            mainImg.style.opacity = 0;
+            
+            setTimeout(() => {
+                if (proj.isComingSoon) {
+                    mainImg.style.display = 'none';
+                    comingText.style.display = 'block';
+                    launchBtn.style.display = 'none';
+                } else {
+                    mainImg.src = proj.mainImg;
+                    mainImg.style.display = 'block';
+                    comingText.style.display = 'none';
+                    
+                    launchBtn.href = proj.link;
+                    launchBtn.style.display = 'flex';
+                }
+                
+                // Fade back in
+                mainImg.style.opacity = 1;
+            }, 150);
+
+            // Update active styling on the mini-cards
+            document.querySelectorAll('.tableau-mini-card').forEach((card, i) => {
+                if (i === index) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
 
 
         // ==========================================
