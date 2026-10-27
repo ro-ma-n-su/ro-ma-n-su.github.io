@@ -111,7 +111,7 @@
         .industry-list { font-size: 0.8rem; font-weight: 600; line-height: 1.3; opacity: 0.95; }
         .minmax-container { margin-top: auto; padding-bottom: 10px; }
         .minmax-bar { height: 4px; width: 100%; background: rgba(255,255,255,0.3); border-radius: 2px; position: relative; margin: 6px 0; }
-        .minmax-fill { position: absolute; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, #fff 100%); border-radius: 2px; }
+        .minmax-fill { position: absolute; left: 0; width: 100%; height: 100%; transform-origin: left center; background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, #fff 100%); border-radius: 2px; }
         .minmax-labels { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 600; }
         .lbl-detail { font-size: 0.6rem; opacity: 0.8; font-weight: 400; }
         .stats-toggle-container { display: flex; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 3px; align-self: center; margin-top: auto; transform: scale(0.85); }
@@ -363,6 +363,87 @@
         .tableau-mini-card.active { opacity: 1; border-color: white; transform: scale(1.03); box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
         .tableau-mini-card:hover { opacity: 0.9; }
 
+
+        /* ==========================================
+           --- CARD 8 MOTTO ANIMATION (4 random patterns) ---
+           ========================================== */
+        .motto-text .mw { display: inline-block; opacity: 0; transform: var(--from, none); filter: var(--from-filter, none); will-change: transform, opacity, filter; }
+        /* hidden start states + timing, per pattern */
+        .c8.m-p0 { --dur: 750ms; --stag: 130ms; --ease: cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .c8.m-p0 .mw { --from: translateY(-34px) rotate(-8deg) scale(0.6); --from-filter: blur(5px); --to: translateY(-22px) scale(0.85); }
+        .c8.m-p0 .mw:nth-child(even) { --from: translateY(34px) rotate(8deg) scale(0.6); }
+
+        .c8.m-p1 { --dur: 800ms; --stag: 110ms; --ease: cubic-bezier(0.22, 1.3, 0.36, 1); }
+        .c8.m-p1 .mw { --from: translateX(-90px) skewX(-18deg); --from-filter: blur(3px); --to: translateX(90px) skewX(18deg); }
+        .c8.m-p1 .mw:nth-child(even) { --from: translateX(90px) skewX(18deg); --to: translateX(-90px) skewX(-18deg); }
+
+        .c8.m-p2 { --dur: 850ms; --stag: 120ms; --ease: cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+        .c8.m-p2 .mw { --from: perspective(500px) rotateX(-95deg) translateY(18px); --from-filter: none; --to: perspective(500px) rotateX(95deg) translateY(-18px); transform-origin: 50% 100%; }
+
+        .c8.m-p3 { --dur: 650ms; --stag: 90ms; --ease: cubic-bezier(0.2, 0.9, 0.2, 1); }
+        .c8.m-p3 .mw { --from: scale(2.8) rotate(4deg); --from-filter: blur(9px); --to: scale(0.2); }
+
+        .c8.m-in .mw { opacity: 1; transform: none; filter: none; transition: opacity .5s ease, filter .5s ease, transform var(--dur) var(--ease); transition-delay: calc(var(--i) * var(--stag)); }
+        .c8.m-in .mw.motto-accent { animation: newPop 1s ease-in-out forwards; animation-delay: calc(var(--i) * var(--stag) + 750ms); }
+        .c8.m-out .mw { opacity: 0; transform: var(--to, none); filter: blur(5px); transition: opacity .5s ease, filter .5s ease, transform .6s ease; transition-delay: calc((7 - var(--i)) * 60ms); }
+        .c8.m-reset .mw { transition: none !important; animation: none !important; }
+        @keyframes newPop { 0% { transform: scale(1) rotate(0); } 30% { transform: scale(1.5) rotate(-8deg); } 55% { transform: scale(1.35) rotate(6deg); } 80% { transform: scale(1.1) rotate(-3deg); } 100% { transform: scale(1) rotate(0); } }
+        .c8.m-in .deco-sparkle { animation: sparkleTwinkle 1.2s ease-in-out 2; }
+        .c8.m-in .deco-quote-left { animation: quoteNudgeL 1s ease-out; }
+        .c8.m-in .deco-quote-right { animation: quoteNudgeR 1s ease-out; }
+        @keyframes sparkleTwinkle { 0%,100% { opacity: .1; transform: scale(1) rotate(0); } 50% { opacity: .6; transform: scale(1.8) rotate(90deg); } }
+        @keyframes quoteNudgeL { from { transform: translate(-12px,-12px); opacity: 0; } to { transform: none; opacity: .15; } }
+        @keyframes quoteNudgeR { from { transform: translate(12px,12px); opacity: 0; } to { transform: none; opacity: .15; } }
+
+        /* ==========================================
+           --- CARD 9 PUZZLE ROTATION ---
+           ========================================== */
+        .bento-container { position: relative; }
+        .puz-layer { position: absolute; inset: 0; pointer-events: none; z-index: 50; }
+        .puz-tile { position: absolute; overflow: hidden; border-radius: var(--card-radius); }
+        /* image-style cards simply stretch to the new slot */
+        .puz-tile:not(.puz-fit) > * { width: 100% !important; height: 100% !important; margin: 0 !important; }
+        /* content cards keep their natural size and are scaled down to fit, so nothing spills outside the tile */
+        .puz-tile.puz-fit > * { position: absolute; left: 0; top: 0; margin: 0 !important; transform-origin: 0 0; }
+        .puz-tile, .puz-tile * { transition: none !important; }   /* .card has a 0.2s transform transition that would lag the frame-by-frame scaling */
+        .puz-tile .hover-overlay { display: none; }
+        .puz-layer .mw { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; animation: none !important; }
+        .puz-hide { visibility: hidden; }
+        .puz-center { animation: puzPulse .72s ease-in-out infinite; }
+        @keyframes puzPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        .c9.puz-nope { animation: puzNope .4s ease; }
+        @keyframes puzNope { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+        @media (prefers-reduced-motion: reduce) { .puz-center { animation: none; } }
+
+
+        /* ==========================================
+           --- V2: PAGE-LOAD ASSEMBLE ---
+           ========================================== */
+        .intro-hide .bento-container > .card,
+        .intro-hide .bento-container > .c3-wrapper,
+        .intro-hide .right-col-wrapper > .card,
+        .intro-hide .bottom-row-split > div { opacity: 0; }
+
+        /* ==========================================
+           --- V2: CIRCULAR THEME WIPE (View Transitions) ---
+           ========================================== */
+        ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+        ::view-transition-old(root) { z-index: 1; }
+        ::view-transition-new(root) { z-index: 2; }
+        html.vt-no-anim *, html.vt-no-anim *::before, html.vt-no-anim *::after { transition: none !important; }
+
+        /* ==========================================
+           --- V2: TRAFFIC SPARKLINE ---
+           ========================================== */
+        .traffic-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+        .traffic-head .code-comment { margin-bottom: 0; }
+        .spark { display: none; width: 84px; height: 22px; overflow: visible; }
+        .spark.ready { display: block; }
+        .spark-line { fill: none; stroke: var(--theme-color); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.5s ease; }
+        .spark-dot { fill: var(--theme-color); transition: fill 0.5s ease; }
+        .spark-ring { fill: none; stroke: var(--theme-color); stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: sparkPulse 2.2s ease-out infinite; }
+        @keyframes sparkPulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.2); opacity: 0; } }
+
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             body { padding: 10px; height: auto; overflow-y: auto; } 
@@ -407,6 +488,15 @@
         }
         @media (min-width: 769px) { .mobile-only { display: none !important; } }
     </style>
+    <script>
+        /* Hides the cards just until the assemble animation takes over (skipped for reduced motion; auto-released after 4s as a safety net) */
+        (function () {
+            var d = document.documentElement;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            d.classList.add('intro-hide');
+            setTimeout(function () { d.classList.remove('intro-hide'); }, 4000);
+        })();
+    </script>
 </head>
 <body>
 
@@ -421,16 +511,16 @@
             <div id="stats-edu" class="stats-content">
                 <div class="stats-grid">
                     <div class="stat-block">
-                        <div class="stat-big">7,000+</div>
+                        <div class="stat-big"><span class="count-up" data-target="7000" data-suffix="+">7,000+</span></div>
                         <div class="stat-lbl">Learners Taught</div>
                     </div>
                     <div class="stat-block">
-                        <div class="stat-med">200+</div>
+                        <div class="stat-med"><span class="count-up" data-target="200" data-suffix="+">200+</span></div>
                         <div class="stat-lbl">Classes Delivered</div>
                     </div>
                 </div>
                 <div class="minmax-container">
-                    <div class="minmax-labels"><div>30 <span class="lbl-detail">(min)</span></div><div>3,000+ <span class="lbl-detail">(max)</span></div></div>
+                    <div class="minmax-labels"><div>30 <span class="lbl-detail">(min)</span></div><div><span class="count-up" data-target="3000" data-suffix="+" data-bar="1">3,000+</span> <span class="lbl-detail">(max)</span></div></div>
                     <div class="minmax-bar"><div class="minmax-fill"></div></div>
                     <div class="stat-lbl" style="font-size: 0.7rem; text-align: center;">Range of Students per Class</div>
                 </div>
@@ -439,7 +529,7 @@
             <div id="stats-prac" class="stats-content">
                 <div class="stats-grid">
                     <div class="stat-block">
-                        <div class="stat-big">300+</div>
+                        <div class="stat-big"><span class="count-up" data-target="300" data-suffix="+">300+</span></div>
                         <div class="stat-lbl">Data Projects</div>
                     </div>
                     <div class="stat-block">
@@ -448,7 +538,7 @@
                     </div>
                 </div>
                 <div class="minmax-container">
-                    <div class="minmax-labels"><div>1 <span class="lbl-detail">(min)</span></div><div>350+ <span class="lbl-detail">(max)</span></div></div>
+                    <div class="minmax-labels"><div>1 <span class="lbl-detail">(min)</span></div><div><span class="count-up" data-target="350" data-suffix="+" data-bar="1">350+</span> <span class="lbl-detail">(max)</span></div></div>
                     <div class="minmax-bar"><div class="minmax-fill"></div></div>
                     <div class="stat-lbl" style="font-size: 0.7rem; text-align: center;">Range of Users per Project</div>
                 </div>
@@ -468,7 +558,10 @@
         <div class="c3-wrapper">
             
             <div class="c3-top">
-                <div class="code-comment">// LIVE_TRAFFIC</div>
+                <div class="traffic-head">
+                    <div class="code-comment">// LIVE_TRAFFIC</div>
+                    <svg id="spark" class="spark" viewBox="0 0 84 22" role="img" aria-label="Page views over the last 14 days"></svg>
+                </div>
                 
                 <div class="traffic-row">
                     <div><i class="fa-solid fa-fire traffic-icon"></i>30 Days:</div>
@@ -489,7 +582,7 @@
 
         </div>
 
-        <div class="card c5 clickable" onclick="toggleTheme()">
+        <div class="card c5 clickable" onclick="toggleTheme(event)">
             <img id="img-c5" src="pics/bento-Photo.png" alt="Profile">
         </div>
 
@@ -515,12 +608,12 @@
                     <i class="fa-solid fa-quote-left deco-icon deco-quote-left"></i>
                     <i class="fa-solid fa-quote-right deco-icon deco-quote-right"></i>
                     <i class="fa-solid fa-star deco-icon deco-sparkle"></i>
-                    <div class="motto-text">"There's always something <span class="motto-accent">new</span> to learn everyday."</div>
+                    <div class="motto-text" id="motto-text" aria-label="There's always something new to learn everyday.">"There's always something <span class="motto-accent">new</span> to learn everyday."</div>
                     <div class="hover-overlay">Knowledge Gacha here 🎲</div>
                 </div>
             </div>
             <div class="c9-wrapper">
-                <div class="card c9 mood-happy">
+                <div class="card c9 mood-happy clickable" onclick="startPuzzle()">
                     <div class="mood-emoji">⁶🤷‍♂️⁷</div>
                     <div class="mood-label">Learning Season</div>
                     <div class="mood-note">"Brain is braining!"</div>
@@ -806,10 +899,10 @@
             document.getElementById('tab-edu').classList.remove('active'); document.getElementById('tab-prac').classList.remove('active');
             document.getElementById('stats-edu').style.display = 'none'; document.getElementById('stats-prac').style.display = 'none';
             if(type === 'edu') {
-                document.getElementById('tab-edu').classList.add('active'); document.getElementById('stats-edu').style.display = 'flex';
+                document.getElementById('tab-edu').classList.add('active'); document.getElementById('stats-edu').style.display = 'flex'; runCountUp(document.getElementById('stats-edu'));
                 document.getElementById('since-badge').textContent = 'Since 2021'; document.getElementById('stats-icon').className = 'fa-solid fa-graduation-cap';
             } else {
-                document.getElementById('tab-prac').classList.add('active'); document.getElementById('stats-prac').style.display = 'flex';
+                document.getElementById('tab-prac').classList.add('active'); document.getElementById('stats-prac').style.display = 'flex'; runCountUp(document.getElementById('stats-prac'));
                 document.getElementById('since-badge').textContent = 'Since 2020'; document.getElementById('stats-icon').className = 'fa-solid fa-briefcase';
             }
         }
@@ -822,7 +915,7 @@
             c7: { orange: 'pics/bento-Consultation.png', green: 'pics/bento-Consultation-alt.png' } 
         };
         
-        function toggleTheme() {
+        function toggleThemeLegacy() {
             const root = document.documentElement;
             if (isOrangeTheme) { root.style.setProperty('--theme-color', '#228B22'); root.style.setProperty('--theme-light', '#E8F5E9'); swapImageSource('img-c2', imageConfig.c2.green); swapImageSource('img-c4', imageConfig.c4.green); swapImageSource('img-c5', imageConfig.c5.green); swapImageSource('img-c6', imageConfig.c6.green); swapImageSource('img-c7', imageConfig.c7.green); } 
             else { root.style.setProperty('--theme-color', '#FF8C00'); root.style.setProperty('--theme-light', '#FFF4E6'); swapImageSource('img-c2', imageConfig.c2.orange); swapImageSource('img-c4', imageConfig.c4.orange); swapImageSource('img-c5', imageConfig.c5.orange); swapImageSource('img-c6', imageConfig.c6.orange); swapImageSource('img-c7', imageConfig.c7.orange); }
@@ -1528,7 +1621,7 @@
             fetch('https://ro-ma-n-su.goatcounter.com/counter/TOTAL.json')
                 .then(response => response.json())
                 .then(data => { 
-                    document.getElementById('traffic-total').innerText = data.count; 
+                    tweenNumber(document.getElementById('traffic-total'), data.count); 
                 })
                 .catch(error => { console.error('Traffic fetch error:', error); });
 
@@ -1536,7 +1629,7 @@
             fetch('https://ro-ma-n-su.goatcounter.com/counter/TOTAL.json?start=month')
                 .then(response => response.json())
                 .then(data => { 
-                    document.getElementById('traffic-30').innerText = data.count; 
+                    tweenNumber(document.getElementById('traffic-30'), data.count); 
                 })
                 .catch(error => { console.error('Traffic fetch error:', error); });
         }
@@ -1544,6 +1637,379 @@
         // Run the fetcher immediately when the page loads
         fetchLiveTraffic();
 
+        // ==========================================
+        // 10. CARD 1 COUNT-UP + LOADING BAR
+        // ==========================================
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const countRafs = new WeakMap();
+
+        function runCountUp(container) {
+            const bar = container.querySelector('.minmax-fill');
+            if (bar) bar.style.transform = prefersReducedMotion ? 'scaleX(1)' : 'scaleX(0)';
+            container.querySelectorAll('.count-up').forEach(el => {
+                const target = parseInt(el.dataset.target, 10);
+                const suffix = el.dataset.suffix || '';
+                const drivesBar = el.dataset.bar === '1';
+                cancelAnimationFrame(countRafs.get(el));
+                if (prefersReducedMotion) { el.textContent = target.toLocaleString('en-US') + suffix; return; }
+
+                const big = target > 1000;
+                const duration = big ? 2600 : 2000;   // ms
+                const start = performance.now();
+                el.textContent = '0' + suffix;
+
+                const tick = (now) => {
+                    const t = Math.min((now - start) / duration, 1);
+                    // big numbers ease out (fast then slow); small ones count steadily so every number is visible
+                    const eased = big ? 1 - Math.pow(1 - t, 3) : t;
+                    const val = Math.round(target * eased);
+                    el.textContent = val.toLocaleString('en-US') + suffix;
+                    // the line under the range grows from the min (left) to the max (right) in sync with the max number
+                    if (drivesBar && bar) bar.style.transform = 'scaleX(' + eased + ')';
+                    if (t < 1) countRafs.set(el, requestAnimationFrame(tick));
+                };
+                countRafs.set(el, requestAnimationFrame(tick));
+            });
+        }
+        // Run on page load for whichever panel is visible (Educator by default)
+        // (when the cards assemble on load, counting starts as card 1 lands)
+        setTimeout(() => runCountUp(document.getElementById('stats-edu')), prefersReducedMotion ? 0 : 450);
+
+        // ==========================================
+        // 11. CARD 8 MOTTO ANIMATION LOOP (random pattern each repeat)
+        // ==========================================
+        (function initMotto() {
+            const card = document.querySelector('.c8');
+            const motto = document.getElementById('motto-text');
+            if (!card || !motto || prefersReducedMotion) return;
+
+            const words = [
+                { t: '"There\'s' }, { t: 'always' }, { t: 'something' },
+                { t: 'new', accent: true }, { t: 'to' }, { t: 'learn' }, { t: 'everyday."' }
+            ];
+            motto.innerHTML = '';
+            const spans = words.map((w, i) => {
+                const span = document.createElement('span');
+                span.className = 'mw' + (w.accent ? ' motto-accent' : '');
+                span.style.setProperty('--i', i);
+                span.textContent = w.t;
+                motto.appendChild(span);
+                if (i < words.length - 1) motto.appendChild(document.createTextNode(' '));
+                return span;
+            });
+
+            const PATTERN_COUNT = 4;  // 0 drop-in, 1 side-slide, 2 3D flip, 3 stamp-zoom (random order)
+            const IN_TIME = 2700;     // words animate in + "new" pops
+            const HOLD_TIME = 6000;   // full sentence stays still
+            const OUT_TIME = 1100;    // words exit
+            const GAP_TIME = 300;
+            let last = -1;
+
+            function reflow() { void card.offsetWidth; }
+            function pickPattern() {
+                let n; do { n = Math.floor(Math.random() * PATTERN_COUNT); } while (n === last);
+                last = n; return n;
+            }
+            function shuffled(len) {
+                const a = Array.from({ length: len }, (_, i) => i);
+                for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+                return a;
+            }
+            function cycle() {
+                const n = pickPattern();
+                card.classList.remove('m-in', 'm-out', 'm-p0', 'm-p1', 'm-p2', 'm-p3');
+                card.classList.add('m-reset', 'm-p' + n);
+                // pattern 3 reveals the words in a random order, the others read left to right
+                const order = n === 3 ? shuffled(spans.length) : spans.map((_, i) => i);
+                spans.forEach((sp, i) => sp.style.setProperty('--i', order[i]));
+                reflow();
+                card.classList.remove('m-reset');
+                reflow();
+                card.classList.add('m-in');
+                setTimeout(() => {
+                    setTimeout(() => {
+                        card.classList.remove('m-in');
+                        card.classList.add('m-out');
+                        setTimeout(cycle, OUT_TIME + GAP_TIME);
+                    }, HOLD_TIME);
+                }, IN_TIME);
+            }
+            setTimeout(cycle, 1300);   // wait for the cards to assemble first
+        })();
+
+        // ==========================================
+        // 12. CARD 9 PUZZLE ROTATION (random pattern per click)
+        //     Animated frame-by-frame so every card always exactly fills its box
+        // ==========================================
+        let puzzleRunning = false;
+        let lastPuzzle = -1;
+        const RING = 8;
+        const EASE = {
+            inOutCubic: t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+            inOutSine:  t => -(Math.cos(Math.PI * t) - 1) / 2,
+            inOutQuad:  t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
+            inOutQuart: t => t < .5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
+        };
+        // Every pattern's steps add up to a multiple of 8, so all cards always end up back home.
+        const PUZZLE_PATTERNS = [
+            { name: 'slow clockwise',    seq: [1,1,1,1,1,1,1,1],                 ms: 760, ease: 'inOutCubic' },
+            { name: 'counter-clockwise', seq: [-1,-1,-1,-1,-1,-1,-1,-1],         ms: 560, ease: 'inOutCubic' },
+            { name: 'turbo double lap',  seq: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], ms: 300, ease: 'inOutSine' },
+            { name: 'back and forth',    seq: [1,1,1,1,-1,-1,-1,-1],             ms: 620, ease: 'inOutQuart' }
+        ];
+
+        function startPuzzle() {
+            if (puzzleRunning || introRunning) return;
+            const c9 = document.querySelector('.c9');
+            // The ring only makes sense in the desktop grid; on mobile the cards are stacked
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                c9.classList.remove('puz-nope'); void c9.offsetWidth; c9.classList.add('puz-nope');
+                return;
+            }
+            const container = document.querySelector('.bento-container');
+            const center = document.querySelector('.c6');
+            // Clockwise ring of 8 slots around card 6: 1 -> 2 -> 3 -> 4 -> 7 -> 9 -> 8 -> 5.
+            // fit:true = content card. It keeps its natural layout, is scaled to fit and re-flowed to fill the
+            // slot exactly (no empty margins, border stays around the whole card). Image cards just stretch.
+            const specs = [
+                { sel: '.c1', fit: true }, { sel: '.c2' }, { sel: '.c3-wrapper', fit: true }, { sel: '.c4' },
+                { sel: '.c7' }, { sel: '.c9-wrapper', fit: true }, { sel: '.c8-wrapper', fit: true }, { sel: '.c5' }
+            ];
+            const ring = specs.map(sp => document.querySelector(sp.sel));
+            if (ring.some(el => !el)) return;
+            puzzleRunning = true;
+
+            // pick a random pattern (never the same one twice in a row)
+            let pi; do { pi = Math.floor(Math.random() * PUZZLE_PATTERNS.length); } while (pi === lastPuzzle);
+            lastPuzzle = pi;
+            const pat = PUZZLE_PATTERNS[pi];
+            const ease = EASE[pat.ease];
+            const slideMs = Math.round(pat.ms * 0.82);
+
+            const cRect = container.getBoundingClientRect();
+            const slots = ring.map(el => {
+                const r = el.getBoundingClientRect();
+                return { left: r.left - cRect.left, top: r.top - cRect.top, width: r.width, height: r.height };
+            });
+
+            const layer = document.createElement('div');
+            layer.className = 'puz-layer';
+            const tiles = ring.map((el, i) => {
+                const tile = document.createElement('div');
+                tile.className = 'puz-tile' + (specs[i].fit ? ' puz-fit' : '');
+                const clone = el.cloneNode(true);
+                // keep anything that is hidden on the real card hidden on the copy (e.g. the inactive Educator/Practitioner panel),
+                // because the id-based CSS rules are lost once ids are stripped below
+                const srcNodes = el.querySelectorAll('*'), cloneNodes = clone.querySelectorAll('*');
+                srcNodes.forEach((n, k) => { if (getComputedStyle(n).display === 'none') cloneNodes[k].style.display = 'none'; });
+                clone.removeAttribute('id'); clone.removeAttribute('onclick');
+                clone.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+                clone.querySelectorAll('[onclick]').forEach(n => n.removeAttribute('onclick'));
+                tile.appendChild(clone);
+                layer.appendChild(tile);
+                return tile;
+            });
+
+            const lerp = (a, b, e) => a + (b - a) * e;
+            const lerpRect = (a, b, e) => ({ left: lerp(a.left, b.left, e), top: lerp(a.top, b.top, e), width: lerp(a.width, b.width, e), height: lerp(a.height, b.height, e) });
+            function place(i, r) {
+                const tile = tiles[i];
+                tile.style.left = r.left + 'px'; tile.style.top = r.top + 'px';
+                tile.style.width = r.width + 'px'; tile.style.height = r.height + 'px';
+                if (specs[i].fit) {
+                    const nat = slots[i];
+                    const sc = Math.min(r.width / nat.width, r.height / nat.height);
+                    const c = tile.firstChild;
+                    c.style.width = (r.width / sc) + 'px';     // re-flow so the card fills the box exactly
+                    c.style.height = (r.height / sc) + 'px';
+                    c.style.transform = 'scale(' + sc + ')';
+                }
+            }
+            tiles.forEach((_, i) => place(i, slots[i]));        // exact same place as the real cards
+            container.appendChild(layer);
+            ring.forEach(el => el.classList.add('puz-hide'));
+            center.style.animationDuration = Math.round(pat.ms * 0.95) + 'ms';
+            center.classList.add('puz-center');
+
+            const mod = n => ((n % RING) + RING) % RING;
+            let step = 0, pos = 0, rafId = 0, timer = 0;
+            function finish() {
+                cancelAnimationFrame(rafId); clearTimeout(timer);
+                layer.remove();
+                ring.forEach(el => el.classList.remove('puz-hide'));
+                center.classList.remove('puz-center');
+                center.style.animationDuration = '';
+                puzzleRunning = false;
+                window.removeEventListener('resize', finish);
+            }
+            window.addEventListener('resize', finish);   // layout changed mid-animation: bail out cleanly
+
+            function nextStep() {
+                const from = tiles.map((_, i) => mod(i + pos));
+                pos += pat.seq[step]; step++;
+                const to = tiles.map((_, i) => mod(i + pos));
+                const t0 = performance.now();
+                (function frame(now) {
+                    const t = Math.min((now - t0) / slideMs, 1), e = ease(t);
+                    tiles.forEach((_, i) => place(i, lerpRect(slots[from[i]], slots[to[i]], e)));
+                    if (t < 1) { rafId = requestAnimationFrame(frame); return; }
+                    if (step < pat.seq.length) timer = setTimeout(nextStep, pat.ms - slideMs);
+                    else timer = setTimeout(finish, 150);
+                })(t0);
+            }
+            timer = setTimeout(nextStep, 200);
+        }
+
+        // ==========================================
+        // 13. V2: CARDS ASSEMBLE ON PAGE LOAD
+        // ==========================================
+        let introRunning = false;
+        (function assembleCards() {
+            const root = document.documentElement;
+            if (prefersReducedMotion || !root.classList.contains('intro-hide')) return;
+            introRunning = true;
+            const q = s => document.querySelector(s);
+            // card 6 first (the centre of the ring), then clockwise: 1 2 3 4 7 9 8 5
+            const order = [q('.c6'), q('.c1'), q('.c2'), q('.c3-wrapper'), q('.c4'), q('.c7'), q('.c9-wrapper'), q('.c8-wrapper'), q('.c5')];
+            const mobile = window.matchMedia('(max-width: 768px)').matches;
+            const cEl = order[0].getBoundingClientRect();
+            const cx = cEl.left + cEl.width / 2, cy = cEl.top + cEl.height / 2;
+            const anims = [];
+            order.forEach((el, i) => {
+                if (!el) return;
+                const r = el.getBoundingClientRect();
+                let dx = 0, dy = 0;
+                if (mobile) { dy = 40; }
+                else if (i > 0) { dx = (cx - (r.left + r.width / 2)) * 0.55; dy = (cy - (r.top + r.height / 2)) * 0.55; }
+                else { dy = 14; }
+                const rot = i === 0 ? 0 : (i % 2 ? -7 : 7);
+                const from = { opacity: 0, transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + (i === 0 ? 0.85 : 0.55) + ') rotate(' + rot + 'deg)' };
+                const to = { opacity: 1, transform: 'none' };
+                anims.push(el.animate([from, to], {
+                    duration: 750, delay: i === 0 ? 0 : 200 + (i - 1) * 110,
+                    easing: 'cubic-bezier(0.34, 1.4, 0.64, 1)', fill: 'both'
+                }));
+            });
+            const total = 200 + 7 * 110 + 750;
+            setTimeout(() => {
+                root.classList.remove('intro-hide');
+                anims.forEach(a => a.cancel());
+                introRunning = false;
+            }, total + 50);
+        })();
+
+        // ==========================================
+        // 14. V2: CIRCULAR THEME WIPE (View Transitions API)
+        // ==========================================
+        function applyThemeVars(toGreen) {
+            const root = document.documentElement;
+            if (toGreen) { root.style.setProperty('--theme-color', '#228B22'); root.style.setProperty('--theme-light', '#E8F5E9'); }
+            else { root.style.setProperty('--theme-color', '#FF8C00'); root.style.setProperty('--theme-light', '#FFF4E6'); }
+            isOrangeTheme = !toGreen;
+        }
+        function swapImagesInstantly(toGreen) {
+            const jobs = [];
+            Object.keys(imageConfig).forEach(k => {
+                const img = document.getElementById('img-' + k);
+                if (!img) return;
+                img.src = toGreen ? imageConfig[k].green : imageConfig[k].orange;
+                img.style.opacity = 1;
+                jobs.push(img.decode().catch(() => {}));
+            });
+            // never let a slow image hold the whole page: give up waiting after 1.2s
+            return Promise.race([Promise.all(jobs), new Promise(r => setTimeout(r, 1200))]);
+        }
+        function toggleTheme(e) {
+            const root = document.documentElement;
+            if (!document.startViewTransition || prefersReducedMotion || puzzleRunning) { toggleThemeLegacy(); return; }
+            const toGreen = isOrangeTheme;
+            const x = e && e.clientX != null ? e.clientX : window.innerWidth / 2;
+            const y = e && e.clientY != null ? e.clientY : window.innerHeight / 2;
+            const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+            root.classList.add('vt-no-anim');   // colours must change instantly inside the snapshot
+            const vt = document.startViewTransition(async () => { applyThemeVars(toGreen); await swapImagesInstantly(toGreen); });
+            vt.ready.then(() => {
+                root.animate(
+                    { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)'] },
+                    { duration: 900, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', pseudoElement: '::view-transition-new(root)' }
+                );
+            }).catch(() => {});
+            vt.finished.finally(() => root.classList.remove('vt-no-anim'));
+        }
+        // warm the cache so the alternate-theme images are ready when the wipe starts
+        setTimeout(() => Object.values(imageConfig).forEach(c => { new Image().src = c.green; }), 2500);
+
+        // ==========================================
+        // 15. V2: LIVE TRAFFIC NUMBERS + SPARKLINE (GoatCounter, last 14 days)
+        // ==========================================
+        function tweenNumber(el, raw, duration = 1200) {
+            const n = parseInt(String(raw).replace(/[^\d]/g, ''), 10);
+            if (!el || isNaN(n)) { if (el) el.innerText = raw; return; }
+            if (prefersReducedMotion) { el.innerText = n.toLocaleString('en-US'); return; }
+            const t0 = performance.now();
+            (function tick(now) {
+                const t = Math.min((now - t0) / duration, 1);
+                el.innerText = Math.round(n * (1 - Math.pow(1 - t, 3))).toLocaleString('en-US');
+                if (t < 1) requestAnimationFrame(tick);
+            })(t0);
+        }
+
+        function drawSparkline(vals) {
+            const svg = document.getElementById('spark');
+            if (!svg || vals.length < 2) return;
+            const W = 84, H = 22, pad = 3, max = Math.max(...vals, 1);
+            const pts = vals.map((v, i) => [pad + i * (W - 2 * pad) / (vals.length - 1), H - pad - (v / max) * (H - 2 * pad)]);
+            const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+            const area = d + ' L' + pts[pts.length - 1][0].toFixed(1) + ' ' + H + ' L' + pts[0][0].toFixed(1) + ' ' + H + ' Z';
+            const last = pts[pts.length - 1];
+            svg.innerHTML =
+                '<defs><linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">' +
+                '<stop offset="0" style="stop-color:var(--theme-color);stop-opacity:.35"/>' +
+                '<stop offset="1" style="stop-color:var(--theme-color);stop-opacity:0"/></linearGradient></defs>' +
+                '<path class="spark-area" d="' + area + '" fill="url(#sparkGrad)"/>' +
+                '<path class="spark-line" d="' + d + '" pathLength="1"/>' +
+                '<circle class="spark-ring" cx="' + last[0] + '" cy="' + last[1] + '" r="2.2"/>' +
+                '<circle class="spark-dot" cx="' + last[0] + '" cy="' + last[1] + '" r="2.2"/>';
+            svg.classList.add('ready');
+            if (prefersReducedMotion) return;
+            const line = svg.querySelector('.spark-line'), areaEl = svg.querySelector('.spark-area'), dot = svg.querySelector('.spark-dot'), ring = svg.querySelector('.spark-ring');
+            line.style.strokeDasharray = 1;
+            const draw = line.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 1500, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)', fill: 'both' });
+            draw.onfinish = () => { line.style.strokeDashoffset = 0; draw.cancel(); };
+            areaEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 800, delay: 700, fill: 'backwards' });
+            dot.animate([{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 300, delay: 1400, fill: 'backwards' });
+            ring.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1500, fill: 'backwards' });
+        }
+
+        async function loadSparkline() {
+            const DAYS = 14, KEY = 'gcSpark14';
+            const pad2 = n => String(n).padStart(2, '0');
+            const ymd = d => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+            const today = new Date();
+            const starts = [];
+            for (let k = DAYS - 1; k >= 0; k--) { const d = new Date(today); d.setDate(d.getDate() - k); starts.push(ymd(d)); }
+            try {   // GoatCounter caches for 30 min anyway, so reuse a recent result instead of re-asking
+                const c = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+                if (c && c.day === starts[DAYS - 1] && Date.now() - c.t < 30 * 60 * 1000) { drawSparkline(c.vals); return; }
+            } catch (e) {}
+            try {
+                // "views since day X" for each of the last 14 days; subtracting neighbours gives views per day
+                const since = await Promise.all(starts.map(async day => {
+                    const r = await fetch('https://ro-ma-n-su.goatcounter.com/counter/TOTAL.json?start=' + day);
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    const n = parseInt(String((await r.json()).count).replace(/[^\d]/g, ''), 10);
+                    if (isNaN(n)) throw new Error('bad count');
+                    return n;
+                }));
+                const vals = since.map((v, i) => v - (i < DAYS - 1 ? since[i + 1] : 0));
+                if (vals.some(v => v < 0)) throw new Error('inconsistent data');
+                try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), day: starts[DAYS - 1], vals })); } catch (e) {}
+                drawSparkline(vals);
+            } catch (err) {
+                console.warn('Sparkline unavailable (card stays as before):', err);   // no data = no sparkline, never fake data
+            }
+        }
+        setTimeout(loadSparkline, 1200);
     </script>
 </body>
 </html>
