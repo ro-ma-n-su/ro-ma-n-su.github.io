@@ -33,7 +33,7 @@
             --overlay-color: rgba(20, 20, 20, 0.75);
             /* App Themes */
             --sql-color: #F05032; --sql-bg: #FAFAFA; --chat-roman: #E5E5E5;
-            --tableau-color: #1f447e; 
+            --tableau-color: #1f447e; --python-color: #306998; --python-yellow: #FFD43B; 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -487,6 +487,100 @@
             .tableau-carousel { height: 90px; gap: 10px; }
         }
         @media (min-width: 769px) { .mobile-only { display: none !important; } }
+
+        /* ==========================================
+           --- PYTHON APP (Toolkit -> Python) ---
+           ========================================== */
+        .modal-content-python {
+            background: var(--python-color);
+            width: 90%; height: 90%;
+            border-radius: 24px;
+            display: flex; flex-direction: row;
+            padding: 30px; gap: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            transform: scale(0.8);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal-content-python { transform: scale(1); }
+
+        .py-sidebar { width: 28%; background: white; border-radius: 16px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+        .py-intro { display: flex; flex-direction: column; align-items: flex-start; gap: 25px; }
+        .py-desc { font-size: 1.05rem; line-height: 1.6; color: #333; margin-top: 10px; }
+        .py-logo-sidebar { font-size: 4.5rem; align-self: center; color: var(--python-color); }
+        .py-header-mobile { display: none; }
+        .py-intro-mobile { display: none; }
+
+        .py-main { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; }
+        .py-stage { flex: 1; min-height: 0; background: #f0f4f8; border-radius: 16px; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; }
+
+        /* Projects list */
+        .py-projects { flex: 1; min-height: 0; padding: 30px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        .py-stage-title { font-size: 1.3rem; font-weight: 800; color: var(--text-dark); }
+        .py-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .py-card { background: #fff; border: 2px solid transparent; border-radius: 16px; padding: 24px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 10px; font-family: inherit; color: var(--text-dark); transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+        .py-card:hover { transform: translateY(-3px); border-color: var(--python-color); box-shadow: 0 10px 24px rgba(0,0,0,0.12); }
+        .py-card:focus-visible { outline: 3px solid var(--python-color); outline-offset: 2px; }
+        .py-card-icon { width: 46px; height: 46px; border-radius: 12px; background: var(--python-color); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+        .py-card-title { font-size: 1.15rem; font-weight: 800; }
+        .py-card-text { font-size: 0.92rem; line-height: 1.5; color: #555; }
+        .py-card-tag { align-self: flex-start; font-size: 0.72rem; font-weight: 700; color: var(--python-color); background: #e6eef6; border-radius: 20px; padding: 4px 10px; }
+        .py-card.soon { background: transparent; border: 2px dashed #b3bfcc; cursor: default; color: #8794a3; }
+        .py-card.soon:hover { transform: none; box-shadow: none; border-color: #b3bfcc; }
+        .py-card.soon .py-card-icon { background: #c9d2dc; }
+        .py-card.soon .py-card-text { color: #8794a3; }
+        .py-card.soon .py-card-tag { color: #9a5b2b; background: #f6e9dc; }
+
+        /* Project view */
+        .py-project { display: none; flex-direction: column; height: 100%; min-height: 0; }
+        .py-bar { display: flex; align-items: center; gap: 14px; padding: 14px 18px 0; background: #fff; flex-wrap: wrap; }
+        .py-bar-back { background: #f4f4f4; border: none; padding: 8px 14px; border-radius: 10px; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.85rem; color: var(--text-dark); display: flex; gap: 6px; align-items: center; }
+        .py-bar-back:hover { background: #e0e0e0; }
+        .py-bar-title { font-weight: 800; font-size: 1.05rem; color: var(--text-dark); }
+        .py-seg { margin-left: auto; display: flex; background: #eef1f5; border-radius: 10px; padding: 3px; }
+        .py-seg-btn { border: none; background: none; font-family: inherit; font-weight: 700; font-size: 0.85rem; color: #555; padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+        .py-seg-btn.active { background: var(--python-color); color: #fff; }
+        .py-tabs { width: 100%; display: flex; gap: 22px; margin-top: 8px; border-bottom: 1px solid #e3e8ee; }
+        .py-tab { border: none; background: none; font-family: inherit; font-weight: 700; font-size: 0.92rem; color: #7a8694; padding: 10px 2px; border-bottom: 3px solid transparent; margin-bottom: -1px; cursor: pointer; display: flex; gap: 8px; align-items: center; }
+        .py-tab:hover { color: var(--text-dark); }
+        .py-tab.active { color: var(--python-color); border-bottom-color: var(--python-yellow); }
+
+        .py-pane { display: none; flex: 1; min-height: 0; flex-direction: column; }
+        .py-pane.active { display: flex; }
+        .py-embed-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 18px; font-size: 0.8rem; color: #667383; background: #fff; border-bottom: 1px solid #e3e8ee; }
+        .py-embed-head a { color: var(--python-color); font-weight: 700; text-decoration: none; white-space: nowrap; }
+        .py-embed-head a:hover { text-decoration: underline; }
+        .py-frame { flex: 1; min-height: 0; width: 100%; border: none; background: #fff; }
+
+        .py-code-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 16px 18px 18px; gap: 12px; }
+        .py-code-note { font-size: 0.88rem; line-height: 1.5; color: #556; }
+        .py-stats { display: flex; flex-wrap: wrap; gap: 8px; }
+        .py-stat { font-family: 'Space Mono', monospace; font-size: 0.72rem; background: #fff; border: 1px solid #dde3ea; border-radius: 8px; padding: 5px 9px; color: #667383; }
+        .py-stat b { color: var(--text-dark); }
+        .py-code-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; background: #2d2d2d; border-radius: 12px; overflow: hidden; }
+        .py-code-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 10px; padding: 9px 14px; border-bottom: 1px solid #444; }
+        .py-code-file { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: #a3a6a3; min-width: 0; overflow-wrap: anywhere; }
+        .py-code-actions { display: flex; gap: 8px; }
+        .py-code-btn { font-family: inherit; font-size: 0.75rem; font-weight: 700; color: #d6e2e8; background: #3d3d3d; border: 1px solid #505050; border-radius: 8px; padding: 5px 11px; cursor: pointer; display: flex; gap: 6px; align-items: center; }
+        .py-code-btn:hover { background: #4a4a4a; }
+        .py-code-scroll { flex: 1; min-height: 0; overflow: auto; padding: 14px 18px; }
+        .py-code-scroll pre, .py-code-scroll pre[class*="language-"] { margin: 0; padding: 0; background: transparent; overflow: visible; }
+        .py-code-scroll code, .py-code-scroll code[class*="language-"] { font-family: 'Space Mono', monospace; font-size: 0.76rem; line-height: 1.6; color: #d6e2e8; text-shadow: none; white-space: pre; tab-size: 4; }
+
+        @media (max-width: 768px) {
+            .modal-content-python { flex-direction: column; width: 95%; height: 95%; padding: 15px; gap: 15px; }
+            .py-sidebar { display: none; }
+            .py-header-mobile { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: white; border-radius: 12px; }
+            .py-header-mobile i.fa-python { font-size: 1.9rem; color: var(--python-color); }
+            .py-main { width: 100%; height: auto; flex: 1; min-height: 0; }
+            .py-stage { border-radius: 12px; }
+            .py-projects { padding: 18px; }
+            .py-intro-mobile { display: block; font-size: 0.95rem; line-height: 1.5; color: #333; }
+            .py-card-grid { grid-template-columns: 1fr; }
+            .py-bar { padding: 12px 12px 0; gap: 10px; }
+            .py-seg { margin-left: 0; width: 100%; }
+            .py-seg-btn { flex: 1; }
+            .py-code-wrap { padding: 12px; }
+        }
     </style>
     <script>
         /* Hides the cards just until the assemble animation takes over (skipped for reduced motion; auto-released after 4s as a safety net) */
@@ -641,7 +735,7 @@
             <div class="modal-title">My Data Toolkit</div>
             <div class="icon-grid">
                 <div class="app-icon" onclick="startSQLApp()"><div class="app-box bg-toolkit" style="background: #F05032;"><i class="fa-solid fa-database"></i></div><span class="app-name">SQL</span></div>
-                <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-brands fa-python"></i></div><span class="app-name">Python</span></div>
+                <div class="app-icon" onclick="openPythonApp()"><div class="app-box bg-toolkit" style="background: var(--python-color);"><i class="fa-brands fa-python"></i></div><span class="app-name">Python</span></div>
                 <div class="app-icon" style="cursor: default;"><div class="app-box bg-toolkit"><i class="fa-solid fa-gears"></i></div><span class="app-name">KNIME</span></div>
                 
                 <div class="app-icon" onclick="openTableauApp()">
@@ -798,6 +892,890 @@
         </div>
     </div>
 
+
+    <div id="app-overlay-python" class="modal-overlay" onclick="pyOverlayClick(event)">
+        <div class="modal-content-python" onclick="event.stopPropagation()">
+
+            <div class="py-header-mobile">
+                <button class="btn-sql-back" onclick="closePythonApp()" aria-label="Back to toolkit"><i class="fa-solid fa-arrow-left"></i></button>
+                <i class="fa-brands fa-python"></i>
+                <div style="width: 30px;"></div>
+            </div>
+
+            <div class="py-sidebar">
+                <div class="py-intro">
+                    <button class="desktop-back" onclick="closePythonApp()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                    <p class="py-desc">I use Python mainly for data science: cleaning data, building models, and automation. My learning journey started in 2019 when I took an external course at university, followed by online platforms like DataCamp and HackerRank.<br><br>In today's AI-driven era, learning, deploying, and testing Python code has become even faster and more accessible, significantly accelerating development and problem-solving.</p>
+                </div>
+                <i class="fa-brands fa-python py-logo-sidebar"></i>
+            </div>
+
+            <div class="py-main">
+                <div class="py-stage">
+
+                    <!-- Projects list -->
+                    <div id="py-view-projects" class="py-projects">
+                        <p class="py-intro-mobile">I use Python mainly for data science: cleaning data, building models, and automation. My learning journey started in 2019 when I took an external course at university, followed by online platforms like DataCamp and HackerRank.<br><br>In today's AI-driven era, learning, deploying, and testing Python code has become even faster and more accessible, significantly accelerating development and problem-solving.</p>
+                        <div class="py-stage-title">Projects</div>
+                        <div class="py-card-grid">
+                            <button class="py-card" onclick="pyOpenProject()">
+                                <div class="py-card-icon"><i class="fa-solid fa-car-side"></i></div>
+                                <span class="py-card-tag">2 datasets</span>
+                                <div class="py-card-title">Car Price Predictor</div>
+                                <div class="py-card-text">Predicting used-car prices from real listings. Same pipeline, two markets: Ford (UK) and Indonesia.</div>
+                            </button>
+                            <div class="py-card soon" aria-disabled="true">
+                                <div class="py-card-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                                <span class="py-card-tag">Coming soon</span>
+                                <div class="py-card-title">Next project</div>
+                                <div class="py-card-text">Another data science project, in progress.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Car Price Predictor -->
+                    <div id="py-view-project" class="py-project">
+                        <div class="py-bar">
+                            <button class="py-bar-back" onclick="pyShowProjects()"><i class="fa-solid fa-arrow-left"></i> Projects</button>
+                            <span class="py-bar-title">Car Price Predictor</span>
+                            <div class="py-seg" role="group" aria-label="Dataset">
+                                <button class="py-seg-btn active" id="py-seg-ford" onclick="pySetMarket('ford')">Ford (UK)</button>
+                                <button class="py-seg-btn" id="py-seg-indonesia" onclick="pySetMarket('indonesia')">Indonesia</button>
+                            </div>
+                            <div class="py-tabs">
+                                <button class="py-tab active" id="py-tab-estimator" onclick="pySetTab('estimator')"><i class="fa-solid fa-sliders"></i> Estimator</button>
+                                <button class="py-tab" id="py-tab-code" onclick="pySetTab('code')"><i class="fa-solid fa-code"></i> Python code</button>
+                            </div>
+                        </div>
+
+                        <div id="py-pane-estimator" class="py-pane active">
+                            <div class="py-embed-head">
+                                <span>Live in your browser. The trained model runs inside the page; nothing is sent to a server.</span>
+                                <a id="py-embed-open" href="#" target="_blank" rel="noopener">Open full size <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            </div>
+                            <iframe id="py-frame" class="py-frame" title="Car price estimator"></iframe>
+                        </div>
+
+                        <div id="py-pane-code" class="py-pane">
+                            <div class="py-code-wrap">
+                                <p class="py-code-note" id="py-code-note"></p>
+                                <div class="py-stats" id="py-stats"></div>
+                                <div class="py-code-panel">
+                                    <div class="py-code-head">
+                                        <span class="py-code-file" id="py-code-file"></span>
+                                        <div class="py-code-actions">
+                                            <button class="py-code-btn" onclick="pyCopyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                                            <button class="py-code-btn" onclick="pyDownloadCode()"><i class="fa-solid fa-download"></i> Download</button>
+                                        </div>
+                                    </div>
+                                    <div class="py-code-scroll" id="py-code-scroll"><pre><code id="py-code" class="language-python"></code></pre></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Python source shown in the code viewer (inert text, not executed) -->
+    <script type="text/plain" id="py-src-ford">"""
+================================================================================
+ FORD USED CAR PRICE PREDICTION - END TO END MACHINE LEARNING PIPELINE
+================================================================================
+Author : Data Science analysis
+Input  : ford.csv  (17,966 rows x 9 columns - scraped UK used-car listings)
+Output :
+    - ford_clean.csv              cleaned dataset
+    - model_comparison.csv        metrics for every candidate model
+    - feature_importance.png      feature importance bar chart
+    - actual_vs_predicted.png     diagnostic scatter plot
+    - residuals.png               diagnostic residual plot
+    - ford_price_model.joblib     final sklearn pipeline (for reuse in Python)
+    - ford_price_model.json       final model exported to plain JSON
+                                   (trees + metadata) so it can be run
+                                   client-side in the companion HTML page,
+                                   with no server / Python runtime required
+    - viz_data.json               small aggregated tables used by the HTML
+                                   dashboard's charts
+
+Approach
+--------
+This is a *tabular regression* problem. Because the deployed prediction tool
+(point 2 of the brief) must run as a static HTML page with no backend, the
+final model is deliberately a compact Gradient Boosting ensemble: highly
+accurate on tabular data, and small enough (150 trees, depth 6) to serialize
+its splits as JSON and re-implement the (very simple) tree-traversal logic in
+~30 lines of vanilla JavaScript. This keeps the deployed model IDENTICAL to
+the one evaluated below (no separate "demo" approximation).
+================================================================================
+"""
+
+import json
+import numpy as np
+import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, cross_val_score
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    GradientBoostingRegressor,
+    HistGradientBoostingRegressor,
+)
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+import joblib
+
+RANDOM_STATE = 42
+
+# ==============================================================================
+# 1. LOAD DATA
+# ==============================================================================
+df = pd.read_csv("ford.csv")
+print(f"Raw data shape: {df.shape}")
+
+# ==============================================================================
+# 2. DATA CLEANING
+# ==============================================================================
+# 2a. Strip stray leading/trailing whitespace from the 'model' text column
+#     (e.g. " Fiesta" -> "Fiesta") - present in the raw CSV.
+df["model"] = df["model"].str.strip()
+
+# 2b. Drop exact duplicate rows (154 found) - repeated listings scraped twice.
+n_before = len(df)
+df = df.drop_duplicates()
+print(f"Dropped {n_before - len(df)} duplicate rows")
+
+# 2c. Drop rows with an impossible registration year. The data is a listings
+#     snapshot from 2020, so a year of 2060 is a typo/data-entry error, not a
+#     real future-dated car.
+n_before = len(df)
+df = df[df["year"] <= 2020]
+print(f"Dropped {n_before - len(df)} rows with invalid year (> 2020)")
+
+# 2d. Drop rows with engineSize == 0. These are NOT electric vehicles (their
+#     fuelType is Petrol/Diesel/Hybrid, and the genuine 'Electric'-labelled
+#     rows in this data have a normal engineSize, since they are actually
+#     plug-in hybrids) - engineSize == 0 is a data-entry gap, not a real
+#     value. Only ~0.3% of rows are affected.
+n_before = len(df)
+df = df[df["engineSize"] > 0]
+print(f"Dropped {n_before - len(df)} rows with engineSize == 0")
+
+# 2e. No missing values were present in any column (verified separately with
+#     df.isnull().sum()), so no imputation is required.
+
+print(f"Cleaned data shape: {df.shape}")
+
+# ==============================================================================
+# 3. FEATURE ENGINEERING
+# ==============================================================================
+# A handful of models appear fewer than 20 times (Fusion, Streetka, Ranger,
+# Escort, Transit Tourneo). With so few examples, one-hot columns for them are
+# almost pure noise and can destabilise both training and the train/test
+# split. They are grouped into a single 'Other' bucket.
+model_counts = df["model"].value_counts()
+rare_models = model_counts[model_counts < 20].index.tolist()
+print(f"Grouping rare models into 'Other': {rare_models}")
+df["model_grp"] = df["model"].where(~df["model"].isin(rare_models), "Other")
+
+df.to_csv("ford_clean.csv", index=False)
+
+# ==============================================================================
+# 4. EXPLORATORY SUMMARY (kept brief - full EDA was done interactively)
+# ==============================================================================
+print("\n--- Price by fuel type (mean) ---")
+print(df.groupby("fuelType")["price"].mean().round(0).sort_values(ascending=False))
+print("\n--- Correlation of numeric features with price ---")
+print(df[["year", "mileage", "tax", "mpg", "engineSize", "price"]].corr()["price"].round(3))
+
+# ==============================================================================
+# 5. TRAIN / TEST SPLIT
+# ==============================================================================
+NUM_FEATURES = ["year", "mileage", "tax", "mpg", "engineSize"]
+CAT_FEATURES = ["model_grp", "transmission", "fuelType"]
+
+X = df[NUM_FEATURES + CAT_FEATURES]
+y = df["price"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=RANDOM_STATE
+)
+print(f"\nTrain size: {X_train.shape[0]}   Test size: {X_test.shape[0]}")
+
+# ==============================================================================
+# 6. PREPROCESSING PIPELINES
+# ==============================================================================
+# Linear models need scaled numeric features; tree models don't.
+preprocess_linear = ColumnTransformer([
+    ("num", StandardScaler(), NUM_FEATURES),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), CAT_FEATURES),
+])
+
+preprocess_tree = ColumnTransformer([
+    ("num", "passthrough", NUM_FEATURES),
+    ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), CAT_FEATURES),
+])
+
+# ==============================================================================
+# 7. BASELINE MODEL COMPARISON
+# ==============================================================================
+candidates = {
+    "LinearRegression": Pipeline([("prep", preprocess_linear), ("model", LinearRegression())]),
+    "Ridge": Pipeline([("prep", preprocess_linear), ("model", Ridge(alpha=1.0))]),
+    "RandomForest": Pipeline([("prep", preprocess_tree),
+                               ("model", RandomForestRegressor(n_estimators=200, random_state=RANDOM_STATE, n_jobs=-1))]),
+    "GradientBoosting (default)": Pipeline([("prep", preprocess_tree),
+                                             ("model", GradientBoostingRegressor(random_state=RANDOM_STATE))]),
+    "HistGradientBoosting": Pipeline([("prep", preprocess_tree),
+                                       ("model", HistGradientBoostingRegressor(random_state=RANDOM_STATE))]),
+}
+
+def evaluate(pipe, X_tr, y_tr, X_te, y_te, cv=5):
+    pipe.fit(X_tr, y_tr)
+    pred = pipe.predict(X_te)
+    r2 = r2_score(y_te, pred)
+    mae = mean_absolute_error(y_te, pred)
+    rmse = np.sqrt(mean_squared_error(y_te, pred))
+    mape = np.mean(np.abs((y_te - pred) / y_te)) * 100
+    cv_scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring="r2", n_jobs=-1)
+    return dict(R2=r2, MAE=mae, RMSE=rmse, MAPE=mape,
+                CV_R2_mean=cv_scores.mean(), CV_R2_std=cv_scores.std())
+
+print("\n=== BASELINE MODEL COMPARISON ===")
+comparison_rows = []
+for name, pipe in candidates.items():
+    metrics = evaluate(pipe, X_train, y_train, X_test, y_test)
+    comparison_rows.append({"model": name, **metrics})
+    print(f"{name:28s} R2={metrics['R2']:.4f}  MAE={metrics['MAE']:8.2f}  "
+          f"RMSE={metrics['RMSE']:8.2f}  MAPE={metrics['MAPE']:5.2f}%  "
+          f"CV_R2={metrics['CV_R2_mean']:.4f}+-{metrics['CV_R2_std']:.4f}")
+
+# ==============================================================================
+# 8. HYPERPARAMETER TUNING (winner: Gradient Boosting)
+# ==============================================================================
+# GradientBoostingRegressor was chosen for tuning because it matched
+# RandomForest/HistGradientBoosting on accuracy while producing FAR fewer
+# total tree nodes for the same/better performance - critical since the final
+# model must be exported and traversed in JavaScript in the browser.
+print("\n=== HYPERPARAMETER SEARCH (GradientBoostingRegressor) ===")
+tune_pipe = Pipeline([("prep", preprocess_tree), ("model", GradientBoostingRegressor(random_state=RANDOM_STATE))])
+
+param_dist = {
+    "model__n_estimators": [100, 150, 200],
+    "model__max_depth": [3, 4, 5, 6],
+    "model__learning_rate": [0.05, 0.1, 0.15],
+    "model__subsample": [0.7, 0.8, 1.0],
+}
+search = RandomizedSearchCV(
+    tune_pipe, param_dist, n_iter=15, cv=3, scoring="r2",
+    random_state=RANDOM_STATE, n_jobs=-1, verbose=1,
+)
+search.fit(X_train, y_train)
+print("Best params:", search.best_params_)
+print("Best CV R2 :", search.best_score_)
+
+final_pipe = search.best_estimator_
+
+# ==============================================================================
+# 9. FINAL MODEL EVALUATION (held-out test set)
+# ==============================================================================
+y_pred = final_pipe.predict(X_test)
+final_r2 = r2_score(y_test, y_pred)
+final_mae = mean_absolute_error(y_test, y_pred)
+final_rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+final_mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
+final_cv = cross_val_score(final_pipe, X_train, y_train, cv=5, scoring="r2", n_jobs=-1)
+
+comparison_rows.append({
+    "model": "GradientBoosting (tuned, FINAL)",
+    "R2": final_r2, "MAE": final_mae, "RMSE": final_rmse, "MAPE": final_mape,
+    "CV_R2_mean": final_cv.mean(), "CV_R2_std": final_cv.std(),
+})
+comparison_df = pd.DataFrame(comparison_rows).sort_values("R2", ascending=False)
+comparison_df.to_csv("model_comparison.csv", index=False)
+
+print("\n=== FINAL MODEL PERFORMANCE (held-out 20% test set) ===")
+print(f"R2   : {final_r2:.4f}   (explains {final_r2*100:.1f}% of price variance)")
+print(f"MAE  : £{final_mae:,.0f}   (average absolute prediction error)")
+print(f"RMSE : £{final_rmse:,.0f}")
+print(f"MAPE : {final_mape:.2f}%  (average % error)")
+print(f"5-fold CV R2: {final_cv.mean():.4f} +- {final_cv.std():.4f}  (stable across folds -> not overfit to one split)")
+
+print("\n=== FULL MODEL COMPARISON TABLE ===")
+print(comparison_df.to_string(index=False))
+
+# ==============================================================================
+# 10. FEATURE IMPORTANCE
+# ==============================================================================
+gbm_model = final_pipe.named_steps["model"]
+feat_names = final_pipe.named_steps["prep"].get_feature_names_out()
+importances = pd.Series(gbm_model.feature_importances_, index=feat_names).sort_values(ascending=False)
+
+print("\n=== TOP 10 FEATURE IMPORTANCES ===")
+print(importances.head(10))
+
+plt.figure(figsize=(9, 6))
+importances.head(15).iloc[::-1].plot(kind="barh", color="#1a5fb4")
+plt.title("Feature Importance - Gradient Boosting Price Model")
+plt.xlabel("Importance")
+plt.tight_layout()
+plt.savefig("feature_importance.png", dpi=130)
+plt.close()
+
+# ==============================================================================
+# 11. DIAGNOSTIC PLOTS
+# ==============================================================================
+plt.figure(figsize=(7, 7))
+plt.scatter(y_test, y_pred, alpha=0.25, s=12, color="#1a5fb4")
+lims = [0, max(y_test.max(), y_pred.max())]
+plt.plot(lims, lims, "r--", linewidth=1.5, label="Perfect prediction")
+plt.xlabel("Actual price (£)")
+plt.ylabel("Predicted price (£)")
+plt.title(f"Actual vs Predicted Price (R2={final_r2:.3f})")
+plt.legend()
+plt.tight_layout()
+plt.savefig("actual_vs_predicted.png", dpi=130)
+plt.close()
+
+residuals = y_test - y_pred
+plt.figure(figsize=(8, 5))
+plt.scatter(y_pred, residuals, alpha=0.25, s=12, color="#c64600")
+plt.axhline(0, color="black", linewidth=1)
+plt.xlabel("Predicted price (£)")
+plt.ylabel("Residual (actual - predicted)")
+plt.title("Residual Plot")
+plt.tight_layout()
+plt.savefig("residuals.png", dpi=130)
+plt.close()
+
+# ==============================================================================
+# 12. REFIT ON 100% OF CLEANED DATA FOR DEPLOYMENT
+# ==============================================================================
+# Standard practice: after honestly evaluating on a held-out test set (above),
+# retrain the same architecture/hyperparameters on ALL available data before
+# shipping, so the deployed tool benefits from every labelled example.
+deploy_pipe = Pipeline([("prep", preprocess_tree), ("model", GradientBoostingRegressor(**{
+    k.replace("model__", ""): v for k, v in search.best_params_.items()
+}, random_state=RANDOM_STATE))])
+deploy_pipe.fit(X, y)
+
+joblib.dump(deploy_pipe, "ford_price_model.joblib")
+print("\nSaved final production pipeline -> ford_price_model.joblib")
+
+# ==============================================================================
+# 13. EXPORT MODEL TO JSON (for the dependency-free HTML/JS prediction tool)
+# ==============================================================================
+def export_tree(tree):
+    """Convert an sklearn DecisionTreeRegressor's internal tree_ structure
+    into a compact list of nodes that a ~15-line JS function can traverse."""
+    t = tree.tree_
+    nodes = []
+    for i in range(t.node_count):
+        if t.children_left[i] == -1:  # leaf node
+            nodes.append({"leaf": True, "value": float(t.value[i][0][0])})
+        else:
+            nodes.append({
+                "leaf": False,
+                "f": int(t.feature[i]),          # feature index
+                "t": float(t.threshold[i]),      # split threshold
+                "l": int(t.children_left[i]),    # left child node index
+                "r": int(t.children_right[i]),   # right child node index
+            })
+    return nodes
+
+gbm = deploy_pipe.named_steps["model"]
+ohe = deploy_pipe.named_steps["prep"].named_transformers_["cat"]
+
+model_export = {
+    "feature_order": list(NUM_FEATURES) + [str(f) for f in ohe.get_feature_names_out(CAT_FEATURES)],
+    "numeric_features": NUM_FEATURES,
+    "categorical_features": CAT_FEATURES,
+    "categories": {feat: list(cats) for feat, cats in zip(CAT_FEATURES, ohe.categories_)},
+    "init_prediction": float(gbm.init_.constant_.ravel()[0]),
+    "learning_rate": float(gbm.learning_rate),
+    "trees": [export_tree(est[0]) for est in gbm.estimators_],
+    "metrics": {
+        "r2": round(final_r2, 4), "mae": round(final_mae, 2),
+        "rmse": round(final_rmse, 2), "mape": round(final_mape, 2),
+        "n_train": len(X), "n_test": len(X_test),
+    },
+    "feature_importance": importances.head(12).round(4).to_dict(),
+    # Maps every individual model name seen in the raw data (incl. the 5 rare
+    # ones grouped in training) to the model_grp bucket the model expects -
+    # lets the HTML dropdown list all real model names while predicting
+    # correctly against the grouped category.
+    "model_name_to_group": {
+        name: ("Other" if name in rare_models else name)
+        for name in sorted(df["model"].unique())
+    },
+}
+with open("ford_price_model.json", "w") as f:
+    json.dump(model_export, f)
+print(f"Saved JSON model export -> ford_price_model.json "
+      f"({sum(len(t) for t in model_export['trees'])} total tree nodes)")
+
+# ==============================================================================
+# 14. SMALL AGGREGATED TABLES FOR THE HTML DASHBOARD'S CHARTS
+# ==============================================================================
+viz_data = {
+    "avg_price_by_model": df.groupby("model_grp")["price"].mean().round(0)
+        .sort_values(ascending=False).to_dict(),
+    "avg_price_by_year": df.groupby("year")["price"].mean().round(0).to_dict(),
+    "model_options": sorted(df["model"].unique().tolist()),
+    # Typical (median) spec per model - used by the HTML form to pre-fill
+    # sensible defaults the moment a user picks a model, e.g. picking
+    # "Mustang" pre-fills a low mileage / big engine / poor mpg profile.
+    "model_defaults": df.groupby("model")[["year", "mileage", "tax", "mpg", "engineSize"]]
+        .median().round(1).to_dict(orient="index"),
+}
+
+# Average price per mileage band (bucketed, rather than all 17,760 raw
+# points) - keeps the dashboard payload tiny while still showing the
+# depreciation-by-mileage trend clearly.
+mileage_bins = [0, 5000, 10000, 20000, 30000, 50000, 75000, 100000, 200000]
+mileage_labels = ["0-5k", "5-10k", "10-20k", "20-30k", "30-50k", "50-75k", "75-100k", "100k+"]
+df["mileage_bucket"] = pd.cut(df["mileage"], bins=mileage_bins, labels=mileage_labels, right=False)
+viz_data["avg_price_by_mileage_bucket"] = {
+    "labels": mileage_labels,
+    "bucket_upper_bound": mileage_bins[1:],
+    "avg_price": df.groupby("mileage_bucket", observed=True)["price"].mean().round(0).reindex(mileage_labels).tolist(),
+}
+with open("viz_data.json", "w") as f:
+    json.dump(viz_data, f)
+print("Saved chart aggregates -> viz_data.json")
+
+# ==============================================================================
+# 15. EXAMPLE: LOAD THE SAVED PIPELINE AND PREDICT A NEW CAR
+# ==============================================================================
+loaded = joblib.load("ford_price_model.joblib")
+example = pd.DataFrame([{
+    "year": 2018, "mileage": 15000, "tax": 145, "mpg": 55.0, "engineSize": 1.0,
+    "model_grp": "Fiesta", "transmission": "Manual", "fuelType": "Petrol",
+}])
+print(f"\nExample prediction (2018 Fiesta, 15k miles): £{loaded.predict(example)[0]:,.0f}")
+
+print("\nDone.")
+</script>
+    <script type="text/plain" id="py-src-indonesia">"""
+================================================================================
+ INDONESIA USED CAR PRICE PREDICTION - END TO END MACHINE LEARNING PIPELINE
+================================================================================
+Input  : used_car.csv  (609 rows x 20 columns - used car listings scraped
+          from Indonesian marketplaces; source: Kaggle "Used Car Listings in
+          Indonesia" by indraputra21)
+Output :
+    - used_car_clean.csv           cleaned dataset
+    - model_comparison.csv         metrics for every candidate model
+    - feature_importance.png       feature importance bar chart
+    - actual_vs_predicted.png      diagnostic scatter plot
+    - residuals.png                diagnostic residual plot
+    - indo_price_model.joblib      final sklearn pipeline (for reuse in Python)
+    - indo_price_model.json        final model exported to plain JSON
+                                    (trees + metadata), same format used by
+                                    the companion HTML page, so it runs
+                                    fully client-side with no server needed
+    - viz_data.json                small aggregated tables for the HTML
+                                    dashboard's charts
+
+IMPORTANT CAVEAT vs. the Ford (UK) model
+-----------------------------------------
+This dataset has 609 rows, spread across 13 brands and ~60 models - about
+30x smaller than the 17,760-row Ford dataset. With this little data:
+  - Metrics have real variance across folds (see the 5-fold CV spread below);
+    a single held-out test score is somewhat optimistic vs the CV average.
+  - Rare brands/models are grouped into 'Other' more aggressively.
+  - Treat this model as a rough, illustrative estimator, not a precise
+    valuation tool the way the Ford model can be.
+
+Approach
+--------
+Same overall design as the Ford pipeline: a compact Gradient Boosting
+ensemble, small enough (150 trees, depth 3) to serialize as JSON and
+re-walk in plain JavaScript in the browser, so the deployed HTML tool uses
+the exact same trained model evaluated below - not a separate approximation.
+================================================================================
+"""
+
+import json
+import re
+import numpy as np
+import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, cross_val_score
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    GradientBoostingRegressor,
+    HistGradientBoostingRegressor,
+)
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+import joblib
+
+RANDOM_STATE = 42
+
+# ==============================================================================
+# 1. LOAD DATA
+# ==============================================================================
+df = pd.read_csv("used_car.csv")
+print(f"Raw data shape: {df.shape}")
+
+# ==============================================================================
+# 2. DATA CLEANING
+# ==============================================================================
+# 2a. Mileage is Indonesian-formatted with '.' as a thousands separator, and
+#     the exporting tool dropped trailing zeros (e.g. "42.32" really means
+#     42,320 km, not 42.32 km - a used car obviously doesn't have single-digit
+#     mileage). Pandas parses the raw string as a float, e.g. 42.32; the fix
+#     is multiplying back up by 1000 to recover the true kilometre value.
+df["mileage_km"] = (df["mileage (km)"] * 1000).round().astype(int)
+
+# 2b. 'car name' bundles model + trim + engine size in one free-text field,
+#     e.g. "KIJANG INNOVA REBORN G 2.0". Engine size is reliably the last
+#     token (always a decimal number), so it is extracted directly.
+df["engineSize"] = df["car name"].str.strip().str.extract(r"(\d+\.\d+)$").astype(float)
+
+# 2c. 'model' is taken as the first word of the name, except for a handful of
+#     two-word model families (e.g. "GRAND LIVINA", "KIJANG INNOVA",
+#     "PAJERO SPORT", "OUTLANDER SPORT") where the first word alone would
+#     wrongly merge two different models (e.g. "GRAND" collapsing both
+#     "Grand Livina" and unrelated "Grand ..." trims together).
+TWO_WORD_PREFIXES = {"GRAND", "KIJANG", "PAJERO", "OUTLANDER"}
+def extract_model(name):
+    parts = name.strip().split()
+    if parts[0] in TWO_WORD_PREFIXES and len(parts) > 1:
+        return parts[0] + " " + parts[1]
+    return parts[0]
+df["model"] = df["car name"].apply(extract_model)
+
+# 2d. 'instalment (Rp|Monthly)' correlates with price at 0.99999 - it is
+#     literally price / 49 (a fixed monthly financing formula), not an
+#     independent signal. Including it would leak the target, so it is
+#     dropped entirely, along with the now-redundant raw text/mileage columns.
+df = df.drop(columns=["instalment (Rp|Monthly)", "car name", "mileage (km)"])
+df = df.rename(columns={"price (Rp)": "price", "plate type": "plate_type"})
+
+# 2e. No missing values and no exact duplicate rows were found in this data
+#     (verified separately), so no imputation or de-duplication is needed.
+
+print(f"Cleaned data shape: {df.shape}")
+
+# ==============================================================================
+# 3. FEATURE ENGINEERING - group rare categories
+# ==============================================================================
+# With only 609 rows, brands/models seen fewer than 5 times give the model
+# almost nothing to learn from and fragment the one-hot encoding, so they are
+# grouped into 'Other'.
+brand_counts = df["brand"].value_counts()
+rare_brands = brand_counts[brand_counts < 5].index.tolist()
+print(f"Rare brands -> 'Other': {rare_brands}")
+df["brand_grp"] = df["brand"].where(~df["brand"].isin(rare_brands), "Other")
+
+model_counts = df["model"].value_counts()
+rare_models = model_counts[model_counts < 5].index.tolist()
+print(f"Rare models (<5 listings) grouped into 'Other': {len(rare_models)} models")
+df["model_grp"] = df["model"].where(~df["model"].isin(rare_models), "Other")
+
+df.to_csv("used_car_clean.csv", index=False)
+
+# ==============================================================================
+# 4. EXPLORATORY SUMMARY
+# ==============================================================================
+print("\n--- Mean price by brand ---")
+print(df.groupby("brand_grp")["price"].mean().round(0).sort_values(ascending=False))
+print("\n--- Correlation of numeric features with price ---")
+print(df[["year", "mileage_km", "engineSize", "price"]].corr()["price"].round(3))
+
+# ==============================================================================
+# 5. TRAIN / TEST SPLIT
+# ==============================================================================
+BINARY_FLAGS = [
+    "rear camera", "sun roof", "auto retract mirror", "electric parking brake",
+    "map navigator", "vehicle stability control", "keyless push start",
+    "sports mode", "360 camera view", "power sliding door", "auto cruise control",
+]
+NUM_FEATURES = ["year", "mileage_km", "engineSize"] + BINARY_FLAGS
+CAT_FEATURES = ["brand_grp", "model_grp", "transmission", "plate_type", "location"]
+
+X = df[NUM_FEATURES + CAT_FEATURES]
+y = df["price"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=RANDOM_STATE
+)
+print(f"\nTrain size: {X_train.shape[0]}   Test size: {X_test.shape[0]}")
+
+# ==============================================================================
+# 6. PREPROCESSING PIPELINES
+# ==============================================================================
+preprocess_linear = ColumnTransformer([
+    ("num", StandardScaler(), NUM_FEATURES),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), CAT_FEATURES),
+])
+preprocess_tree = ColumnTransformer([
+    ("num", "passthrough", NUM_FEATURES),
+    ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), CAT_FEATURES),
+])
+
+# ==============================================================================
+# 7. BASELINE MODEL COMPARISON
+# ==============================================================================
+candidates = {
+    "LinearRegression": Pipeline([("prep", preprocess_linear), ("model", LinearRegression())]),
+    "Ridge": Pipeline([("prep", preprocess_linear), ("model", Ridge(alpha=1.0))]),
+    "RandomForest": Pipeline([("prep", preprocess_tree),
+                               ("model", RandomForestRegressor(n_estimators=200, random_state=RANDOM_STATE, n_jobs=-1))]),
+    "GradientBoosting (default)": Pipeline([("prep", preprocess_tree),
+                                             ("model", GradientBoostingRegressor(random_state=RANDOM_STATE))]),
+    "HistGradientBoosting": Pipeline([("prep", preprocess_tree),
+                                       ("model", HistGradientBoostingRegressor(random_state=RANDOM_STATE))]),
+}
+
+def evaluate(pipe, X_tr, y_tr, X_te, y_te, cv=5):
+    pipe.fit(X_tr, y_tr)
+    pred = pipe.predict(X_te)
+    r2 = r2_score(y_te, pred)
+    mae = mean_absolute_error(y_te, pred)
+    rmse = np.sqrt(mean_squared_error(y_te, pred))
+    mape = np.mean(np.abs((y_te - pred) / y_te)) * 100
+    cv_scores = cross_val_score(pipe, X_tr, y_tr, cv=cv, scoring="r2", n_jobs=-1)
+    return dict(R2=r2, MAE=mae, RMSE=rmse, MAPE=mape,
+                CV_R2_mean=cv_scores.mean(), CV_R2_std=cv_scores.std())
+
+print("\n=== BASELINE MODEL COMPARISON ===")
+comparison_rows = []
+for name, pipe in candidates.items():
+    metrics = evaluate(pipe, X_train, y_train, X_test, y_test)
+    comparison_rows.append({"model": name, **metrics})
+    print(f"{name:28s} R2={metrics['R2']:.4f}  MAE={metrics['MAE']:14,.0f}  "
+          f"RMSE={metrics['RMSE']:14,.0f}  MAPE={metrics['MAPE']:5.2f}%  "
+          f"CV_R2={metrics['CV_R2_mean']:.4f}+-{metrics['CV_R2_std']:.4f}")
+
+# ==============================================================================
+# 8. HYPERPARAMETER TUNING (winner: Gradient Boosting)
+# ==============================================================================
+# Search space is intentionally smaller/shallower than the Ford model's -
+# with only ~487 training rows after the split, deep or numerous trees would
+# memorise the training set rather than generalise.
+print("\n=== HYPERPARAMETER SEARCH (GradientBoostingRegressor) ===")
+tune_pipe = Pipeline([("prep", preprocess_tree), ("model", GradientBoostingRegressor(random_state=RANDOM_STATE))])
+param_dist = {
+    "model__n_estimators": [50, 80, 100, 150],
+    "model__max_depth": [2, 3, 4, 5],
+    "model__learning_rate": [0.03, 0.05, 0.1],
+    "model__subsample": [0.7, 0.8, 1.0],
+    "model__min_samples_leaf": [1, 3, 5],
+}
+search = RandomizedSearchCV(
+    tune_pipe, param_dist, n_iter=25, cv=5, scoring="r2",
+    random_state=RANDOM_STATE, n_jobs=-1, verbose=1,
+)
+search.fit(X_train, y_train)
+print("Best params:", search.best_params_)
+print("Best CV R2 :", search.best_score_)
+
+final_pipe = search.best_estimator_
+
+# ==============================================================================
+# 9. FINAL MODEL EVALUATION (held-out test set + cross-validation)
+# ==============================================================================
+y_pred = final_pipe.predict(X_test)
+final_r2 = r2_score(y_test, y_pred)
+final_mae = mean_absolute_error(y_test, y_pred)
+final_rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+final_mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
+final_cv = cross_val_score(final_pipe, X_train, y_train, cv=5, scoring="r2", n_jobs=-1)
+
+comparison_rows.append({
+    "model": "GradientBoosting (tuned, FINAL)",
+    "R2": final_r2, "MAE": final_mae, "RMSE": final_rmse, "MAPE": final_mape,
+    "CV_R2_mean": final_cv.mean(), "CV_R2_std": final_cv.std(),
+})
+comparison_df = pd.DataFrame(comparison_rows).sort_values("R2", ascending=False)
+comparison_df.to_csv("model_comparison.csv", index=False)
+
+print("\n=== FINAL MODEL PERFORMANCE ===")
+print(f"Held-out test set  - R2: {final_r2:.4f}   MAE: Rp {final_mae:,.0f}   "
+      f"RMSE: Rp {final_rmse:,.0f}   MAPE: {final_mape:.2f}%")
+print(f"5-fold CV on training data - R2: {final_cv.mean():.4f} +- {final_cv.std():.4f}")
+print("NOTE: the CV average is the more honest estimate of real-world accuracy - "
+      "the single test-set score above can look better or worse than this just "
+      "from which 122 rows happened to land in the test split, given only 609 "
+      "rows total.")
+
+print("\n=== FULL MODEL COMPARISON TABLE ===")
+print(comparison_df.to_string(index=False))
+
+# ==============================================================================
+# 10. FEATURE IMPORTANCE
+# ==============================================================================
+gbm_model = final_pipe.named_steps["model"]
+feat_names = final_pipe.named_steps["prep"].get_feature_names_out()
+importances = pd.Series(gbm_model.feature_importances_, index=feat_names).sort_values(ascending=False)
+
+print("\n=== TOP 10 FEATURE IMPORTANCES ===")
+print(importances.head(10))
+
+plt.figure(figsize=(9, 6))
+importances.head(15).iloc[::-1].plot(kind="barh", color="#B6242D")
+plt.title("Feature Importance - Indonesia Used Car Price Model")
+plt.xlabel("Importance")
+plt.tight_layout()
+plt.savefig("feature_importance.png", dpi=130)
+plt.close()
+
+# ==============================================================================
+# 11. DIAGNOSTIC PLOTS
+# ==============================================================================
+plt.figure(figsize=(7, 7))
+plt.scatter(y_test, y_pred, alpha=0.4, s=20, color="#B6242D")
+lims = [0, max(y_test.max(), y_pred.max())]
+plt.plot(lims, lims, "b--", linewidth=1.5, label="Perfect prediction")
+plt.xlabel("Actual price (Rp)")
+plt.ylabel("Predicted price (Rp)")
+plt.title(f"Actual vs Predicted Price (R2={final_r2:.3f})")
+plt.legend()
+plt.tight_layout()
+plt.savefig("actual_vs_predicted.png", dpi=130)
+plt.close()
+
+residuals = y_test - y_pred
+plt.figure(figsize=(8, 5))
+plt.scatter(y_pred, residuals, alpha=0.4, s=20, color="#2A5C8A")
+plt.axhline(0, color="black", linewidth=1)
+plt.xlabel("Predicted price (Rp)")
+plt.ylabel("Residual (actual - predicted)")
+plt.title("Residual Plot")
+plt.tight_layout()
+plt.savefig("residuals.png", dpi=130)
+plt.close()
+
+# ==============================================================================
+# 12. REFIT ON 100% OF CLEANED DATA FOR DEPLOYMENT
+# ==============================================================================
+deploy_pipe = Pipeline([("prep", preprocess_tree), ("model", GradientBoostingRegressor(**{
+    k.replace("model__", ""): v for k, v in search.best_params_.items()
+}, random_state=RANDOM_STATE))])
+deploy_pipe.fit(X, y)
+
+joblib.dump(deploy_pipe, "indo_price_model.joblib")
+print("\nSaved final production pipeline -> indo_price_model.joblib")
+
+# ==============================================================================
+# 13. EXPORT MODEL TO JSON (for the dependency-free HTML/JS prediction tool)
+# ==============================================================================
+def export_tree(tree):
+    t = tree.tree_
+    nodes = []
+    for i in range(t.node_count):
+        if t.children_left[i] == -1:
+            nodes.append({"leaf": True, "value": float(t.value[i][0][0])})
+        else:
+            nodes.append({
+                "leaf": False,
+                "f": int(t.feature[i]),
+                "t": float(t.threshold[i]),
+                "l": int(t.children_left[i]),
+                "r": int(t.children_right[i]),
+            })
+    return nodes
+
+gbm = deploy_pipe.named_steps["model"]
+ohe = deploy_pipe.named_steps["prep"].named_transformers_["cat"]
+
+model_export = {
+    "feature_order": list(NUM_FEATURES) + [str(f) for f in ohe.get_feature_names_out(CAT_FEATURES)],
+    "numeric_features": NUM_FEATURES,
+    "binary_flags": BINARY_FLAGS,
+    "categorical_features": CAT_FEATURES,
+    "categories": {feat: list(cats) for feat, cats in zip(CAT_FEATURES, ohe.categories_)},
+    "init_prediction": float(gbm.init_.constant_.ravel()[0]),
+    "learning_rate": float(gbm.learning_rate),
+    "trees": [export_tree(est[0]) for est in gbm.estimators_],
+    "metrics": {
+        "r2_test": round(final_r2, 4), "mae": round(final_mae, 0),
+        "rmse": round(final_rmse, 0), "mape": round(final_mape, 2),
+        "cv_r2_mean": round(final_cv.mean(), 4), "cv_r2_std": round(final_cv.std(), 4),
+        "n_train": len(X), "n_test": len(X_test),
+    },
+    "feature_importance": importances.head(12).round(4).to_dict(),
+    "brand_name_to_group": {
+        name: ("Other" if name in rare_brands else name) for name in sorted(df["brand"].unique())
+    },
+    "model_name_to_group": {
+        name: ("Other" if name in rare_models else name) for name in sorted(df["model"].unique())
+    },
+    "brand_to_models": df.groupby("brand")["model"].unique().apply(lambda a: sorted(a.tolist())).to_dict(),
+}
+with open("indo_price_model.json", "w") as f:
+    json.dump(model_export, f)
+print(f"Saved JSON model export -> indo_price_model.json "
+      f"({sum(len(t) for t in model_export['trees'])} total tree nodes)")
+
+# ==============================================================================
+# 14. SMALL AGGREGATED TABLES FOR THE HTML DASHBOARD'S CHARTS
+# ==============================================================================
+viz_data = {
+    "avg_price_by_brand": df.groupby("brand_grp")["price"].mean().round(0)
+        .sort_values(ascending=False).to_dict(),
+    "avg_price_by_year": df.groupby("year")["price"].mean().round(0).to_dict(),
+    "brand_options": sorted(df["brand"].unique().tolist()),
+    "model_defaults": df.groupby("model")[["year", "mileage_km", "engineSize"]]
+        .median().round(1).to_dict(orient="index"),
+}
+mileage_bins = [0, 20000, 40000, 60000, 80000, 120000, 160000, 250000]
+mileage_labels = ["0-20k", "20-40k", "40-60k", "60-80k", "80-120k", "120-160k", "160k+"]
+df["mileage_bucket"] = pd.cut(df["mileage_km"], bins=mileage_bins, labels=mileage_labels, right=False)
+viz_data["avg_price_by_mileage_bucket"] = {
+    "labels": mileage_labels,
+    "bucket_upper_bound": mileage_bins[1:],
+    "avg_price": df.groupby("mileage_bucket", observed=True)["price"].mean().round(0).reindex(mileage_labels).tolist(),
+}
+
+# Engine size turned out to be the single strongest price driver for this
+# dataset (54% of feature importance) - bucketed on the natural breakpoints
+# in the data (1.0/1.2/1.3/1.4/1.5L are common fixed factory engine sizes).
+engine_bins = [0.9, 1.25, 1.45, 1.55, 2.05, 3.0]
+engine_labels = ["1.0-1.2L", "1.3-1.4L", "1.5L", "1.6-2.0L", "2.1L+"]
+df["engine_bucket"] = pd.cut(df["engineSize"], bins=engine_bins, labels=engine_labels)
+viz_data["avg_price_by_engine_bucket"] = {
+    "labels": engine_labels,
+    "bucket_upper_bound": engine_bins[1:],
+    "avg_price": df.groupby("engine_bucket", observed=True)["price"].mean().round(0).reindex(engine_labels).tolist(),
+}
+with open("viz_data.json", "w") as f:
+    json.dump(viz_data, f)
+print("Saved chart aggregates -> viz_data.json")
+
+# ==============================================================================
+# 15. EXAMPLE: LOAD THE SAVED PIPELINE AND PREDICT A NEW CAR
+# ==============================================================================
+loaded = joblib.load("indo_price_model.joblib")
+example = pd.DataFrame([{
+    "year": 2019, "mileage_km": 40000, "engineSize": 1.5,
+    "rear camera": 0, "sun roof": 0, "auto retract mirror": 1,
+    "electric parking brake": 0, "map navigator": 0, "vehicle stability control": 0,
+    "keyless push start": 0, "sports mode": 0, "360 camera view": 0,
+    "power sliding door": 0, "auto cruise control": 0,
+    "brand_grp": "Honda", "model_grp": "BRIO", "transmission": "Manual",
+    "plate_type": "odd plate", "location": "Bandung",
+}])
+print(f"\nExample prediction (2019 Honda Brio, 40k km): Rp {loaded.predict(example)[0]:,.0f}")
+
+print("\nDone.")
+</script>
 
     <div id="gachaModal" class="gacha-modal-overlay" style="display: none;" onclick="closeGachaOutside(event)">
         <div class="gacha-modal-content" onclick="event.stopPropagation()">
@@ -1296,6 +2274,128 @@
             });
         }
 
+
+        // ==========================================
+        // PYTHON APP (Toolkit -> Python)
+        // The estimator is one combined file holding both trained models;
+        // the #ford / #indonesia hash tells it which market to show.
+        // Change PY_MARKETS.*.estimator below if you store it elsewhere.
+        // ==========================================
+        const PY_MARKETS = {
+            ford: {
+                file: 'ford_price_prediction.py',
+                src: 'py-src-ford',
+                estimator: 'python/car-price-estimator.html#ford',
+                note: '17,760 UK Ford listings, cleaned, compared across five model types, then tuned.',
+                stats: [['R²', '0.932'], ['MAE', '£813'], ['MAPE', '6.9%'], ['Model', '150 trees, depth 6']]
+            },
+            indonesia: {
+                file: 'indo_price_prediction.py',
+                src: 'py-src-indonesia',
+                estimator: 'python/car-price-estimator.html#indonesia',
+                note: '609 Indonesian marketplace listings, about 30x less data than the UK set, so cross-validated R² is the honest metric here.',
+                stats: [['CV R²', '0.842 ± 0.059'], ['MAE', 'Rp 12.7M'], ['MAPE', '6.1%'], ['Model', '150 trees, depth 3']]
+            }
+        };
+        let pyMarket = 'ford', pyTab = 'estimator', pyLoadedSrc = '', pyPrismPromise = null;
+        const pyEl = id => document.getElementById(id);
+
+        function openPythonApp() {
+            closeModalDirect('modal-toolkit');
+            const app = pyEl('app-overlay-python');
+            app.style.display = 'flex';
+            setTimeout(() => app.classList.add('active'), 10);
+            pyShowProjects();
+        }
+        function pyHide(after) {
+            const app = pyEl('app-overlay-python');
+            app.classList.remove('active');
+            setTimeout(() => { app.style.display = 'none'; pyUnloadFrame(); if (after) after(); }, 300);
+        }
+        function closePythonApp() { pyHide(() => openModal('modal-toolkit')); }
+        function pyOverlayClick(e) { if (e.target.id === 'app-overlay-python') pyHide(); }
+
+        function pyUnloadFrame() {
+            if (pyLoadedSrc) { pyEl('py-frame').src = 'about:blank'; pyLoadedSrc = ''; }
+        }
+        function pyShowProjects() {
+            pyUnloadFrame();
+            pyEl('py-view-project').style.display = 'none';
+            pyEl('py-view-projects').style.display = 'flex';
+        }
+        function pyOpenProject() {
+            pyEl('py-view-projects').style.display = 'none';
+            pyEl('py-view-project').style.display = 'flex';
+            pyRender();
+        }
+        function pySetMarket(m) { pyMarket = m; pyRender(); }
+        function pySetTab(t) { pyTab = t; pyRender(); }
+
+        function pyRender() {
+            const m = PY_MARKETS[pyMarket];
+            ['ford', 'indonesia'].forEach(k => pyEl('py-seg-' + k).classList.toggle('active', k === pyMarket));
+            ['estimator', 'code'].forEach(k => {
+                pyEl('py-tab-' + k).classList.toggle('active', k === pyTab);
+                pyEl('py-pane-' + k).classList.toggle('active', k === pyTab);
+            });
+            if (pyTab === 'estimator') {
+                pyEl('py-embed-open').href = m.estimator;
+                if (pyLoadedSrc !== m.estimator) { pyEl('py-frame').src = m.estimator; pyLoadedSrc = m.estimator; }
+            } else {
+                pyUnloadFrame();
+                pyRenderCode(m);
+            }
+        }
+
+        function pyRenderCode(m) {
+            pyEl('py-code-file').textContent = m.file;
+            pyEl('py-code-note').textContent = m.note;
+            pyEl('py-stats').innerHTML = m.stats.map(s => '<span class="py-stat">' + s[0] + ' <b>' + s[1] + '</b></span>').join('');
+            const code = pyEl('py-code');
+            code.className = 'language-python';
+            code.textContent = pyEl(m.src).textContent;
+            pyEl('py-code-scroll').scrollTop = 0;
+            // Syntax colours are a nice-to-have: the code stays readable if Prism fails to load.
+            pyLoadPrism().then(() => { try { Prism.highlightElement(code); } catch (e) {} }).catch(() => {});
+        }
+
+        // Prism is loaded on first use so it doesn't slow down the main page.
+        function pyLoadPrism() {
+            if (pyPrismPromise) return pyPrismPromise;
+            window.Prism = window.Prism || {};
+            window.Prism.manual = true;
+            const base = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/';
+            const css = document.createElement('link');
+            css.rel = 'stylesheet'; css.href = base + 'themes/prism-tomorrow.min.css';
+            document.head.appendChild(css);
+            const load = src => new Promise((res, rej) => {
+                const s = document.createElement('script');
+                s.src = src; s.onload = res; s.onerror = rej;
+                document.head.appendChild(s);
+            });
+            pyPrismPromise = load(base + 'components/prism-core.min.js').then(() => load(base + 'components/prism-python.min.js'));
+            pyPrismPromise.catch(() => { pyPrismPromise = null; });
+            return pyPrismPromise;
+        }
+
+        function pyCopyCode(btn) {
+            const text = pyEl('py-code').textContent;
+            if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const old = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+                setTimeout(() => { btn.innerHTML = old; }, 1500);
+            }).catch(() => {});
+        }
+        function pyDownloadCode() {
+            const m = PY_MARKETS[pyMarket];
+            const blob = new Blob([pyEl(m.src).textContent], { type: 'text/x-python' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = m.file;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
 
         // ==========================================
         // 8. NEW: GACHA SYSTEM LOGIC
